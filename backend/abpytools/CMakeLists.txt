@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 
+enable_testing()
 #message("${PYTHON_INCLUDE_DIRS}")
+add_subdirectory(tests)
 
 include_directories(${PYTHON_INCLUDE_DIRS}
         include/)
@@ -19,3 +21,6 @@ target_link_libraries(${TARGET_NAME}
 add_executable(testExec src/main.cpp)
 
 target_link_libraries(testExec ${TARGET_NAME})
+
+add_test(NAME SimpleTest COMMAND SimpleTest
+        WORKING_DIRECTORY ${BackendAbPyToolsCPP_SOURCE_DIR})
