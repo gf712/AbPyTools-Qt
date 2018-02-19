@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/c++,python,qtcreator
 
+.idea/
+cmake-build-debug/
+
 ### C++ ###
 # Prerequisites
 *.d
