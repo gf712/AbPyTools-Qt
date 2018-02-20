@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
+enable_testing()
+
 include("cmake/HunterGate.cmake")
 
 # 1. Try to detect hunter by:
@@ -21,9 +23,11 @@ project(AbPyTools-Qt)
 hunter_add_package(Boost COMPONENTS test)
 find_package(Boost CONFIG REQUIRED COMPONENTS unit_test_framework)
 
+#find_package(PythonLibs)
+
 # TODO: automate path finding with anaconda
 set(PYTHON_INCLUDE_DIRS /home/gil/anaconda3/include/python3.6m)
 set(PYTHON_LIBRARIES /home/gil/anaconda3/lib/libpython3.6m.so)
 
-add_subdirectory(backend/abpytools)add_subdirectory(backend/utils)
+add_subdirectory(backend/utils)
 add_subdirectory(backend/abpytools)
