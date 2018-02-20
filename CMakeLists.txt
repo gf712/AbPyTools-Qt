@@ -23,6 +23,8 @@ project(AbPyTools-Qt)
 hunter_add_package(Boost COMPONENTS test)
 find_package(Boost CONFIG REQUIRED COMPONENTS unit_test_framework)
 
+set(BOOST_INCLUDE_DIRS ${BOOST_ROOT}/include)
+
 #find_package(PythonLibs)
 
 # TODO: automate path finding with anaconda

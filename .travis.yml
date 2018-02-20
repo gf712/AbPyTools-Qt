@@ -1,0 +1,15 @@
+sudo: true
+dist: trusty
+language: cpp
+
+# Install packages
+install:
+    - sudo apt-get update
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+
+# Run tests
+script:
+    - env CTEST_OUTPUT_ON_FAILURE=1 make
