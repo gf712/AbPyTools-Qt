@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gf712/AbPyTools-Qt.svg?branch=master)](https://travis-ci.org/gf712/AbPyTools-Qt)
+
 AbPyTools-Qt
 ============
 
