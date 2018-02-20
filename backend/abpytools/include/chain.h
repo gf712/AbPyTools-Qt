@@ -6,16 +6,23 @@
 #define ABPYTOOLS_QT_CHAIN_H
 
 #include <Python.h>
+#include <string>
+using namespace std;
 
 class AntibodyChainCPP {
 
 public:
-    AntibodyChainCPP();
+    AntibodyChainCPP() {}
+    AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme);
     ~AntibodyChainCPP();
+
+    char* getName();
+
+
 
 private:
     const char module_name[10] = "abpytools";
-    PyObject* module, *dict, *python_class, *object;
+    PyObject* module, *chainObject;
 
 };
 
