@@ -18,4 +18,15 @@ public:
 
 };
 
+class ClassImportException: public std::runtime_error {
+
+public:
+
+    ClassImportException(): runtime_error("Python import class error") {}
+
+    explicit ClassImportException(std::string msg):runtime_error(msg.c_str()){}
+
+};
+
+
 #endif //ABPYTOOLS_QT_EXCEPTION_H
