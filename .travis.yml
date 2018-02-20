@@ -24,6 +24,7 @@ before_install:
 
 install:
     # build package
+    - cd -
     - mkdir build
     - cd build
     - cmake -DPYTHON_PATH=$HOME/miniconda ..
