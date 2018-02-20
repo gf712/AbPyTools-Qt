@@ -16,9 +16,13 @@ public:
     AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme);
     ~AntibodyChainCPP();
 
+    // GETTERS (gets python @property)
     char* getName();
+    char* getSequence();
+    char* getNumberingScheme();
 
-
+    // METHODS
+    void load();
 
 private:
     const char module_name[10] = "abpytools";

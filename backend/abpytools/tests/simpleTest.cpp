@@ -3,14 +3,13 @@
 //
 
 #define BOOST_TEST_MODULE AbPyToolsPyCInterface
-#include <boost/test/included/unit_test.hpp>
 #include "chain.h"
 #include "exception.h"
-#include <string>
+#include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(ModuleImportTest)
 {
-    try {
+                try {
         auto *testObject = new AntibodyChainCPP;
     }
 
@@ -35,10 +34,11 @@ BOOST_AUTO_TEST_CASE(NameTest)
 
     char name[5] = "test";
     char sequence[5] = "ABCD";
-    char numbering_scheme[10] = "Chothia";
+    char numbering_scheme[10] = "chothia";
 
     auto *testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
 
     BOOST_TEST(testObject->getName() == name);
-
+    BOOST_TEST(testObject->getSequence() == sequence);
+    BOOST_TEST(testObject->getNumberingScheme() == numbering_scheme);
 }
