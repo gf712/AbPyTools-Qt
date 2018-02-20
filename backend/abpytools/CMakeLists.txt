@@ -1,14 +1,19 @@
 cmake_minimum_required(VERSION 3.1)
 
-enable_testing()
-#message("${PYTHON_INCLUDE_DIRS}")
-add_subdirectory(tests)
+project(BackendAbPyToolsCPP)
 
-include_directories(${PYTHON_INCLUDE_DIRS}
-        include/)
+#message("${PYTHON_INCLUDE_DIRS}")
+
+set(ABPYTOOLS_CPP_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/)
+
+include_directories(
+        ${PYTHON_INCLUDE_DIRS}
+        ${ABPYTOOLS_CPP_DIRS}
+        ${BACKEND_UTILS_DIRS})
 
 set(SOURCE_FILES
-        src/chain.cpp)
+        src/chain.cpp
+        include/chain.h)
 
 set(TARGET_NAME AbPyToolsInterfaceLib)
 
@@ -16,11 +21,10 @@ add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
 
 target_link_libraries(${TARGET_NAME}
-        ${PYTHON_LIBRARIES})
+        ${PYTHON_LIBRARIES}
+        ${EXCEPTIONS_LIB})
 
-add_executable(testExec src/main.cpp)
-
-target_link_libraries(testExec ${TARGET_NAME})
+add_subdirectory(tests)
 
 add_test(NAME SimpleTest COMMAND SimpleTest
-        WORKING_DIRECTORY ${BackendAbPyToolsCPP_SOURCE_DIR})
+        WORKING_DIRECTORY ${BackendAbPyToolsCPPTests_SOURCE_DIR})

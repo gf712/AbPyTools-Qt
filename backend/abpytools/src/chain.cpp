@@ -5,17 +5,15 @@
 #include <Python.h>
 #include "chain.h"
 #include <iostream>
+#include "exception.h"
 
 AntibodyChainCPP::AntibodyChainCPP() {
 
     Py_Initialize();
-//    PySys_SetPath(L"/home/gil/anaconda3/lib/python3.6/site-packages/AbPyTools-0.1.1-py3.6.egg/");
 
     module = PyImport_ImportModule(module_name);
     if (module == nullptr) {
-        PyErr_Print();
-        std::cerr << "Fails to import the module.\n";
-        return;
+        throw ModuleImportException(std::string("Could not import AbPyTools!"));
     }
     Py_DECREF(module_name);
 

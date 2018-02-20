@@ -14,8 +14,8 @@ public:
     ~AntibodyChainCPP();
 
 private:
-    char module_name[10] = "abpytools";
-    PyObject *module, *dict, *python_class, *object;
+    const char module_name[10] = "abpytools";
+    PyObject* module, *dict, *python_class, *object;
 
 };
 
