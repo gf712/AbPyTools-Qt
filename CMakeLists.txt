@@ -18,6 +18,10 @@ HunterGate(
         SHA1 "7e8c74787e08c476484d3e5106524fe7a5a0cc56"
 )
 
+set(PYTHON_PATH $ENV{HOME}/anaconda3 CACHE FILEPATH "Python path")
+
+message("python path ${PYTHON_PATH}")
+
 project(AbPyTools-Qt)
 
 hunter_add_package(Boost COMPONENTS test)
@@ -28,8 +32,8 @@ set(BOOST_INCLUDE_DIRS ${BOOST_ROOT}/include)
 #find_package(PythonLibs)
 
 # TODO: automate path finding with anaconda
-set(PYTHON_INCLUDE_DIRS /home/gil/anaconda3/include/python3.6m)
-set(PYTHON_LIBRARIES /home/gil/anaconda3/lib/libpython3.6m.so)
+set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include/python3.6m)
+set(PYTHON_LIBRARIES ${PYTHON_PATH}/lib/libpython3.6m.so)
 
 add_subdirectory(backend/utils)
 add_subdirectory(backend/abpytools)
