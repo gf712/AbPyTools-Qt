@@ -8,12 +8,13 @@ set(TARGET_NAME EXCEPTIONS_LIB PARENT_SCOPE)
 include_directories(
         include/
         BACKEND_UTILS_DIRS
-        ${PYTHON_INCLUDE_DIRS})
+        ${PYTHON_INCLUDE_DIRS}
+        ${Boost_INCLUDE_DIRS}
+)
 
 add_library(EXCEPTIONS_LIB STATIC
         include/exception.h
         src/exception.cpp)
-
 
 target_link_libraries(EXCEPTIONS_LIB
         ${PYTHON_LIBRARY})

@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.1)
 
 project(BackendAbPyToolsCPP)
 
-set(ABPYTOOLS_CPP_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/)
+set(ABPYTOOLS_CPP_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/ PARENT_SCOPE)
 
 include_directories(
         ${PYTHON_INCLUDE_DIRS}
-        ${ABPYTOOLS_CPP_DIRS}
+        include/
         ${BACKEND_UTILS_DIRS}
         ${BOOST_INCLUDE_DIRS})
 

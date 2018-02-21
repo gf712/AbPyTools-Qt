@@ -12,6 +12,8 @@ HunterGate(
         SHA1 "7e8c74787e08c476484d3e5106524fe7a5a0cc56"
 )
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage -fPIC -O0")
+
 # project name
 project(AbPyTools-Qt)
 
@@ -22,5 +24,4 @@ find_package(PythonLibs 3.5 REQUIRED)
 hunter_add_package(Boost COMPONENTS test python)
 find_package(Boost COMPONENTS REQUIRED unit_test_framework python3)
 
-add_subdirectory(backend/utils)
-add_subdirectory(backend/abpytools)
+add_subdirectory(backend)

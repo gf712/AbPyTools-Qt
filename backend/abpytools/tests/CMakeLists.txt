@@ -10,7 +10,6 @@ target_include_directories(SimpleTest PRIVATE
         ${ABPYTOOLS_CPP_DIRS}
         )
 
-
 target_link_libraries(SimpleTest
         AbPyToolsInterfaceLib
         ${PYTHON_LIBRARY}

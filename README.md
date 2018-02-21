@@ -6,8 +6,8 @@ AbPyTools-Qt
 This is a new version of [AbPyTools](https://github.com/gf712/AbPyTools) which has a frontend that can be easily used in addition to the existing
 Python3 API.
 
-Project Mission & Summary:
-==========================
+Project Mission & Summary
+=========================
 - Provide an easy to use interface to work with heavy and light antibody chains
 - Further optimise AbPyTools python code using C/C++ backend
 - Integrate machine learning algorithms for data analysis
@@ -41,8 +41,8 @@ make
 make test
 ```
 
-Known issues:
-=============
+Known issues
+============
 - Compiling boost with a python distribution from anaconda can lead to pathing issues. This issue will come up when 
 hunter is preparing the build files, and boost will fail to find the pyconfig.h. To solve this create a symlink
 in the include directory, like this:
