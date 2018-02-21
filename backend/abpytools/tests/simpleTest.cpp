@@ -39,8 +39,7 @@ BOOST_AUTO_TEST_CASE(NameTest)
     auto *testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
 
     BOOST_TEST(testObject->getName() == name);
-    BOOST_TEST(testObj    std::cout << testObject->getChain();
-ect->getSequence() == sequence);
+    BOOST_TEST(testObject->getSequence() == sequence);
     BOOST_TEST(testObject->getNumberingScheme() == numbering_scheme);
 }
 

@@ -12,8 +12,7 @@ addons:
       - gcc-5
 
 env:
-  - "CXX=g++-5"
-  - "CC=gcc-5"
+  - "CXX=g++-5 && CC=gcc-5"
 
 # Install packages
 before_install:
