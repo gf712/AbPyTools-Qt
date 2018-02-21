@@ -32,7 +32,7 @@ install:
     - cd -
     - mkdir build
     - cd build
-    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m -DPYTHON_LIBRARIES=$HOME/miniconda/lib/libpython3.6m.so ..
+    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m -DPYTHON_LIBRARY=$HOME/miniconda/lib/libpython3.6m.so ..
     - make
 
 # Run tests
