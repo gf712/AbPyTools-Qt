@@ -2,6 +2,15 @@ sudo: true
 dist: trusty
 language: cpp
 
+os: linux
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-5
+      - gcc-5
+
 # Install packages
 before_install:
     - sudo apt-get update -y
@@ -23,6 +32,13 @@ before_install:
     - python setup.py test
 
 install:
+    # enforce usage of gcc-5 and g++-5
+    - cd /usr/local/bin
+    - rm cc gcc c++ g++
+    - ln -s /usr/local/bin/gcc-5 cc
+    - ln -s /usr/local/bin/gcc-5 gcc
+    - ln -s /usr/local/bin/c++-5 c++
+    - ln -s /usr/local/bin/g++-5 g++
     # build package
     - cd -
     - mkdir build
