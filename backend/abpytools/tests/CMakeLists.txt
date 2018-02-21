@@ -2,19 +2,17 @@ cmake_minimum_required(VERSION 3.1)
 
 project(BackendAbPyToolsCPPTests)
 
-add_executable(SimpleTest
-        simpleTest.cpp)
+add_executable(BackendAbPyToolsCPPTest
+        AbPyToolsPyCInterfaceTestSuite.cpp
+        )
 
-target_include_directories(SimpleTest PRIVATE
+target_include_directories(BackendAbPyToolsCPPTest PRIVATE
         ${Boost_INCLUDE_DIRS}
         ${ABPYTOOLS_CPP_DIRS}
         )
 
-target_link_libraries(SimpleTest
+target_link_libraries(BackendAbPyToolsCPPTest
         AbPyToolsInterfaceLib
         ${PYTHON_LIBRARY}
         Boost::python3
         Boost::unit_test_framework)
-
-#target_link_libraries(SimpleTest
-#        PRIVATE AbPyToolsInterfaceLib Boost::Test)
