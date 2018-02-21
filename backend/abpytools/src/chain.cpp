@@ -8,8 +8,9 @@
 #include <iostream>
 #include <iterator>
 #include "exception.h"
+#include <boost/python.hpp>
 
-//using namespace boost::python;
+using namespace boost::python;
 
 AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme) {
     Py_Initialize();
@@ -54,11 +55,12 @@ std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH,
 
     PyObject* chargePyObject = PyObject_CallMethod(chainObject, "ab_charge", "ids", align, pH, pka_database);
 
+    // let boost handle PyObject memory allocation
+    object temp(handle<>(chargePyObject));
+
     int arraySize = static_cast<int>(PyArray_DIMS(chargePyObject)[0]);
 
-    auto chargeDouble = (double*) PyArray_DATA(chargePyObject);
-
-//    cout << chargeDouble[10];
+    auto chargeDouble = static_cast<double*>(PyArray_DATA(chargePyObject));
 
     std::vector<double> aminoAcidChargesVector(chargeDouble, chargeDouble + arraySize);
 

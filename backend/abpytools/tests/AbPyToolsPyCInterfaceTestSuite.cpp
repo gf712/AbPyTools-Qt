@@ -9,6 +9,8 @@
 #include "exception.h"
 #include <algorithm>
 
+namespace tt = boost::test_tools;
+
 struct ChainObjectFixture {
 
     AntibodyChainCPP* testObject;
@@ -80,10 +82,10 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
         vector<double> charges = testObject->getAminoAcidCharges(true, 7.4, database);
 
-//        std::cout << charges[0] << " , " << charges[1];
+        double sumOfCharges = std::accumulate(charges.begin(), charges.end(), 0.0);
 
         BOOST_TEST(charges.size() == 158);
-//        BOOST_TEST(std::accumulate(charges.rbegin(), charges.rend(), 0) == 1.7497642167513607);
+        BOOST_TEST(sumOfCharges == 1.7497642167513601, tt::tolerance(10e-9));
 
     }
 
