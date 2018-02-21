@@ -1,22 +1,15 @@
 sudo: true
 dist: trusty
 language: cpp
-
 os: linux
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-5
-      - gcc-5
 
-env:
-  - "CXX=g++-5 && CC=gcc-5"
-
-# Install packages
+# Install dependencies
 before_install:
+    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
     - sudo apt-get update -y
+    - sudo apt-get install gcc-5 g++-5
+    # increase priority of gcc5 and g++5
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
     # download and install miniconda
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
     - bash miniconda.sh -b -p $HOME/miniconda
@@ -39,7 +32,7 @@ install:
     - cd -
     - mkdir build
     - cd build
-    - cmake -DPYTHON_PATH=$HOME/miniconda ..
+    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m -DPYTHON_LIBRARIES=$HOME/miniconda/lib/libpython3.6m.so ..
     - make
 
 # Run tests
