@@ -6,7 +6,6 @@
 #include "chain.h"
 #include <iostream>
 #include "exception.h"
-//#include <boost/python.hpp>
 
 using namespace boost::python;
 
