@@ -7,6 +7,7 @@
 
 #include <Python.h>
 #include <string>
+#include <vector>
 using namespace std;
 
 class AntibodyChainCPP {
@@ -21,6 +22,7 @@ public:
     char* getSequence();
     char* getNumberingScheme();
     char* getChain();
+    std::vector<double> getAminoAcidCharges(bool align, double pH, char *pka_database);
 
     // METHODS
     void load();

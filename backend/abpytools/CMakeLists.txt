@@ -4,12 +4,6 @@ project(BackendAbPyToolsCPP)
 
 set(ABPYTOOLS_CPP_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/ PARENT_SCOPE)
 
-include_directories(
-        ${PYTHON_INCLUDE_DIRS}
-        include/
-        ${BACKEND_UTILS_DIRS}
-        ${BOOST_INCLUDE_DIRS})
-
 set(SOURCE_FILES
         src/chain.cpp
         include/chain.h)
@@ -18,6 +12,16 @@ set(TARGET_NAME AbPyToolsInterfaceLib)
 
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
+
+message("${PYTHON_INCLUDE_DIRS}")
+
+target_include_directories(${TARGET_NAME} PUBLIC
+        ${PYTHON_INCLUDE_DIRS}
+        include/
+        ${BACKEND_UTILS_DIRS}
+        ${BOOST_INCLUDE_DIRS}
+        ${PYTHON_NUMPY_INCLUDE_DIR}
+        )
 
 target_link_libraries(${TARGET_NAME}
         ${EXCEPTIONS_LIB}

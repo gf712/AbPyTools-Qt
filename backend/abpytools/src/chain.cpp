@@ -2,15 +2,16 @@
 // Created by gil on 19/02/18.
 //
 
+#include <numpy/arrayobject.h>
 #include <Python.h>
 #include "chain.h"
 #include <iostream>
+#include <iterator>
 #include "exception.h"
 
-using namespace boost::python;
+//using namespace boost::python;
 
 AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme) {
-
     Py_Initialize();
 
     module = PyImport_ImportModule(module_name);
@@ -49,6 +50,21 @@ char *AntibodyChainCPP::getChain() {
     return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "chain"));
 }
 
+std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH, char *pka_database) {
+
+    PyObject* chargePyObject = PyObject_CallMethod(chainObject, "ab_charge", "ids", align, pH, pka_database);
+
+    int arraySize = static_cast<int>(PyArray_DIMS(chargePyObject)[0]);
+
+    auto chargeDouble = (double*) PyArray_DATA(chargePyObject);
+
+//    cout << chargeDouble[10];
+
+    std::vector<double> aminoAcidChargesVector(chargeDouble, chargeDouble + arraySize);
+
+    return aminoAcidChargesVector;
+}
+
 void AntibodyChainCPP::load() {
     try {
         PyObject_CallMethod(chainObject, "load", "");
@@ -62,4 +78,3 @@ void AntibodyChainCPP::load() {
         throw PythonAbPyToolsError(pType, pValue, pTraceback);
     }
 }
-

@@ -7,6 +7,23 @@
 #include <boost/test/included/unit_test.hpp>
 #include "chain.h"
 #include "exception.h"
+#include <algorithm>
+
+struct ChainObjectFixture {
+
+    AntibodyChainCPP* testObject;
+    char name[5] = "test";
+    char sequence[200] = "QVQLQQWGAGLLKPSETLSLTCAVYGGSFSGYYWSWIRQPPGQGAEWIGEINHSGSTNYNPSLKSRVTISVGTSKNQFSLKLSSVTAADTAVYYCARGSTGRFLEWLLYFDYWGQGTLVTVSSGSRSAPTLFPLVSCENSPSDTSSVAVGCLAQDFLPDSITFSWKYKNNSDISSTRGFPSVLR";
+    char numbering_scheme[10] = "chothia";
+
+    ChainObjectFixture() {
+
+        testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
+    }
+
+    ~ChainObjectFixture() = default;
+
+};
 
 BOOST_AUTO_TEST_SUITE(AbPyToolsImportTests)
 
@@ -35,15 +52,9 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsImportTests)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(AbPyToolsPyCInterface)
+BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
     BOOST_AUTO_TEST_CASE(NameTest) {
-
-        char name[5] = "test";
-        char sequence[5] = "ABCD";
-        char numbering_scheme[10] = "chothia";
-
-        auto *testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
 
         BOOST_TEST(testObject->getName() == name);
         BOOST_TEST(testObject->getSequence() == sequence);
@@ -54,16 +65,25 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsPyCInterface)
 
     BOOST_AUTO_TEST_CASE(LoadTest) {
 
-        char name[5] = "test";
-        char sequence[200] = "QVQLQQWGAGLLKPSETLSLTCAVYGGSFSGYYWSWIRQPPGQGAEWIGEINHSGSTNYNPSLKSRVTISVGTSKNQFSLKLSSVTAADTAVYYCARGSTGRFLEWLLYFDYWGQGTLVTVSSGSRSAPTLFPLVSCENSPSDTSSVAVGCLAQDFLPDSITFSWKYKNNSDISSTRGFPSVLR";
-        char numbering_scheme[10] = "chothia";
         char chain[6] = "heavy";
-
-        auto *testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
 
         testObject->load();
 
         BOOST_TEST(testObject->getChain() == chain);
+
+    }
+
+    BOOST_AUTO_TEST_CASE(ChargeTest) {
+
+        char chain[6] = "heavy";
+        char database[10] = "Wikipedia";
+
+        vector<double> charges = testObject->getAminoAcidCharges(true, 7.4, database);
+
+//        std::cout << charges[0] << " , " << charges[1];
+
+        BOOST_TEST(charges.size() == 158);
+//        BOOST_TEST(std::accumulate(charges.rbegin(), charges.rend(), 0) == 1.7497642167513607);
 
     }
 
