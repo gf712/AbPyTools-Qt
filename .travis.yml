@@ -5,9 +5,9 @@ os: linux
 
 # Install dependencies
 before_install:
-    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - sudo apt-get update -y
-    - sudo apt-get install gcc-5 g++-5
+    - sudo apt-get install gcc-5 g++-5 -y
     # increase priority of gcc5 and g++5
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
     # download and install miniconda
