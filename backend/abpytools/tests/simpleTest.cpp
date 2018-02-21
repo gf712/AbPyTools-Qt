@@ -39,6 +39,22 @@ BOOST_AUTO_TEST_CASE(NameTest)
     auto *testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
 
     BOOST_TEST(testObject->getName() == name);
-    BOOST_TEST(testObject->getSequence() == sequence);
+    BOOST_TEST(testObj    std::cout << testObject->getChain();
+ect->getSequence() == sequence);
     BOOST_TEST(testObject->getNumberingScheme() == numbering_scheme);
+}
+
+BOOST_AUTO_TEST_CASE(LoadTest)
+{
+
+    char name[5] = "test";
+    char sequence[200] = "QVQLQQWGAGLLKPSETLSLTCAVYGGSFSGYYWSWIRQPPGQGAEWIGEINHSGSTNYNPSLKSRVTISVGTSKNQFSLKLSSVTAADTAVYYCARGSTGRFLEWLLYFDYWGQGTLVTVSSGSRSAPTLFPLVSCENSPSDTSSVAVGCLAQDFLPDSITFSWKYKNNSDISSTRGFPSVLR";
+    char numbering_scheme[10] = "chothia";
+    char chain[6] = "heavy";
+
+    auto *testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
+
+    testObject->load();
+
+    BOOST_TEST(testObject->getChain() == chain);
 }

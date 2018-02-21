@@ -6,7 +6,8 @@
 #include "chain.h"
 #include <iostream>
 #include "exception.h"
-#include <boost/python.hpp>
+//#include <boost/python.hpp>
+
 using namespace boost::python;
 
 AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme) {
@@ -45,30 +46,21 @@ char *AntibodyChainCPP::getNumberingScheme() {
     return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "numbering_scheme"));
 }
 
+char *AntibodyChainCPP::getChain() {
+    return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "chain"));
+}
+
 void AntibodyChainCPP::load() {
     try {
         PyObject_CallMethod(chainObject, "load", "");
 
     }
     catch (error_already_set&) {
-//        PyObject *exc,*val,*tb;
-//
+        PyObject *pType,*pValue,*pTraceback;
 
-//        PyObject *pType, *pValue, *pTraceback;
-//
-//        PyErr_Fetch(&pType, &pValue, &pTraceback);
-//
-//        handle<> hType(pType);
-//        object extype(hType);
-//        handle<> hTraceback(pTraceback);
-//        object traceback(hTraceback);
-//
-//        string strErrorMessage = extract<string>(pValue);
-//
-//        long lineno = extract<long> (traceback.attr("tb_lineno"));
-//        string filename = extract<string>(traceback.attr("tb_frame").attr("f_code").attr("co_filename"));
-//        string funcname = extract<string>(traceback.attr("tb_frame").attr("f_code").attr("co_name"));
+        PyErr_Fetch(&pType, &pValue, &pTraceback);
 
-//        throw
+        throw PythonAbPyToolsError(pType, pValue, pTraceback);
     }
 }
+

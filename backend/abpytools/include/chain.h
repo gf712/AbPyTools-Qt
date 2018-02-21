@@ -20,6 +20,7 @@ public:
     char* getName();
     char* getSequence();
     char* getNumberingScheme();
+    char* getChain();
 
     // METHODS
     void load();
