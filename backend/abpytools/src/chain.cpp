@@ -3,9 +3,9 @@
 //
 
 #include <numpy/arrayobject.h>
-#include "chain.h"
 #include <iostream>
 #include <iterator>
+#include "chain.h"
 #include "exception.h"
 
 using namespace boost::python;
@@ -75,6 +75,35 @@ std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH,
     std::vector<double> aminoAcidChargesVector(chargeDouble, chargeDouble + arraySize);
 
     return aminoAcidChargesVector;
+}
+
+std::vector<double> AntibodyChainCPP::getAminoAcidHydrophobicity(char *hydrophobicity_scores) {
+
+    PyObject* hValuesPyObject = PyObject_CallMethod(chainObject, "ab_hydrophobicity_matrix", "s", hydrophobicity_scores);
+
+    // let boost handle PyObject memory allocation
+    object temp(handle<>(hValuesPyObject));
+
+    int arraySize = static_cast<int>(PyArray_DIMS(hValuesPyObject)[0]);
+
+    auto hValuesDouble = static_cast<double*>(PyArray_DATA(hValuesPyObject));
+
+    std::vector<double> aminoAcidHValues(hValuesDouble, hValuesDouble + arraySize);
+
+    return aminoAcidHValues;
+}
+
+
+std::vector<double> AntibodyChainCPP::getAminoAcidHydrophobicity(hydrophobicityParser &customHValues_) {
+
+    std::vector<double> hValues(sequence.length());
+
+    for (int j = 0; j < hValues.size(); ++j) {
+
+        customHValues_.getAminoAcidHydrophobicityMap()[sequence[j]];
+
+    }
+
 }
 
 void AntibodyChainCPP::load() {
