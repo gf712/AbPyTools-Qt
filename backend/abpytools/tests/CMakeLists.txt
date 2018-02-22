@@ -8,7 +8,7 @@ add_executable(BackendAbPyToolsCPPTest
 
 target_include_directories(BackendAbPyToolsCPPTest PRIVATE
         ${Boost_INCLUDE_DIRS}
-        ${ABPYTOOLS_CPP_DIRS}
+        ../include
         )
 
 target_link_libraries(BackendAbPyToolsCPPTest

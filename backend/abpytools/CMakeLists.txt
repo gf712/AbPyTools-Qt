@@ -13,8 +13,6 @@ set(TARGET_NAME AbPyToolsInterfaceLib)
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
 
-message("${PYTHON_INCLUDE_DIRS}")
-
 target_include_directories(${TARGET_NAME} PUBLIC
         ${PYTHON_INCLUDE_DIRS}
         include/

@@ -4,8 +4,8 @@
 
 #define BOOST_TEST_MODULE AbPyToolsCInterfaceTestSuite
 #define BOOST_TEST_DYN_LINK
+
 #include <boost/test/included/unit_test.hpp>
-#include <algorithm>
 #include "chain.h"
 #include "exception.h"
 

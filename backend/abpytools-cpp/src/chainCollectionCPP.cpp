@@ -35,6 +35,8 @@ ChainCollectionCPP::ChainCollectionCPP(std::vector <AntibodyChainCPP> antibodyOb
         numberOfChains++;
     }
 
+
+
 }
 
 ChainCollectionCPP::ChainCollectionCPP(char *path, char *numberingScheme) {
