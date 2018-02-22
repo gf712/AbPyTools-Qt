@@ -12,8 +12,9 @@ set (CMAKE_CXX_STANDARD 11)
 # get hunter for package management in cmake
 include("cmake/HunterGate.cmake")
 HunterGate(
-        URL "https://github.com/ruslo/hunter/archive/v0.18.12.tar.gz"
-        SHA1 "7e8c74787e08c476484d3e5106524fe7a5a0cc56"
+        URL "https://github.com/ruslo/hunter/archive/v0.19.125.tar.gz"
+        SHA1 "371aef6239eff8639fe2cd94afef0f4d9f733302"
+        LOCAL
 )
 
 
