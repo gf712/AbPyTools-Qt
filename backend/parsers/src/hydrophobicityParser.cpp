@@ -27,8 +27,6 @@ void hydrophobicityParser::parse() {
 
     boost::filesystem::ifstream file(filepath);
 
-    int nAminoAcids = 0;
-
     for (std::string line; std::getline(file, line); )
     {
 
@@ -64,11 +62,10 @@ void hydrophobicityParser::parse() {
 
             aminoAcidHydrophobicityMap[elements[0]] = numericHValue;
 
-            nAminoAcids++;
         }
     }
 
-    if (nAminoAcids!=20) {
+    if (aminoAcidHydrophobicityMap.size() != 20) {
         // Sanity check -> expected a file with info for 20 amino acids!
         throw 1;
     }
