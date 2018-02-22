@@ -3,12 +3,10 @@
 //
 
 #include <numpy/arrayobject.h>
-#include <Python.h>
 #include "chain.h"
 #include <iostream>
 #include <iterator>
 #include "exception.h"
-#include <boost/python.hpp>
 
 using namespace boost::python;
 
@@ -35,20 +33,32 @@ AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_s
 
 }
 
-char* AntibodyChainCPP::getName() {
-    return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "name"));
+std::string AntibodyChainCPP::getName() {
+    if (!name) {
+        name = std::string(PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "name")));
+    }
+    return *name;
 }
 
-char *AntibodyChainCPP::getSequence() {
-    return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "sequence"));
+std::string AntibodyChainCPP::getSequence() {
+    if (!sequence) {
+        sequence = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "sequence"));
+    }
+    return *sequence;
 }
 
-char *AntibodyChainCPP::getNumberingScheme() {
-    return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "numbering_scheme"));
+std::string AntibodyChainCPP::getNumberingScheme() {
+    if (!numbering_scheme) {
+        numbering_scheme = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "numbering_scheme"));
+    }
+    return *numbering_scheme;
 }
 
-char *AntibodyChainCPP::getChain() {
-    return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "chain"));
+std::string AntibodyChainCPP::getChain() {
+    if (!chain) {
+        chain = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "chain"));
+    }
+    return *chain;
 }
 
 std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH, char *pka_database) {

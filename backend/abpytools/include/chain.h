@@ -8,7 +8,7 @@
 #include <Python.h>
 #include <string>
 #include <vector>
-using namespace std;
+#include <boost/optional.hpp>
 
 class AntibodyChainCPP {
 
@@ -18,10 +18,10 @@ public:
     ~AntibodyChainCPP();
 
     // GETTERS (gets python @property)
-    char* getName();
-    char* getSequence();
-    char* getNumberingScheme();
-    char* getChain();
+    std::string getName();
+    std::string getSequence();
+    std::string getNumberingScheme();
+    std::string getChain();
     std::vector<double> getAminoAcidCharges(bool align, double pH, char *pka_database);
 
     // METHODS
@@ -30,7 +30,12 @@ public:
 private:
     const char module_name[10] = "abpytools";
     PyObject* module, *chainObject;
-
+    // using boost::optional reduces the number of calls to python by caching results
+    // if attribute has already been requested by getter
+    boost::optional<std::string> name;
+    boost::optional<std::string> sequence;
+    boost::optional<std::string> chain;
+    boost::optional<std::string> numbering_scheme;
 };
 
 #endif //ABPYTOOLS_QT_CHAIN_H
