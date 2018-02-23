@@ -78,7 +78,6 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
     BOOST_AUTO_TEST_CASE(ChargeTest) {
 
-        char chain[6] = "heavy";
         char database[10] = "Wikipedia";
 
         vector<double> charges = testObject->getAminoAcidCharges(true, 7.4, database);
@@ -88,6 +87,18 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
         BOOST_TEST(charges.size() == 158);
         BOOST_TEST(sumOfCharges == 1.7497642167513601, tt::tolerance(10e-9));
 
+    }
+
+    BOOST_AUTO_TEST_CASE(HydrophbocityTest) {
+
+        char database[10] = "ew";
+
+        vector<double> hValues = testObject->getHydrophobicityMatrix(database);
+
+        double sumOfHValues = std::accumulate(hValues.begin(), hValues.end(), 0.0);
+
+        BOOST_TEST(hValues.size() == 158);
+        BOOST_TEST(sumOfHValues == 1.7497642167513601, tt::tolerance(10e-9));
     }
 
 BOOST_AUTO_TEST_SUITE_END()

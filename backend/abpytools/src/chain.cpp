@@ -68,7 +68,7 @@ std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH,
     // let boost handle PyObject memory allocation
     object temp(handle<>(chargePyObject));
 
-    int arraySize = static_cast<int>(PyArray_DIMS(chargePyObject)[0]);
+    auto arraySize = static_cast<int>(PyArray_DIMS(chargePyObject)[0]);
 
     auto chargeDouble = static_cast<double*>(PyArray_DATA(chargePyObject));
 
