@@ -14,5 +14,6 @@ target_include_directories(BackendAbPyToolsCPPTest PRIVATE
 target_link_libraries(BackendAbPyToolsCPPTest
         AbPyToolsInterfaceLib
         ${PYTHON_LIBRARY}
+        AbPyToolsCppParserLib
         Boost::python3
         Boost::unit_test_framework)

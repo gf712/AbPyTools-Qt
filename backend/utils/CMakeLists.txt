@@ -6,10 +6,10 @@ set(BACKEND_UTILS_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 set(TARGET_NAME EXCEPTIONS_LIB PARENT_SCOPE)
 
 include_directories(
-        include/
-        BACKEND_UTILS_DIRS
-        ${PYTHON_INCLUDE_DIRS}
-        ${Boost_INCLUDE_DIRS}
+        PRIVATE include/
+        PRIVATE BACKEND_UTILS_DIRS
+        PRIVATE ${PYTHON_INCLUDE_DIRS}
+        PRIVATE ${Boost_INCLUDE_DIRS}
 )
 
 add_library(EXCEPTIONS_LIB STATIC

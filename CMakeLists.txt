@@ -26,8 +26,11 @@ find_package(PythonLibs 3.5 REQUIRED)
 
 # get boost and build unit_test_framework and python3 -> requires python3 interpreter
 hunter_add_package(Boost COMPONENTS test python filesystem)
+hunter_add_package(Qt)
 
 find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesystem system)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Gui REQUIRED)
 
 ############################################################################################
 #                                       DECLARATIONS
@@ -41,3 +44,4 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(Numpy REQUIRED)
 
 add_subdirectory(backend)
+add_subdirectory(gui)
