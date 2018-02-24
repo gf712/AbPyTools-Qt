@@ -2,9 +2,6 @@
 // Created by gil on 19/02/18.
 //
 
-#include <numpy/arrayobject.h>
-#include <iostream>
-#include <iterator>
 #include "chain.h"
 #include "exception.h"
 
@@ -77,7 +74,7 @@ std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH,
     return aminoAcidChargesVector;
 }
 
-std::vector<double> AntibodyChainCPP::getAminoAcidHydrophobicity(char *hydrophobicity_scores) {
+std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(char *hydrophobicity_scores) {
 
     PyObject* hValuesPyObject = PyObject_CallMethod(chainObject, "ab_hydrophobicity_matrix", "s", hydrophobicity_scores);
 
@@ -94,13 +91,19 @@ std::vector<double> AntibodyChainCPP::getAminoAcidHydrophobicity(char *hydrophob
 }
 
 
-std::vector<double> AntibodyChainCPP::getAminoAcidHydrophobicity(hydrophobicityParser &customHValues_) {
+std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(hydrophobicityParser &customHValues_) {
 
-    std::vector<double> hValues(sequence.length());
+    if (!sequence) {
+        getSequence();
+    }
+
+    std::vector<double> hValues((*sequence).length());
 
     for (int j = 0; j < hValues.size(); ++j) {
 
-        customHValues_.getAminoAcidHydrophobicityMap()[sequence[j]];
+        std::cout << hValues[j];
+
+        customHValues_.getAminoAcidHydrophobicityMap()[(*sequence).substr(j)];
 
     }
 

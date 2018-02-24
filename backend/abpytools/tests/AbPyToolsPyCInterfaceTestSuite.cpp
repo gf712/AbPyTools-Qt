@@ -8,6 +8,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include "chain.h"
 #include "exception.h"
+#include "hydrophobicityParser.h"
 
 using namespace std;
 namespace tt = boost::test_tools;
@@ -98,7 +99,24 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
         double sumOfHValues = std::accumulate(hValues.begin(), hValues.end(), 0.0);
 
         BOOST_TEST(hValues.size() == 158);
-        BOOST_TEST(sumOfHValues == 1.7497642167513601, tt::tolerance(10e-9));
+        BOOST_TEST(sumOfHValues == -8.01, tt::tolerance(10e-9));
     }
+
+    BOOST_AUTO_TEST_CASE(HydrophbocityParserTest) {
+
+        std::string filepath = "data/abraham.hpb";
+
+        auto hParser = hydrophobicityParser(filepath);
+
+        hParser.parse();
+
+        vector<double> hValues = testObject->getHydrophobicityMatrix(hParser);
+
+        double sumOfHValues = std::accumulate(hValues.begin(), hValues.end(), 0.0);
+
+        BOOST_TEST(hValues.size() == 158);
+        BOOST_TEST(sumOfHValues == -8.01, tt::tolerance(10e-9));
+    }
+
 
 BOOST_AUTO_TEST_SUITE_END()
