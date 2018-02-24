@@ -41,6 +41,9 @@ make
 make test
 ```
 
+Building from source is something for the patient. If you never used hunter before, particularly with a project that 
+requires Qt, downloading and building all the libraries can take a long time (and cause loss of hair..)!
+
 Known issues
 ============
 - Compiling boost with a python distribution from anaconda can lead to pathing issues. This issue will come up when 
