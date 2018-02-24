@@ -7,7 +7,7 @@ os: linux
 before_install:
     - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - sudo apt-get update -y
-    - sudo apt-get install gcc-5 g++-5 -y
+    - sudo apt-get install gcc-5 g++-5 libglfw3-dev libgles2-mesa-dev -y
     # increase priority of gcc5 and g++5
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
     # download and install miniconda
@@ -35,8 +35,9 @@ install:
     - mkdir build
     - cd build
     - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m -DPYTHON_LIBRARY=$HOME/miniconda/lib/libpython3.6m.so ..
-    - make
+    # speed up compiling by using up to 4 jobs at any time
+    - make -j4
 
 # Run tests
 script:
-    - env CTEST_OUTPUT_ON_FAILURE=1 make
+    - env CTEST_OUTPUT_ON_FAILURE=1 make test
