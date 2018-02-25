@@ -7,9 +7,11 @@ os: linux
 before_install:
     - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - sudo apt-get update -y
-    - sudo apt-get install gcc-5 g++-5 libglfw3-dev libgles2-mesa-dev -y
+    - sudo apt-get install gcc-5 g++-5 libgles2-mesa-dev -y
     # increase priority of gcc5 and g++5
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
+    # https://github.com/filipwasil/fillwave/issues/58
+    - git clone https://github.com/glfw/glfw && mkdir build && cd build && cmake ../glfw && make -j4 && sudo make install && cd $HOME
     # download and install miniconda
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
     - bash miniconda.sh -b -p $HOME/miniconda
