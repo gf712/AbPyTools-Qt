@@ -20,7 +20,12 @@ target_link_libraries(${TARGET_NAME}
         ${PYTHON_LIBRARY}
         )
 
-target_include_directories(${TARGET_NAME} PRIVATE
+target_include_directories(${TARGET_NAME}
+        INTERFACE include/
+        )
+
+target_include_directories(${TARGET_NAME} SYSTEM
+        PUBLIC ${PYTHON_INCLUDE_DIRS}
         ${ABPYTOOLS_CPP_DIRS}
-        ${PYTHON_INCLUDE_DIRS}
-        include/)
+        ${PYTHON_NUMPY_INCLUDE_DIR}
+        )

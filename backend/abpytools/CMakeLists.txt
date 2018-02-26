@@ -1,8 +1,6 @@
-cmake_minimum_required(VERSION 3.1)
-
 project(BackendAbPyToolsCPP)
 
-set(ABPYTOOLS_CPP_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/ PARENT_SCOPE)
+set(ABPYTOOLS_CPP_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpytools cpp include lib")
 
 set(SOURCE_FILES
         src/chain.cpp)
@@ -14,9 +12,13 @@ include_directories(${ABPYTOOLS_CPP_PARSER_DIR})
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
 
-target_include_directories(${TARGET_NAME} PUBLIC
-        ${PYTHON_INCLUDE_DIRS}
-        include/
+message(${PYTHON_NUMPY_INCLUDE_DIR})
+
+target_include_directories(${TARGET_NAME}
+        INTERFACE include/)
+
+target_include_directories(${TARGET_NAME} SYSTEM
+        PUBLIC ${PYTHON_INCLUDE_DIRS}
         ${BACKEND_UTILS_DIRS}
         ${BOOST_INCLUDE_DIRS}
         ${PYTHON_NUMPY_INCLUDE_DIR})

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.6)
 
 enable_testing()
 
@@ -29,19 +29,22 @@ hunter_add_package(Boost COMPONENTS test python filesystem)
 hunter_add_package(Qt)
 
 find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesystem system)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Core REQUIRED)
 
 ############################################################################################
-#                                       DECLARATIONS
+#                                        DECLARATIONS
 ############################################################################################
 
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage -fPIC -O0")
+set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_package(Numpy REQUIRED)
 
 add_subdirectory(backend)
+
+message("ABPYTOOLS_CPP_DIRS: ${ABPYTOOLS_CPP_DIRS}")
+
 add_subdirectory(gui)

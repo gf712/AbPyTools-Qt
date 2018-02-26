@@ -1,7 +1,7 @@
 project(AbPyToolsCppParsers)
 
 set(SOURCE_FILES
-        src/hydrophobicityParser.cpp tests/AbPyToolsCppParserTests.cpp)
+        src/hydrophobicityParser.cpp)
 
 set(ABPYTOOLS_CPP_PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
