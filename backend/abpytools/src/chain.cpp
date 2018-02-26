@@ -8,6 +8,9 @@
 using namespace boost::python;
 
 AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme) {
+
+    aligned = false;
+
     Py_Initialize();
 
     module = PyImport_ImportModule(module_name);
@@ -42,6 +45,34 @@ std::string AntibodyChainCPP::getSequence() {
         sequence = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "sequence"));
     }
     return *sequence;
+}
+
+
+std::string AntibodyChainCPP::getAlignedSequence() {
+
+    if (!alignedSequence) {
+        std::cout << "Calling aligned_sequence" << "\n";
+        PyObject* alignedSequenceArray = PyObject_GetAttrString(chainObject, "aligned_sequence");
+
+        // let boost handle PyObject memory allocation
+        object temp(handle<>(alignedSequenceArray));
+
+        auto arraySize = static_cast<int>(PyArray_DIMS(alignedSequenceArray)[0]);
+
+        // build string from PyArray
+//        alignedSequence = std::string(alignedSequenceChar);
+
+        // initialise aligned_sequence
+        alignedSequence = "";
+
+        for (int j = 0; j < arraySize; ++j) {
+            (*alignedSequence).append((char*) PyArray_GETPTR1(alignedSequenceArray, j));
+        }
+
+        std::cout << (*alignedSequence) << "\n";
+    }
+
+    return *alignedSequence;
 }
 
 std::string AntibodyChainCPP::getNumberingScheme() {
@@ -93,20 +124,30 @@ std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(char *hydrophobici
 
 std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(hydrophobicityParser &customHValues_) {
 
-    if (!sequence) {
-        getSequence();
+    std::string replacementString = "-";
+
+    if (!alignedSequence) {
+        auto temp = getAlignedSequence();
     }
 
-    std::vector<double> hValues((*sequence).length());
+    auto oneLetterMap =  customHValues_.getAminoAcidHydrophobicityMap(1);
+
+    std::vector<double> hValues;
+    hValues.resize((*alignedSequence).length());
 
     for (int j = 0; j < hValues.size(); ++j) {
 
-        std::cout << hValues[j];
-
-        customHValues_.getAminoAcidHydrophobicityMap()[(*sequence).substr(j)];
+        if ((*alignedSequence).substr(j, 1).compare(0, 1, replacementString) == 0) {
+            // this is a replacement string and has no amino acid value
+            hValues[j] = 0;
+        }
+        else {
+            hValues[j] = oneLetterMap[(*alignedSequence).substr(j, 1)];
+        }
 
     }
 
+    return hValues;
 }
 
 void AntibodyChainCPP::load() {
@@ -121,4 +162,13 @@ void AntibodyChainCPP::load() {
 
         throw PythonAbPyToolsError(pType, pValue, pTraceback);
     }
+}
+
+void AntibodyChainCPP::printSequence() {
+
+    if (!sequence) {
+        auto temp = getSequence();
+    }
+
+    std::cout << (*sequence);
 }

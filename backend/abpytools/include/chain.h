@@ -17,13 +17,14 @@
 class AntibodyChainCPP {
 
 public:
-    AntibodyChainCPP() {}
+    AntibodyChainCPP() {aligned=false;}
     AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme);
     ~AntibodyChainCPP() = default;
 
     // GETTERS (gets python @property)
     std::string getName();
     std::string getSequence();
+    std::string getAlignedSequence();
     std::string getNumberingScheme();
     std::string getChain();
     std::vector<double> getAminoAcidCharges(bool align, double pH, char *pka_database);
@@ -38,6 +39,9 @@ public:
     // METHODS
     void load();
 
+    // LOGGING METHODS
+    void printSequence();
+
 private:
     const char module_name[10] = "abpytools";
     PyObject* module, *chainObject;
@@ -47,6 +51,8 @@ private:
     boost::optional<std::string> sequence;
     boost::optional<std::string> chain;
     boost::optional<std::string> numbering_scheme;
+    boost::optional<std::string> alignedSequence;
+    bool aligned;
 };
 
 #endif //ABPYTOOLS_QT_CHAIN_H
