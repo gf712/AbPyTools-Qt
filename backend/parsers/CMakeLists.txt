@@ -9,12 +9,14 @@ add_library(AbPyToolsCppParserLib STATIC
             ${SOURCE_FILES})
 
 target_include_directories(AbPyToolsCppParserLib
-        PUBLIC include/)
-#        ${BOOST_INCLUDE_DIR})
+        PUBLIC include/
+        ${BACKEND_UTILS_DIRS})
 
 target_link_libraries(AbPyToolsCppParserLib
+        EXCEPTIONS_LIB
         Boost::filesystem
-        Boost::system)
+        Boost::system
+        Boost::python3)
 
 file(COPY data/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
 file(COPY data/abraham.hpb DESTINATION ${CMAKE_BINARY_DIR}/backend/abpytools/data)
