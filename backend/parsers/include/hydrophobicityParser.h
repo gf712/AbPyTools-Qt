@@ -18,7 +18,7 @@ public:
     void parse();
 
     // GETTERS
-    std::unordered_map<std::string, double> getAminoAcidHydrophobicityMap() {return aminoAcidHydrophobicityMap;}
+    std::unordered_map<std::string, double> getAminoAcidHydrophobicityMap(int letter);
     std::string getFilepath() { return  filepath;}
 
 private:

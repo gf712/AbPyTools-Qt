@@ -22,8 +22,10 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsHydrophobicityTests)
 
         testObject.parse();
 
-        BOOST_TEST(testObject.getAminoAcidHydrophobicityMap()["ALA"] == 0.440);
-        BOOST_TEST(testObject.getAminoAcidHydrophobicityMap().size() == 20);
+        BOOST_TEST(testObject.getAminoAcidHydrophobicityMap(3)["ALA"] == 0.440);
+        BOOST_TEST(testObject.getAminoAcidHydrophobicityMap(1)["A"] == 0.440);
+        BOOST_TEST(testObject.getAminoAcidHydrophobicityMap(3).size() == 20);
+        BOOST_TEST(testObject.getAminoAcidHydrophobicityMap(1).size() == 20);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
