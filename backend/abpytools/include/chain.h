@@ -21,7 +21,7 @@ public:
     AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme);
     ~AntibodyChainCPP() = default;
 
-    // GETTERS (gets python @property)
+    // GETTERS (for python @property)
     std::string getName();
     std::string getSequence();
     std::string getAlignedSequence();

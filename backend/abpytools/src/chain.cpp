@@ -2,7 +2,7 @@
 // Created by gil on 19/02/18.
 //
 
-#include "chain.h"
+#include "../include/chain.h"
 #include "exception.h"
 
 using namespace boost::python;

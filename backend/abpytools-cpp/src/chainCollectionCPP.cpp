@@ -2,7 +2,7 @@
 // Created by gil on 21/02/18.
 //
 
-#include "chainCollectionCPP.h"
+#include "../include/chainCollectionCPP.h"
 #include <string>
 
 ChainCollectionCPP::ChainCollectionCPP(std::vector <AntibodyChainCPP> antibodyObjects) {
