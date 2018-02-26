@@ -11,13 +11,16 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ui/)
 
 set(SOURCE_FILES
-        src/mainwindow.cpp)
+        src/mainwindow.cpp
+        src/newsequencedialog.cpp)
 
 set(HEADER_FILES
-        include/mainwindow.h)
+        include/mainwindow.h
+        include/newsequencedialog.h)
 
 set(UI_FILES
-        ui/mainwindow.ui)
+        ui/mainwindow.ui
+        ui/newsequencedialog.ui)
 
 add_library(AbPyToolsGUIlib STATIC
         ${SOURCE_FILES}
