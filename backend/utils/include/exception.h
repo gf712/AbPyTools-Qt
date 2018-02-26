@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <Python.h>
 #include <boost/python.hpp>
+//#include <boost/format.hpp>
 
 using namespace boost::python;
 using namespace boost;
@@ -65,6 +66,16 @@ public:
         return message;
 
     }
+};
+
+class FileDoesNotExistException: public std::runtime_error {
+
+public:
+
+    FileDoesNotExistException(): runtime_error("Could not find file!") {}
+
+    explicit FileDoesNotExistException(std::string msg): runtime_error(msg.c_str()) {}
+
 };
 
 #endif //ABPYTOOLS_QT_EXCEPTION_H
