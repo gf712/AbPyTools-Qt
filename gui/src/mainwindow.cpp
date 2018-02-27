@@ -29,49 +29,24 @@ void MainWindow::on_actionNew_triggered()
     auto newSequenceDialogPointer = new newSequenceDialog(this);
     newSequenceDialogPointer->show();
 
-    connect(newSequenceDialogPointer, SIGNAL(newSequenceDialogNameChange(std::string)), this,
-            SLOT(newSequenceDialogNameGetter(std::string)));
+    connect(newSequenceDialogPointer, SIGNAL(buttonBoxAccepted(std::string, std::string, std::string)),
+            this, SLOT(addAntibodyObject(std::string, std::string, std::string)));
 
-    connect(newSequenceDialogPointer, SIGNAL(newSequenceDialogSequenceChange(std::string)), this,
-            SLOT(newSequenceDialogSequenceGetter(std::string)));
-
-    connect(newSequenceDialogPointer, SIGNAL(newSequenceDialogNumberingSchemeChange(std::string)), this,
-            SLOT(newSequenceDialogNumberingSchemeGetter(std::string)));
-
-    // debug window
-//    timer = new QTimer(this);
-//    timer->connect(timer, SIGNAL(timeout()), this, SLOT(refresh_values()));
-//    timer->start(1000);
-
-//    name = newSequenceDialogPointer->getDialogName();
-//    sequence = newSequenceDialogPointer->getDialogSequence();
-//    numberingScheme = newSequenceDialogPointer->getDialogNumberingScheme();
-
-//    qDebug() << QString("name: %1\nsequence: %2\nnumbering scheme: %3").arg(QString::fromStdString(antibodyObjects->getName()),
-//                                                                            QString::fromStdString(antibodyObjects->getSequence()),
-//                                                                            QString::fromStdString(antibodyObjects->getNumberingScheme()));
 
 }
 
-void MainWindow::refresh_values() {
+void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std::string numberingScheme_) {
 
-//    if (antibodyObjects != nullptr)
-//
-//        ui->debugAreaTextEdit->setText(QString("name: %1\nsequence: %2\nnumbering scheme: %3").arg(QString::fromStdString(antibodyObjects->getName()),
-//                                                                                                   QString::fromStdString(antibodyObjects->getSequence()),
-//                                                                                                   QString::fromStdString(antibodyObjects->getNumberingScheme())));
-
-}
-
-void MainWindow::newSequenceDialogNameGetter(std::string name_) {
+    qDebug() << "BUTTON ACCEPTED RECEIVED";
 
     antibodyObjects->setName(name_);
-}
 
-void MainWindow::newSequenceDialogSequenceGetter(std::string sequence_) {
     antibodyObjects->setSequence(sequence_);
-}
 
-void MainWindow::newSequenceDialogNumberingSchemeGetter(std::string numberingScheme_) {
     antibodyObjects->setNumberingScheme(numberingScheme_);
+
+    ui->debugAreaTextEdit->setText(QString("name: %1\nsequence: %2\nnumbering scheme: %3").arg(QString::fromStdString(antibodyObjects->getName()),
+                                                                                               QString::fromStdString(antibodyObjects->getSequence()),
+                                                                                               QString::fromStdString(antibodyObjects->getNumberingScheme())));
+
 }

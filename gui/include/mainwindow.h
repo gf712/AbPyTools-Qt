@@ -28,12 +28,7 @@ public:
 private slots:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
-    void newSequenceDialogNameGetter(std::string name_);
-    void newSequenceDialogSequenceGetter(std::string name_);
-    void newSequenceDialogNumberingSchemeGetter(std::string name_);
-
-    // DEBUG
-    void refresh_values();
+    void addAntibodyObject(std::string name_, std::string sequence_, std::string numberingScheme_);
 
 private:
     Ui::MainWindow *ui;

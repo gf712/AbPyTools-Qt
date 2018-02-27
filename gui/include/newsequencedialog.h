@@ -23,9 +23,7 @@ private slots:
     void on_newSequenceDialogNumberingScheme_currentIndexChanged(int index);
 
 signals:
-    void newSequenceDialogNameChange(std::string name);
-    void newSequenceDialogSequenceChange(std::string name);
-    void newSequenceDialogNumberingSchemeChange(std::string name);
+    void buttonBoxAccepted(std::string name_, std::string sequence_, std::string numberingScheme_);
 
 private:
     Ui::newSequenceDialog *ui;

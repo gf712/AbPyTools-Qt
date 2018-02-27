@@ -18,20 +18,7 @@ newSequenceDialog::~newSequenceDialog()
 
 void newSequenceDialog::on_buttonBox_accepted()
 {
-    
-}
-
-void newSequenceDialog::on_newSequenceDialogName_editingFinished()
-{
-    emit newSequenceDialogNameChange(ui->newSequenceDialogName->text().toStdString());
-}
-
-void newSequenceDialog::on_newSequenceDialogSequence_textChanged()
-{
-    emit newSequenceDialogSequenceChange(ui->newSequenceDialogSequence->toPlainText().toStdString());
-}
-
-void newSequenceDialog::on_newSequenceDialogNumberingScheme_currentIndexChanged(int index)
-{
-    emit newSequenceDialogNumberingSchemeChange(std::string(numberingSchemesVector[ui->newSequenceDialogNumberingScheme->currentIndex()]));
+    emit buttonBoxAccepted(ui->newSequenceDialogName->text().toStdString(),
+                           ui->newSequenceDialogSequence->toPlainText().toStdString(),
+                           std::string(numberingSchemesVector[ui->newSequenceDialogNumberingScheme->currentIndex()]));
 }
