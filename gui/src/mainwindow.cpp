@@ -23,7 +23,7 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionNew_triggered()
 {
     // instantiate antibody object with empty constructor
-    antibodyObjects = new AntibodyChainCPP();
+    antibodyObject = new AntibodyChainCPP();
 
     // opens new dialog to add sequence
     auto newSequenceDialogPointer = new newSequenceDialog(this);
@@ -39,14 +39,14 @@ void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std
 
     qDebug() << "BUTTON ACCEPTED RECEIVED";
 
-    antibodyObjects->setName(name_);
+    antibodyObject->setName(name_);
 
-    antibodyObjects->setSequence(sequence_);
+    antibodyObject->setSequence(sequence_);
 
-    antibodyObjects->setNumberingScheme(numberingScheme_);
+    antibodyObject->setNumberingScheme(numberingScheme_);
 
-    ui->debugAreaTextEdit->setText(QString("name: %1\nsequence: %2\nnumbering scheme: %3").arg(QString::fromStdString(antibodyObjects->getName()),
-                                                                                               QString::fromStdString(antibodyObjects->getSequence()),
-                                                                                               QString::fromStdString(antibodyObjects->getNumberingScheme())));
+    ui->debugAreaTextEdit->setText(QString("name: %1\nsequence: %2\nnumbering scheme: %3").arg(QString::fromStdString(antibodyObject->getName()),
+                                                                                               QString::fromStdString(antibodyObject->getSequence()),
+                                                                                               QString::fromStdString(antibodyObject->getNumberingScheme())));
 
 }

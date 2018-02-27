@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "chain.h"
+#include "chainCollectionCPP.h"
 #include <QMainWindow>
 #include <QTimer>
 #include <QString>
@@ -28,11 +29,14 @@ public:
 private slots:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
-    void addAntibodyObject(std::string name_, std::string sequence_, std::string numberingScheme_);
+    void addAntibodyObject(std::string name_,
+                           std::string sequence_,
+                           std::string numberingScheme_);
 
 private:
     Ui::MainWindow *ui;
-    AntibodyChainCPP *antibodyObjects; // = new AntibodyChainCPP();
+    AntibodyChainCPP *antibodyObject; // = new AntibodyChainCPP();
+    ChainCollectionCPP *antibodyObjects;
     std::string name;
     std::string sequence;
     std::string numberingScheme;

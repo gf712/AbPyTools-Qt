@@ -123,7 +123,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
         hParser.parse();
 
         vector<double> hValues = testObject->getHydrophobicityMatrix(hParser);
-        
+
         double sumOfHValues = std::accumulate(hValues.begin(), hValues.end(), 0.0);
 
         BOOST_TEST(hValues.size() == 158);

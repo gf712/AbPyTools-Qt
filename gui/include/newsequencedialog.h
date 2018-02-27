@@ -18,9 +18,6 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
-    void on_newSequenceDialogName_editingFinished();
-    void on_newSequenceDialogSequence_textChanged();
-    void on_newSequenceDialogNumberingScheme_currentIndexChanged(int index);
 
 signals:
     void buttonBoxAccepted(std::string name_, std::string sequence_, std::string numberingScheme_);
