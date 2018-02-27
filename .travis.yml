@@ -10,14 +10,18 @@ addons:
       - libgles2-mesa-dev
       - libxrender-dev
       - libfreetype6-dev
+      - libx11-dev
+      - libxext-dev
+      - libxfixes-dev
+      - libxi-dev
+      - libxcb1-dev
+      - libx11-xcb-dev
 
 # Install dependencies
 before_install:
     - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - sudo apt-get update -y
-    - sudo apt-get install gcc-5 g++-5 libx11-dev \
-     libxext-dev libxfixes-dev libxi-dev \
-     libxcb1-dev libx11-xcb-dev
+    - sudo apt-get install gcc-5 g++-5 
     # increase priority of gcc5 and g++5
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
     # https://github.com/filipwasil/fillwave/issues/58
