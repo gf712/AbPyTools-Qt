@@ -27,15 +27,14 @@ add_library(AbPyToolsGUIlib STATIC
         ${HEADER_FILES}
         ${UI_FILES})
 
-target_include_directories(AbPyToolsGUIlib
-        PUBLIC include/
+target_include_directories(AbPyToolsGUIlib PUBLIC
+        include/
         $<TARGET_PROPERTY:Qt5::Core,INTERFACE_INCLUDE_DIRECTORIES>
         $<TARGET_PROPERTY:Qt5::Widgets,INTERFACE_INCLUDE_DIRECTORIES>
-        ${ABPYTOOLS_CPP_DIRS}
         )
 
 target_link_libraries(AbPyToolsGUIlib
-        AbPyToolsCPPLib
+        AbPyToolsInterfaceLib
         Qt5::Widgets
         Qt5::Core)
 

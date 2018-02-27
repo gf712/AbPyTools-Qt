@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QString>
+#include <string>
 #include <iostream>
 #include <QDebug>
 #include "newsequencedialog.h"
@@ -27,17 +28,16 @@ public:
 private slots:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
-
-    void newSequenceDialogNameGetter() {
-
-    };
+    void newSequenceDialogNameGetter(std::string name_);
+    void newSequenceDialogSequenceGetter(std::string name_);
+    void newSequenceDialogNumberingSchemeGetter(std::string name_);
 
     // DEBUG
     void refresh_values();
 
 private:
     Ui::MainWindow *ui;
-    AntibodyChainCPP *antibodyObjects;
+    AntibodyChainCPP *antibodyObjects; // = new AntibodyChainCPP();
     std::string name;
     std::string sequence;
     std::string numberingScheme;
