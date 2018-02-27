@@ -1,6 +1,6 @@
 sudo: true
-dist: precise
-language: cpp
+dist: trusty
+#language: cpp
 os: linux
 
 # Install dependencies
