@@ -1,16 +1,23 @@
 sudo: true
 dist: trusty
-#language: cpp
+language: cpp
 os: linux
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - libgles2-mesa-dev
+      - libxrender-dev
+      - libfreetype6-dev
 
 # Install dependencies
 before_install:
     - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - sudo apt-get update -y
-    - sudo apt-get install gcc-5 g++-5 libegl1-mesa-dev libgl1-mesa-dev \
-     libgles2-mesa-dev libfontconfig1-dev \
-     libfreetype6-dev libx11-dev libxext-dev libxfixes-dev libxi-dev \
-     libxrender-dev libxcb1-dev libx11-xcb-dev
+    - sudo apt-get install gcc-5 g++-5 libx11-dev \
+     libxext-dev libxfixes-dev libxi-dev \
+     libxcb1-dev libx11-xcb-dev
     # increase priority of gcc5 and g++5
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
     # https://github.com/filipwasil/fillwave/issues/58
@@ -25,7 +32,6 @@ before_install:
     - conda update -q conda
     # Useful for debugging any issues with conda
     - conda info -a
-    # Replace dep1 dep2 ... with your dependencies
     - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION scipy numpy pip matplotlib pandas
     - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
     - source activate test-environment
