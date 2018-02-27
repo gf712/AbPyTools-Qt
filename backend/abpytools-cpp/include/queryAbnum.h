@@ -6,6 +6,8 @@
 
 #ifndef ABPYTOOLS_QT_QUERYABNUM_H
 
+// Class to handle Abnum results
+
 class AbnumQuery {
 
 public:

@@ -32,19 +32,47 @@ find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesy
 find_package(Qt5 COMPONENTS Widgets Core REQUIRED)
 
 ############################################################################################
-#                                        DECLARATIONS
+#                                     DECLARATIONS
 ############################################################################################
 
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage -fPIC -O0")
 set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
+set(ADD_QT_QPA_FONTDIR ON)
+
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_package(Numpy REQUIRED)
 
+############################################################################################
+#                                  ADD PROJECT DIRS
+############################################################################################
+
 add_subdirectory(backend)
-
-message("ABPYTOOLS_CPP_DIRS: ${ABPYTOOLS_CPP_DIRS}")
-
 add_subdirectory(gui)
+
+############################################################################################
+#                                   FINAL MESSAGES
+############################################################################################
+
+#message("$ENV{QT_QPA_FONTDIR}")
+
+if (${ADD_QT_QPA_FONTDIR})
+    message("\n           ----------------- CUSTOM VARIABLES --------------------
+
+-- Variables to be added at build time to .bashrc file:
+
+   - QT_QPA_FONTDIR=${QT_ROOT}/lib/fonts
+     Disable this behaviour with -DADD_QT_QPA_FONTDIR=OFF
+
+           -------------------------------------------------------
+")
+    # add QT_QPA_FONTDIR to .bashrc file
+#    file(APPEND $ENV{HOME}/.bashrc "\n# added by AbPyTools-Qt installer
+#export QT_QPA_FONTDIR=\"${QT_ROOT}/lib/fonts\"")
+endif()
+
+############################################################################################
+#                                        END
+############################################################################################

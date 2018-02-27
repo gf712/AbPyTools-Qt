@@ -5,6 +5,8 @@
 #ifndef ABPYTOOLS_QT_CHAIN_H
 #define ABPYTOOLS_QT_CHAIN_H
 
+//#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
 #include <Python.h>
 #include <string>
 #include <vector>
@@ -13,6 +15,8 @@
 #include <numpy/arrayobject.h>
 #include <iostream>
 #include <iterator>
+
+
 
 class AntibodyChainCPP {
 
@@ -29,6 +33,12 @@ public:
     std::string getChain();
     std::vector<double> getAminoAcidCharges(bool align, double pH, char *pka_database);
     std::vector<double> getHydrophobicityMatrix(char *hydrophobicity_scores);
+
+    // SETTERS
+    // can start object with empty initialisera and set values after
+    void setName(std::string name_) {name = name_;}
+    void setSequence(std::string sequence_) {sequence = sequence_;}
+    void setNumberingScheme(std::string numbering_scheme_) {numbering_scheme = numbering_scheme_;}
 
     // C++ functions that do the same as AbPyTools
     // - reasoning: once the frontend has been build the user will be able to submit custom files

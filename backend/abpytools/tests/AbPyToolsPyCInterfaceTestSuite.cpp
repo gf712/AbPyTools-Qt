@@ -58,12 +58,24 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
-    BOOST_AUTO_TEST_CASE(NameTest) {
+    BOOST_AUTO_TEST_CASE(getterTest) {
 
         BOOST_TEST(testObject->getName() == name);
         BOOST_TEST(testObject->getSequence() == sequence);
         BOOST_TEST(testObject->getNumberingScheme() == numbering_scheme);
 
+    }
+
+    BOOST_AUTO_TEST_CASE(emptyConstructorTest) {
+
+        auto tempObject = new AntibodyChainCPP();
+        char name[5] = "test";
+
+        tempObject->setName(name);
+
+        BOOST_TEST(tempObject->getName() == name);
+
+        delete tempObject;
     }
 
 
