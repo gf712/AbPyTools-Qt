@@ -35,6 +35,7 @@ target_include_directories(AbPyToolsGUIlib PUBLIC
 
 target_link_libraries(AbPyToolsGUIlib
         AbPyToolsInterfaceLib
+        AbPyToolsCPPLib
         Qt5::Widgets
         Qt5::Core)
 

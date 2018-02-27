@@ -8,7 +8,9 @@
 #include <vector>
 #include <string>
 #include "chain.h"
+#include "chainCollectionCPP.h"
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/optional.hpp>
 
 using namespace boost::numeric::ublas;
 
@@ -19,18 +21,40 @@ class ChainCollectionCPP {
 // analysis with C++ rather than the already implemented python code
 
 public:
+    // CONSTRUCTORS
+    ChainCollectionCPP();
     ChainCollectionCPP(std::vector<AntibodyChainCPP> antibodyObjects);
     ChainCollectionCPP(char* path, char* numberingScheme);
     ~ChainCollectionCPP() = default;
 
+    // METHODS
+    void load();
+
+    // GETTERS
+    template <typename T>
+    T genericGetter(boost::optional<T>);
+
+    std::vector<std::string> getNames() {return genericGetter<std::vector<std::string>>(names);}
+    std::vector<std::string> getSequences() {return genericGetter<std::vector<std::string>>(sequences);}
+    std::string getChainType() {return genericGetter<std::string>(chainType);}
+    std::string getNumberingScheme() {return genericGetter<std::string>(numberingScheme);}
+    matrix<double> getAminoAcidCharges() {return genericGetter<matrix<double>>(aminoAcidCharges);}
+    std::vector<double> getTotalCharges() {return genericGetter<std::vector<double>>(total_charge);}
+
+    // SETTERS
+
 private:
-    std::vector<std::string> names;
-    std::vector<std::string> sequences;
     int numberOfChains;
-    std::string chainType;
-    std::string numberingScheme;
-    matrix<double> aminoAcidCharges;
-    std::vector<double> total_charge;
+    // optional attributes that are set from python API
+    // or by specific constructors
+    boost::optional<std::vector<std::string>> names;
+    boost::optional<std::vector<std::string>> sequences;
+    boost::optional<std::string> chainType;
+    boost::optional<std::string> numberingScheme;
+    boost::optional<matrix<double>> aminoAcidCharges;
+    boost::optional<std::vector<double>> total_charge;
+
+    std::vector<AntibodyChainCPP> antibodyObjectPointers;
 };
 
 #endif //ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H

@@ -55,6 +55,12 @@ cd include/
 ln -s python3.6m python3.6
 ```
 
+- There can be issues with the font used by Qt, but these should be resolved during build time by the cmake script.
+The script will automatically add the path to the Qt font directory provided by the Qt hunter installation. If you wish
+to change disable this behaviour run cmake like this:
+
+`cmake -DADD_QT_QPA_FONTDIR=OFF ..`
+
 Changelog
 =========
 
