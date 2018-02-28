@@ -37,16 +37,15 @@ ChainCollectionCPP::ChainCollectionCPP(std::vector <AntibodyChainCPP> antibodyOb
 
     // all good, so now we can copy all into C++ objects
     for (auto &antibodyObject: antibodyObjects_) {
-        (*names).emplace_back(antibodyObject.getName());
-        (*sequences).emplace_back(antibodyObject.getSequence());
-        numberOfChains++;
-        antibodyObjectPointers.emplace_back(antibodyObject);
+
+        updateAntibodyObjectVector(antibodyObject);
+
     }
 
 }
 
 ChainCollectionCPP::ChainCollectionCPP(char *path, char *numberingScheme) {
-
+    // method to read in fasta files and .json files
 }
 
 template <typename T>
@@ -62,7 +61,26 @@ void ChainCollectionCPP::load() {
 
     // TODO: add openmp support to project and use it here
     for (auto &antibodyObject: antibodyObjectPointers) {
-        antibodyObject.load();
+        antibodyObject->load();
     }
+}
+
+void ChainCollectionCPP::append(AntibodyChainCPP &antibodyObject_) {
+
+    // function to append more antibody objects
+    updateAntibodyObjectVector(antibodyObject_);
+
+}
+
+void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP antibodyObject) {
+
+    std::cout << "Appending pointer" << "\n";
+
+    names.emplace_back(antibodyObject.getName());
+    sequences.emplace_back(antibodyObject.getSequence());
+    numberOfChains++;
+    antibodyObjectPointers.emplace_back(&antibodyObject);
+
+    std::cout << "Appended pointer" << "\n";
 
 }

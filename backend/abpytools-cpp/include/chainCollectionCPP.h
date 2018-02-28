@@ -29,6 +29,8 @@ public:
 
     // METHODS
     void load();
+    void append(AntibodyChainCPP &AntibodyObject_);
+    void updateAntibodyObjectVector(AntibodyChainCPP antibodyObject);
 
     // GETTERS
     template <typename T>
@@ -54,7 +56,7 @@ private:
     boost::optional<matrix<double>> aminoAcidCharges;
     boost::optional<std::vector<double>> total_charge;
 
-    std::vector<AntibodyChainCPP> antibodyObjectPointers;
+    std::vector<AntibodyChainCPP*> antibodyObjectPointers;
 };
 
 #endif //ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H
