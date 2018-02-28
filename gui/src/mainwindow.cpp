@@ -1,3 +1,4 @@
+#include <QtCore/QDateTime>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -6,7 +7,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    antibodyObjects = new ChainCollectionCPP();
+    ui->workingAreaTextBrowser->isReadOnly();
+    ui->debugAreaTextBrowser->isReadOnly();
 
+    startedWorking = false;
+
+    // display welcome message in working window
+    updateWorkingWindow();
+    updateDebugWindow();
 }
 
 MainWindow::~MainWindow()
@@ -32,12 +41,17 @@ void MainWindow::on_actionNew_triggered()
     connect(newSequenceDialogPointer, SIGNAL(buttonBoxAccepted(std::string, std::string, std::string)),
             this, SLOT(addAntibodyObject(std::string, std::string, std::string)));
 
+    connect(newSequenceDialogPointer, SIGNAL(buttonBoxAccepted()),
+            this, SLOT(updateDebugWindow()));
+
+    connect(newSequenceDialogPointer, SIGNAL(buttonBoxAccepted()),
+            this, SLOT(updateWorkingWindow()));
 
 }
 
 void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std::string numberingScheme_) {
 
-    qDebug() << "BUTTON ACCEPTED RECEIVED";
+    qDebug() << "ACCEPTED BUTTON RECEIVED";
 
     antibodyObject->setName(name_);
 
@@ -45,8 +59,62 @@ void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std
 
     antibodyObject->setNumberingScheme(numberingScheme_);
 
-    ui->debugAreaTextEdit->setText(QString("name: %1\nsequence: %2\nnumbering scheme: %3").arg(QString::fromStdString(antibodyObject->getName()),
-                                                                                               QString::fromStdString(antibodyObject->getSequence()),
-                                                                                               QString::fromStdString(antibodyObject->getNumberingScheme())));
+    antibodyObjects->append(*antibodyObject);
+
+    // write to windows
+    addAntibodyObjectText();
+    addAntibodyObjectDebugText();
+
+}
+
+void MainWindow::updateWorkingWindow() {
+
+    ui->workingAreaTextBrowser->setText(cacheText);
+
+}
+
+void MainWindow::updateDebugWindow() {
+
+    qDebug() << "Updating debug window";
+
+    ui->debugAreaTextBrowser->setText(cacheDebugText);
+
+}
+
+// #####################################################################################################################
+//                                          MESSAGE DISPLAY ROUTINES
+// #####################################################################################################################
+
+
+void MainWindow::addAntibodyObjectText() {
+
+    QRegularExpression re("Loaded antibody chains: \\d+");
+
+    auto text = QString("Loaded antibody chains: %1");
+    text = text.arg(antibodyObjects->getNumberOfChains());
+
+    if (!startedWorking) {
+        cacheText.replace("Nothing to display", "");
+        cacheText.append(text);
+        startedWorking = true;
+    }
+
+    else
+        cacheText.replace(re, text);
+
+}
+
+void MainWindow::addAntibodyObjectDebugText() {
+
+    auto debugText = QString("[%1]: addAntibodyObject\n name: %2\n sequence: %3\n numbering scheme: %4\n");
+
+    debugText = debugText.arg(QDateTime::currentDateTime().toString(),
+                              QString::fromStdString(antibodyObject->getName()),
+                              QString::fromStdString(antibodyObject->getSequence()),
+                              QString::fromStdString(antibodyObject->getNumberingScheme()));
+
+    qDebug() << debugText;
+
+    cacheDebugText.append(debugText);
 
 }

@@ -33,14 +33,26 @@ private slots:
                            std::string sequence_,
                            std::string numberingScheme_);
 
+    void updateWorkingWindow();
+    void updateDebugWindow();
+
+    // Display message editors
+    void addAntibodyObjectText();
+    void addAntibodyObjectDebugText();
+
 private:
     Ui::MainWindow *ui;
-    AntibodyChainCPP *antibodyObject; // = new AntibodyChainCPP();
+    AntibodyChainCPP *antibodyObject;
     ChainCollectionCPP *antibodyObjects;
     std::string name;
     std::string sequence;
     std::string numberingScheme;
     QTimer *timer;
+
+    QString cacheText = "Welcome to AbPyTools-Qt:\nNothing to display"; // stores text to display in working window
+    QString cacheDebugText = "Welcome to AbPyTools-Qt Debug Mode:\n"; // stores text to display in working window
+
+    bool startedWorking;
 };
 
 #endif // MAINWINDOW_H

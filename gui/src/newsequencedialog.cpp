@@ -21,4 +21,5 @@ void newSequenceDialog::on_buttonBox_accepted()
     emit buttonBoxAccepted(ui->newSequenceDialogName->text().toStdString(),
                            ui->newSequenceDialogSequence->toPlainText().toStdString(),
                            std::string(numberingSchemesVector[ui->newSequenceDialogNumberingScheme->currentIndex()]));
+    emit buttonBoxAccepted();
 }

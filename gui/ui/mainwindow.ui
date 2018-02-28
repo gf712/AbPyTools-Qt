@@ -14,28 +14,84 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="debugAreaLabel">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>330</y>
-      <width>101</width>
-      <height>17</height>
+      <x>927</x>
+      <y>20</y>
+      <width>301</width>
+      <height>621</height>
      </rect>
     </property>
-    <property name="text">
-     <string>DEBUG AREA</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="debugAreaLabel">
+       <property name="text">
+        <string>DEBUG AREA</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextBrowser" name="debugAreaTextBrowser"/>
+     </item>
+    </layout>
    </widget>
-   <widget class="QTextEdit" name="debugAreaTextEdit">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>360</y>
-      <width>241</width>
-      <height>141</height>
+      <x>20</x>
+      <y>20</y>
+      <width>401</width>
+      <height>621</height>
      </rect>
     </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>WORKING AREA</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextBrowser" name="workingAreaTextBrowser"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>20</y>
+      <width>491</width>
+      <height>621</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="maximumSize">
+        <size>
+         <width>529</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>PLOTTING AREA</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -63,9 +119,11 @@
      <property name="title">
       <string>Hydrophobicity</string>
      </property>
+     <addaction name="actionImport_hydrophobicity_dataset"/>
      <addaction name="actionCluster"/>
     </widget>
     <addaction name="actionNumbering"/>
+    <addaction name="separator"/>
     <addaction name="menuHydrophobicity"/>
     <addaction name="actionCharges"/>
     <addaction name="actionStructure"/>
@@ -115,6 +173,11 @@
   <action name="actionNew">
    <property name="text">
     <string>New</string>
+   </property>
+  </action>
+  <action name="actionImport_hydrophobicity_dataset">
+   <property name="text">
+    <string>Import hydrophobicity dataset</string>
    </property>
   </action>
  </widget>

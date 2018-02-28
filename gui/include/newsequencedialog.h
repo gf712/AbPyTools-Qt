@@ -21,6 +21,7 @@ private slots:
 
 signals:
     void buttonBoxAccepted(std::string name_, std::string sequence_, std::string numberingScheme_);
+    void buttonBoxAccepted();
 
 private:
     Ui::newSequenceDialog *ui;
