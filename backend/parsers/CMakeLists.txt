@@ -1,16 +1,20 @@
 project(AbPyToolsCppParsers)
 
 set(SOURCE_FILES
-        src/hydrophobicityParser.cpp)
+        src/hydrophobicityParser.cpp
+        src/fastaParser.cpp
+        src/parser.cpp)
 
-set(ABPYTOOLS_CPP_PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
+set(ABPYTOOLS_CPP_PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpytools cpp parser include directory")
 
 add_library(AbPyToolsCppParserLib STATIC
             ${SOURCE_FILES})
 
 target_include_directories(AbPyToolsCppParserLib
-        PUBLIC include/
-        ${BACKEND_UTILS_DIRS})
+        INTERFACE include/)
+
+target_include_directories(AbPyToolsCppParserLib SYSTEM
+        PUBLIC ${BACKEND_UTILS_DIRS})
 
 target_link_libraries(AbPyToolsCppParserLib
         EXCEPTIONS_LIB

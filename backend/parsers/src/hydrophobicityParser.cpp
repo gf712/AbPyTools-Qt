@@ -2,7 +2,7 @@
 // Created by gil on 22/02/18.
 //
 
-#include "hydrophobicityParser.h"
+#include "../include/hydrophobicityParser.h"
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -34,20 +34,9 @@ std::unordered_map<std::string, T> convertOneToThreeMap(std::unordered_map<std::
     return newMap;
 };
 
-hydrophobicityParser::hydrophobicityParser(std::string &filepath_) {
-
-    if (!boost::filesystem::exists(filepath_)) {
-        // write exception
-        throw FileDoesNotExistException("Unknown filepath: " + boost::filesystem::canonical(filepath_).string());
-    }
-
-    // get absolute file path just to be on the safe side..
-    filepath = boost::filesystem::canonical(filepath_).string();
-}
-
 void hydrophobicityParser::parse() {
 
-    boost::filesystem::ifstream file(filepath);
+    boost::filesystem::ifstream file(getFilepath());
 
     for (std::string line; std::getline(file, line); )
     {

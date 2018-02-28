@@ -8,18 +8,18 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include "parser.h"
 
-class hydrophobicityParser {
+class hydrophobicityParser: public Parser {
 
 public:
-    hydrophobicityParser(std::string &filepath_);
+    hydrophobicityParser(std::string filepath_): Parser(filepath_) {};
     ~hydrophobicityParser() = default;
 
     void parse();
 
     // GETTERS
     std::unordered_map<std::string, double> getAminoAcidHydrophobicityMap(int letter);
-    std::string getFilepath() { return  filepath;}
 
 private:
     std::string filepath;
