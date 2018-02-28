@@ -4,7 +4,7 @@ AbPyTools-Qt
 ============
 
 This is a new version of [AbPyTools](https://github.com/gf712/AbPyTools) which has a frontend that can be easily used in addition to the existing
-Python3 API.
+Python3 API. Checkout the [wiki](https://github.com/gf712/AbPyTools-Qt/wiki) for more information.
 
 Project Mission & Summary
 =========================
