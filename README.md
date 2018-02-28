@@ -12,6 +12,12 @@ Project Mission & Summary
 - Further optimise AbPyTools python code using C/C++ backend
 - Integrate machine learning algorithms for data analysis
 
+How does it work?
+=================
+- AbPyTools-Qt aims to provide an interface that allows any user to easily manipulate 
+antibody sequences. By splitting work into groups it is possible to analyse
+several sets of antibody chains (and in future whole Fabs) with ease.
+
 Build from source
 =================
 AbPyTools-Qt can (in relative terms..) be easily built with cmake, which creates all required files for make.
