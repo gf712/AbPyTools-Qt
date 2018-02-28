@@ -9,12 +9,12 @@
 #include <boost/filesystem/fstream.hpp>
 
 
-class fastaParser: public Parser {
+class FastaParser: public Parser {
 
 public:
 
-    fastaParser(std::string filepath_): Parser(filepath_) {};
-    ~fastaParser() = default;
+    FastaParser(std::string filepath_): Parser(filepath_) {};
+    ~FastaParser() = default;
 
     void parse();
 

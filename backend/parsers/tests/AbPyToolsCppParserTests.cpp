@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsFASTATests)
 
         std::string path ="data/test.fasta";
 
-        auto testObject = fastaParser(path);
+        auto testObject = FastaParser(path);
 
         std::cout << testObject.getFilepath();
 

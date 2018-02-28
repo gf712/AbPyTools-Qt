@@ -5,7 +5,7 @@
 #include "../include/fastaParser.h"
 #include <iostream>
 
-void fastaParser::parse() {
+void FastaParser::parse() {
 
     boost::filesystem::ifstream file(getFilepath());
     std::string nameChar = ">";

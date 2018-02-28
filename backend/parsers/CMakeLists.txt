@@ -2,7 +2,7 @@ project(AbPyToolsCppParsers)
 
 set(SOURCE_FILES
         src/hydrophobicityParser.cpp
-        src/fastaParser.cpp
+        src/FastaParser.cpp
         src/parser.cpp)
 
 set(ABPYTOOLS_CPP_PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpytools cpp parser include directory")
