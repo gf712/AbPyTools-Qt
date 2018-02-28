@@ -36,10 +36,11 @@ public:
     template <typename T>
     T genericGetter(boost::optional<T>);
 
-    std::vector<std::string> getNames() {return genericGetter<std::vector<std::string>>(names);}
-    std::vector<std::string> getSequences() {return genericGetter<std::vector<std::string>>(sequences);}
-    std::string getChainType() {return genericGetter<std::string>(chainType);}
-    std::string getNumberingScheme() {return genericGetter<std::string>(numberingScheme);}
+    int getNumberOfChains() { return numberOfChains;}
+    std::vector<std::string> getNames() {return names;}
+    std::vector<std::string> getSequences() {return sequences;}
+    std::string getChainType() {return chainType;}
+    std::string getNumberingScheme() {return numberingScheme;}
     matrix<double> getAminoAcidCharges() {return genericGetter<matrix<double>>(aminoAcidCharges);}
     std::vector<double> getTotalCharges() {return genericGetter<std::vector<double>>(total_charge);}
 
@@ -49,10 +50,12 @@ private:
     int numberOfChains;
     // optional attributes that are set from python API
     // or by specific constructors
-    boost::optional<std::vector<std::string>> names;
-    boost::optional<std::vector<std::string>> sequences;
-    boost::optional<std::string> chainType;
-    boost::optional<std::string> numberingScheme;
+    std::vector<std::string> names;
+    std::vector<std::string> sequences;
+
+    std::string numberingScheme;
+    std::string chainType;
+
     boost::optional<matrix<double>> aminoAcidCharges;
     boost::optional<std::vector<double>> total_charge;
 
