@@ -9,8 +9,7 @@ target_compile_definitions(AbPyToolsCppParserTest PRIVATE
         TEST_PATH=${CMAKE_CURRENT_BINARY_DIR})
 
 target_include_directories(AbPyToolsCppParserTest PRIVATE
-        ${Boost_INCLUDE_DIRS}
-        ../include)
+        ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(AbPyToolsCppParserTest
         AbPyToolsCppParserLib
