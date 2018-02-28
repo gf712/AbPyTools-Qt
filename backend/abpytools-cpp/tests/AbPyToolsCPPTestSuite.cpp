@@ -9,23 +9,6 @@
 #include "chainCollectionCPP.h"
 
 using namespace std;
-namespace tt = boost::test_tools;
-
-//struct ChainObjectFixture {
-//
-//    AntibodyChainCPP* testObject;
-//    char name[5] = "test";
-//    char sequence[200] = "QVQLQQWGAGLLKPSETLSLTCAVYGGSFSGYYWSWIRQPPGQGAEWIGEINHSGSTNYNPSLKSRVTISVGTSKNQFSLKLSSVTAADTAVYYCARGSTGRFLEWLLYFDYWGQGTLVTVSSGSRSAPTLFPLVSCENSPSDTSSVAVGCLAQDFLPDSITFSWKYKNNSDISSTRGFPSVLR";
-//    char numbering_scheme[10] = "chothia";
-//
-//    ChainObjectFixture() {
-//
-//        testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
-//    }
-//
-//    ~ChainObjectFixture() = default;
-//
-//};
 
 BOOST_AUTO_TEST_SUITE(chainCollectionCPPTestSuite)
 
@@ -33,6 +16,21 @@ BOOST_AUTO_TEST_SUITE(chainCollectionCPPTestSuite)
 
         auto testObject = ChainCollectionCPP();
 
+    }
+
+    BOOST_AUTO_TEST_CASE(chainCollectionTwoChains) {
+
+        char name[5] = "test";
+        char sequence[200] = "QVQLQQWGAGLLKPSETLSLTCAVYGGSFSGYYWSWIRQPPGQGAEWIGEINHSGSTNYNPSLKSRVTISVGTSKNQFSLKLSSVTAADTAVYYCARGSTGRFLEWLLYFDYWGQGTLVTVSSGSRSAPTLFPLVSCENSPSDTSSVAVGCLAQDFLPDSITFSWKYKNNSDISSTRGFPSVLR";
+        char numbering_scheme[10] = "chothia";
+        auto testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
+
+        auto testChainCollectionObject = new ChainCollectionCPP();
+
+        testChainCollectionObject->append(*testObject);
+        testChainCollectionObject->append(*testObject);
+
+        BOOST_TEST(testChainCollectionObject->getNumberOfChains() == 2);
     }
 
 
