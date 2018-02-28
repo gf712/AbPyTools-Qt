@@ -12,11 +12,13 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ui/)
 
 set(SOURCE_FILES
         src/mainwindow.cpp
-        src/newsequencedialog.cpp)
+        src/newsequencedialog.cpp
+        src/chainGroups.cpp)
 
 set(HEADER_FILES
         include/mainwindow.h
-        include/newsequencedialog.h)
+        include/newsequencedialog.h
+        include/chainGroups.h)
 
 set(UI_FILES
         ui/mainwindow.ui
