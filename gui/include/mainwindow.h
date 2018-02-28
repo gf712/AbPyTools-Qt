@@ -3,12 +3,15 @@
 
 #include "chain.h"
 #include "chainCollectionCPP.h"
+#include "fastaParser.h"
 #include <QMainWindow>
 #include <QTimer>
 #include <QString>
 #include <string>
 #include <iostream>
 #include <QDebug>
+#include <QFileDialog>
+#include <QDateTime>
 #include "newsequencedialog.h"
 
 namespace Ui {
@@ -24,7 +27,12 @@ public:
     ~MainWindow();
 
     // GETTERS
-    Ui::MainWindow* getUI() { return ui;}
+    Ui::MainWindow* getUI() {return ui;}
+
+    // Display message editors
+    void addAntibodyObjectText();
+    void addAntibodyObjectDebugText();
+    void loadFASTADebugText();
 
 private slots:
     void on_actionOpen_triggered();
@@ -36,14 +44,11 @@ private slots:
     void updateWorkingWindow();
     void updateDebugWindow();
 
-    // Display message editors
-    void addAntibodyObjectText();
-    void addAntibodyObjectDebugText();
-
 private:
     Ui::MainWindow *ui;
     AntibodyChainCPP *antibodyObject;
     ChainCollectionCPP *antibodyObjects;
+    FastaParser *fastaParser;
     std::string name;
     std::string sequence;
     std::string numberingScheme;

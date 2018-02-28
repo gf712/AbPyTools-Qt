@@ -1,4 +1,3 @@
-#include <QtCore/QDateTime>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -26,6 +25,19 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionOpen_triggered()
 {
 
+    QFileDialog dialog;
+//    dialog.setNameFilterDetailsVisible(true);
+//    dialog.setOption(QFileDialog::DontUseNativeDialog,true);
+//    dialog.setOption(QFileDialog::DontResolveSymlinks);
+//    dialog.setViewMode(QFileDialog::Detail);
+
+    QString filename = dialog.getOpenFileName(this, tr("Open FASTA File"),"",tr("FASTA files (*.fasta)"));
+
+    fastaParser = new FastaParser(filename.toStdString());
+
+    fastaParser->parse();
+
+    loadFASTADebugText();
 }
 
 
@@ -117,4 +129,18 @@ void MainWindow::addAntibodyObjectDebugText() {
 
     cacheDebugText.append(debugText);
 
+}
+
+
+void MainWindow::loadFASTADebugText() {
+
+    auto debugText = QString("[%1]: loadFASTA\n Number of entries: %2\n");
+
+    debugText = debugText.arg(QDateTime::currentDateTime().toString(),
+                              QString::number(fastaParser->getNames().size()));
+
+    qDebug() << debugText << fastaParser->getNames().size();
+
+    cacheDebugText.append(debugText);
+    updateDebugWindow();
 }
