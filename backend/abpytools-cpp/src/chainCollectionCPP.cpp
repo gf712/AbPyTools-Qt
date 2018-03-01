@@ -61,7 +61,15 @@ void ChainCollectionCPP::load() {
 
     // TODO: add openmp support to project and use it here
     for (auto const &antibodyObject: antibodyObjectPointers) {
-        antibodyObject->load();
+
+        std::cout << "iterating..";
+
+        try {
+            antibodyObject->load();
+        }
+        catch (...) {
+            throw "Could not load sequence";
+        }
     }
 
     std::string chainType_ = antibodyObjectPointers[0]->getChain();
@@ -72,11 +80,11 @@ void ChainCollectionCPP::load() {
 
         if (antibodyObject->getChain() != chainType_) {
             // write exception
-            throw 1;
+            throw "Not all chains are of the same type!";
         }
 
         if (antibodyObject->getNumberingScheme() != numberingScheme_) {
-            throw 1;
+            throw "Not all the chains were numerbered with the same scheme!";
         }
     }
 
@@ -96,9 +104,9 @@ void ChainCollectionCPP::append(AntibodyChainCPP &antibodyObject_) {
 void ChainCollectionCPP::append(std::string name_, std::string sequence_) {
 
     // function to append more antibody objects, using name and sequence
-    auto antibodyObject = AntibodyChainCPP(name_, sequence_, numberingScheme);
+    auto antibodyObject = new AntibodyChainCPP(sequence_, name_, numberingScheme);
 
-    updateAntibodyObjectVector(antibodyObject);
+    updateAntibodyObjectVector(*antibodyObject);
 
 }
 

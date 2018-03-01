@@ -200,3 +200,9 @@ void MainWindow::loadFASTADebugText() {
     cacheDebugText.append(debugText);
     updateDebugWindow();
 }
+
+void MainWindow::on_actionApply_Numbering_triggered()
+{
+
+    chainGroups->applyNumbering();
+}

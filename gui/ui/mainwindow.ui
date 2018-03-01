@@ -123,7 +123,14 @@
      <addaction name="actionImport_hydrophobicity_dataset"/>
      <addaction name="actionCluster"/>
     </widget>
-    <addaction name="actionNumbering"/>
+    <widget class="QMenu" name="menuNumbering">
+     <property name="title">
+      <string>Numbering</string>
+     </property>
+     <addaction name="actionApply_Numbering"/>
+     <addaction name="actionEdit_numbering_scheme"/>
+    </widget>
+    <addaction name="menuNumbering"/>
     <addaction name="separator"/>
     <addaction name="menuHydrophobicity"/>
     <addaction name="actionCharges"/>
@@ -149,11 +156,6 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
-   </property>
-  </action>
-  <action name="actionNumbering">
-   <property name="text">
-    <string>Numbering</string>
    </property>
   </action>
   <action name="actionCharges">
@@ -184,6 +186,16 @@
   <action name="actionNew_group">
    <property name="text">
     <string>New group</string>
+   </property>
+  </action>
+  <action name="actionApply_Numbering">
+   <property name="text">
+    <string>Apply numbering</string>
+   </property>
+  </action>
+  <action name="actionEdit_numbering_scheme">
+   <property name="text">
+    <string>Edit numbering scheme</string>
    </property>
   </action>
  </widget>

@@ -9,6 +9,7 @@
 #include "chainCollectionCPP.h"
 #include <utility>
 #include <QtCore/QStringList>
+#include <QDebug>
 
 class ChainGroups {
 
@@ -26,6 +27,8 @@ public:
     int getNumberOfSequences(std::string groupName) {return chainCollectionGroups[groupName]->getNumberOfChains();}
     QStringList getGroupNames();
     ChainCollectionCPP* getChainCollection(std::string groupName) { return chainCollectionGroups[groupName];}
+
+    void applyNumbering();
 
 private:
     std::unordered_map<std::string, ChainCollectionCPP*> chainCollectionGroups;

@@ -56,6 +56,8 @@ private Q_SLOTS:
 
     void on_actionNew_group_triggered();
 
+    void on_actionApply_Numbering_triggered();
+
 private:
     Ui::MainWindow *ui;
     ChainGroups *chainGroups;

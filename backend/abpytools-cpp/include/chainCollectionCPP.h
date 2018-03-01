@@ -40,6 +40,7 @@ public:
     int getNumberOfChains() { return numberOfChains;}
     std::vector<std::string> getNames() {return names;}
     std::vector<std::string> getSequences() {return sequences;}
+    std::vector<AntibodyChainCPP*> getAntibodyObjectPointers() {return antibodyObjectPointers;}
     std::string getChainType() {return chainType;}
     std::string getNumberingScheme() {return numberingScheme;}
     matrix<double> getAminoAcidCharges() {return genericGetter<matrix<double>>(aminoAcidCharges);}
