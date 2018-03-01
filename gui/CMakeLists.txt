@@ -13,16 +13,19 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ui/)
 set(SOURCE_FILES
         src/mainwindow.cpp
         src/newsequencedialog.cpp
-        src/chainGroups.cpp)
+        src/chainGroups.cpp
+        src/newgroupdialog.cpp)
 
 set(HEADER_FILES
         include/mainwindow.h
         include/newsequencedialog.h
-        include/chainGroups.h)
+        include/chainGroups.h
+        include/newgroupdialog.h)
 
 set(UI_FILES
         ui/mainwindow.ui
-        ui/newsequencedialog.ui)
+        ui/newsequencedialog.ui
+        ui/newgroupdialog.ui)
 
 add_library(AbPyToolsGUIlib STATIC
         ${SOURCE_FILES}

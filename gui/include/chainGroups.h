@@ -16,13 +16,17 @@ public:
     };
     ~ChainGroups();
 
-    void addGroup(ChainCollectionCPP *chainCollectionCPP_);
+    void addGroup(std::string name_, std::string numeringScheme_);
+
+    // GETTERS
+    std::string getNumberingScheme(std::string groupName) {return chainCollectionGroups[groupName]->getNumberingScheme();}
+    int getNumberOfSequences(std::string groupName) {return chainCollectionGroups[groupName]->getNumberOfChains();}
+    ChainCollectionCPP* getChainCollection(std::string groupName) { return chainCollectionGroups[groupName];}
 
 private:
     std::unordered_map<std::string, ChainCollectionCPP*> chainCollectionGroups;
     int internalCounter;
 };
-
 
 
 #endif //ABPYTOOLS_QT_CHAINGROUPS_H

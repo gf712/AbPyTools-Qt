@@ -4,13 +4,14 @@
 
 #include "chainGroups.h"
 
-void ChainGroups::addGroup(ChainCollectionCPP *chainCollectionCPP_) {
+void ChainGroups::addGroup(std::string name, std::string numberingScheme) {
 
-    auto name = "Group_%i";
 
-    printf(name, internalCounter);
+    auto chainCollection = new ChainCollectionCPP();
 
-    chainCollectionGroups[std::string(name)] = chainCollectionCPP_;
+    chainCollection->setNumberingScheme(numberingScheme);
+
+    chainCollectionGroups[name] = chainCollection;
 
     internalCounter++;
 

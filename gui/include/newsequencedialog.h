@@ -20,12 +20,10 @@ private slots:
     void on_buttonBox_accepted();
 
 signals:
-    void buttonBoxAccepted(std::string name_, std::string sequence_, std::string numberingScheme_);
-    void buttonBoxAccepted();
+    void buttonBoxAccepted(std::string name_, std::string sequence_);
 
 private:
     Ui::newSequenceDialog *ui;
-    constexpr static std::array<char[15], 3> numberingSchemesVector = {"chothia", "kabat", "chothia_ext"};
 };
 
 #endif // NEWSEQUENCEDIALOG_H

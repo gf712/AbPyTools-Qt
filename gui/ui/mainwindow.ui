@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>927</x>
@@ -36,7 +36,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -58,7 +58,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>430</x>
@@ -107,6 +107,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew_group"/>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
@@ -172,12 +173,17 @@
   </action>
   <action name="actionNew">
    <property name="text">
-    <string>New</string>
+    <string>Add sequence</string>
    </property>
   </action>
   <action name="actionImport_hydrophobicity_dataset">
    <property name="text">
     <string>Import hydrophobicity dataset</string>
+   </property>
+  </action>
+  <action name="actionNew_group">
+   <property name="text">
+    <string>New group</string>
    </property>
   </action>
  </widget>

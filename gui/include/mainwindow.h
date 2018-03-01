@@ -12,7 +12,9 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QDateTime>
+#include "chainGroups.h"
 #include "newsequencedialog.h"
+#include "newgroupdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,19 +35,22 @@ public:
     void addAntibodyObjectText();
     void addAntibodyObjectDebugText();
     void loadFASTADebugText();
+    void addGroupText(std::string name);
 
 private slots:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
-    void addAntibodyObject(std::string name_,
-                           std::string sequence_,
-                           std::string numberingScheme_);
+    void addAntibodyObject(std::string name_, std::string sequence_);
+    void addChainGroup(std::string groupName_, std::string numberingScheme_);
 
     void updateWorkingWindow();
     void updateDebugWindow();
 
+    void on_actionNew_group_triggered();
+
 private:
     Ui::MainWindow *ui;
+    ChainGroups *chainGroups;
     AntibodyChainCPP *antibodyObject;
     ChainCollectionCPP *antibodyObjects;
     FastaParser *fastaParser;
