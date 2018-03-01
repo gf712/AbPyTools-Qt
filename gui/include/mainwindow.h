@@ -4,10 +4,13 @@
 #include "chain.h"
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
+#include <boost/range/combine.hpp>
+#include <boost/foreach.hpp>
 
 #include "chainGroups.h"
 #include "newsequencedialog.h"
 #include "newgroupdialog.h"
+#include "fileloaderdialog.h"
 
 #include <QMainWindow>
 #include <QTimer>
@@ -36,15 +39,17 @@ public:
 
     // Display message editors
     void addAntibodyObjectText(std::string name_);
-    void addAntibodyObjectDebugText();
+    void addAntibodyObjectDebugText(AntibodyChainCPP *object_);
     void loadFASTADebugText();
     void addGroupText(std::string name);
 
 private Q_SLOTS:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
+
     void addAntibodyObject(std::string name_, std::string sequence_, std::string groupName_);
     void addChainGroup(std::string groupName_, std::string numberingScheme_);
+    void addFASTA(std::string groupName_, QString filename_);
 
     void updateWorkingWindow();
     void updateDebugWindow();

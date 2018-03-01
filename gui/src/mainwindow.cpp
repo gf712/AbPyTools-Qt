@@ -24,7 +24,7 @@ MainWindow::~MainWindow()
 }
 
 // #####################################################################################################################
-//                                          FILE MENU
+//                                                  FILE MENU
 // #####################################################################################################################
 
 void MainWindow::on_actionNew_group_triggered()
@@ -42,7 +42,7 @@ void MainWindow::on_actionNew_group_triggered()
 void MainWindow::on_actionNew_triggered()
 {
     // instantiate antibody object with empty constructor
-    antibodyObject = new AntibodyChainCPP();
+//    antibodyObject = new AntibodyChainCPP();
 
     // opens new dialog to add sequence
     auto newSequenceDialogPointer = new newSequenceDialog(this, chainGroups->getGroupNames());
@@ -56,15 +56,13 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
 
-    QFileDialog dialog;
+    auto fileLoaderPointer = new FileLoaderDialog(this, chainGroups->getGroupNames());
 
-    QString filename = dialog.getOpenFileName(this, tr("Open FASTA File"),"",tr("FASTA files (*.fasta)"));
+    fileLoaderPointer->show();
 
-    fastaParser = new FastaParser(filename.toStdString());
+    connect(fileLoaderPointer, SIGNAL(fileLoaderDialogFilename(std::string, QString)),
+            this, SLOT(addFASTA(std::string, QString)));
 
-    fastaParser->parse();
-
-    loadFASTADebugText();
 }
 
 
@@ -76,6 +74,7 @@ void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std
     chainGroups->addChain(groupName, name_, sequence_);
 
     qDebug() << "ADDED CHAIN";
+    
     // write to windows
     addAntibodyObjectText(groupName);
 //    addAntibodyObjectDebugText();
@@ -88,6 +87,43 @@ void MainWindow::addChainGroup(std::string groupName_, std::string numberingSche
 
     addGroupText(groupName_);
 }
+
+
+void MainWindow::addFASTA(std::string groupName_, QString filename_) {
+
+    qDebug() << "Parsing FASTA file";
+
+    fastaParser = new FastaParser(filename_.toStdString());
+
+    fastaParser->parse();
+
+    qDebug() << "Parsed FASTA file";
+
+    std::string name_i, sequence_i;
+
+    auto names = fastaParser->getNames();
+    auto sequences = fastaParser->getSequences();
+
+    // it's like python in C++..
+    BOOST_FOREACH(boost::tie(name_i, sequence_i), boost::combine(names, sequences)) {
+
+        qDebug() << QString::fromStdString(name_i) << QString::fromStdString(sequence_i);
+
+        addAntibodyObject(name_i, sequence_i, groupName_);
+
+        auto chainObject = new AntibodyChainCPP(sequence_i, name_i, "chothia");
+
+        addAntibodyObjectDebugText(chainObject);
+    }
+
+    addAntibodyObjectText(groupName_);
+
+}
+
+
+// #####################################################################################################################
+//                                          MESSAGE DISPLAY ROUTINES
+// #####################################################################################################################
 
 void MainWindow::updateWorkingWindow() {
 
@@ -102,11 +138,6 @@ void MainWindow::updateDebugWindow() {
     ui->debugAreaTextBrowser->setText(cacheDebugText);
 
 }
-
-// #####################################################################################################################
-//                                          MESSAGE DISPLAY ROUTINES
-// #####################################################################################################################
-
 
 void MainWindow::addAntibodyObjectText(std::string name_) {
 
@@ -137,18 +168,22 @@ void MainWindow::addGroupText(std::string name) {
     updateWorkingWindow();
 }
 
-void MainWindow::addAntibodyObjectDebugText() {
+void MainWindow::addAntibodyObjectDebugText(AntibodyChainCPP *object_) {
+
+    qDebug() << "Reached addAntibodyObjectDebugText";
 
     auto debugText = QString("[%1]: addAntibodyObject\n name: %2\n sequence: %3\n numbering scheme: %4\n");
 
     debugText = debugText.arg(QDateTime::currentDateTime().toString(),
-                              QString::fromStdString(antibodyObject->getName()),
-                              QString::fromStdString(antibodyObject->getSequence()),
-                              QString::fromStdString(antibodyObject->getNumberingScheme()));
+                              QString::fromStdString(object_->getName()),
+                              QString::fromStdString(object_->getSequence()),
+                              QString::fromStdString(object_->getNumberingScheme()));
 
     qDebug() << debugText;
 
     cacheDebugText.append(debugText);
+
+    updateDebugWindow();
 
 }
 
