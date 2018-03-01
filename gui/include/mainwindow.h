@@ -4,6 +4,11 @@
 #include "chain.h"
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
+
+#include "chainGroups.h"
+#include "newsequencedialog.h"
+#include "newgroupdialog.h"
+
 #include <QMainWindow>
 #include <QTimer>
 #include <QString>
@@ -12,9 +17,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QDateTime>
-#include "chainGroups.h"
-#include "newsequencedialog.h"
-#include "newgroupdialog.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -37,7 +40,7 @@ public:
     void loadFASTADebugText();
     void addGroupText(std::string name);
 
-private slots:
+private Q_SLOTS:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
     void addAntibodyObject(std::string name_, std::string sequence_, std::string groupName_);

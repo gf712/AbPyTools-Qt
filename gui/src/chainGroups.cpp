@@ -2,10 +2,7 @@
 // Created by gil on 28/02/18.
 //
 
-#include <QtCore/QStringList>
 #include "chainGroups.h"
-
-#include <utility>
 
 void ChainGroups::addGroup(std::string name, std::string numberingScheme) {
 

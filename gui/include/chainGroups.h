@@ -7,6 +7,8 @@
 
 #include <unordered_map>
 #include "chainCollectionCPP.h"
+#include <utility>
+#include <QtCore/QStringList>
 
 class ChainGroups {
 

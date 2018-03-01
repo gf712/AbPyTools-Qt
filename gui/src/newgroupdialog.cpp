@@ -20,6 +20,6 @@ NewGroupDialog::~NewGroupDialog()
 
 void NewGroupDialog::on_newGroupDialogButtonBox_accepted()
 {
-    emit newGrupDialogButtonBoxAccepted(ui->newGroupDialogGroupName->text().toStdString(),
-                                        std::string(numberingSchemesVector[ui->newGroupDialogNumberingScheme->currentIndex()]));
+    Q_EMIT newGrupDialogButtonBoxAccepted(ui->newGroupDialogGroupName->text().toStdString(),
+                                          std::string(numberingSchemesVector[ui->newGroupDialogNumberingScheme->currentIndex()]));
 }

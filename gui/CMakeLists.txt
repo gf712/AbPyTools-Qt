@@ -1,5 +1,9 @@
 project(AbPyToolsGUI)
 
+# solves slots issue
+# https://cmake.org/pipermail/cmake/2009-January/026705.html
+ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
+
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -14,18 +18,24 @@ set(SOURCE_FILES
         src/mainwindow.cpp
         src/newsequencedialog.cpp
         src/chainGroups.cpp
-        src/newgroupdialog.cpp)
+        src/newgroupdialog.cpp
+        src/fileloaderdialog.cpp
+        )
 
 set(HEADER_FILES
         include/mainwindow.h
         include/newsequencedialog.h
         include/chainGroups.h
-        include/newgroupdialog.h)
+        include/newgroupdialog.h
+        include/fileloaderdialog.h
+        )
 
 set(UI_FILES
         ui/mainwindow.ui
         ui/newsequencedialog.ui
-        ui/newgroupdialog.ui)
+        ui/newgroupdialog.ui
+        ui/fileloaderdialog.ui
+        )
 
 add_library(AbPyToolsGUIlib STATIC
         ${SOURCE_FILES}

@@ -16,10 +16,10 @@ public:
     newSequenceDialog(QWidget *parent = 0, QStringList groupNames = QStringList());
     ~newSequenceDialog();
 
-private slots:
+private Q_SLOTS:
     void on_buttonBox_accepted();
 
-signals:
+Q_SIGNALS:
     void buttonBoxAccepted(std::string name_, std::string sequence_, std::string groupName);
 
 private:

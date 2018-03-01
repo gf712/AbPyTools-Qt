@@ -15,10 +15,10 @@ public:
     explicit NewGroupDialog(QWidget *parent = 0);
     ~NewGroupDialog();
 
-signals:
+Q_SIGNALS:
     void newGrupDialogButtonBoxAccepted(std::string name_, std::string numberingScheme);
 
-private slots:
+private Q_SLOTS:
     void on_newGroupDialogButtonBox_accepted();
 
 private:

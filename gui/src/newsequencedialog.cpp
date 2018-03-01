@@ -18,7 +18,7 @@ newSequenceDialog::~newSequenceDialog()
 void newSequenceDialog::on_buttonBox_accepted()
 {
     // emits signal(name of sequence, sequence, group to add sequence to)
-    emit buttonBoxAccepted(ui->newSequenceDialogName->text().toStdString(),
-                           ui->newSequenceDialogSequence->toPlainText().toStdString(),
-                           ui->comboBox->currentText().toStdString());
+    Q_EMIT buttonBoxAccepted(ui->newSequenceDialogName->text().toStdString(),
+                             ui->newSequenceDialogSequence->toPlainText().toStdString(),
+                             ui->comboBox->currentText().toStdString());
 }
