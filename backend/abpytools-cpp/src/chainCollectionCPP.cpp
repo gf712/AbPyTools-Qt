@@ -60,9 +60,30 @@ T ChainCollectionCPP::genericGetter(boost::optional<T> optionalParam_) {
 void ChainCollectionCPP::load() {
 
     // TODO: add openmp support to project and use it here
-    for (auto &antibodyObject: antibodyObjectPointers) {
+    for (auto const &antibodyObject: antibodyObjectPointers) {
         antibodyObject->load();
     }
+
+    std::string chainType_ = antibodyObjectPointers[0]->getChain();
+    std::string numberingScheme_ = antibodyObjectPointers[0]->getNumberingScheme();
+
+    // check if they are all of the same chain type
+    for (auto const &antibodyObject: antibodyObjectPointers) {
+
+        if (antibodyObject->getChain() != chainType_) {
+            // write exception
+            throw 1;
+        }
+
+        if (antibodyObject->getNumberingScheme() != numberingScheme_) {
+            throw 1;
+        }
+    }
+
+    // no errors
+    chainType = chainType_;
+    numberingScheme = numberingScheme_;
+
 }
 
 void ChainCollectionCPP::append(AntibodyChainCPP &antibodyObject_) {
@@ -81,7 +102,7 @@ void ChainCollectionCPP::append(std::string name_, std::string sequence_) {
 
 }
 
-void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP antibodyObject) {
+void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP &antibodyObject) {
 
     std::cout << "Appending pointer" << "\n";
 
