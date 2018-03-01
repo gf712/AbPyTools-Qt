@@ -45,6 +45,7 @@ public:
     std::vector<double> getTotalCharges() {return genericGetter<std::vector<double>>(total_charge);}
 
     // SETTERS
+    void setNumberingScheme(std::string numberingScheme_) { numberingScheme = numberingScheme_;}
 
 private:
     int numberOfChains;
