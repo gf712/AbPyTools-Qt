@@ -4,6 +4,7 @@
 #include "chain.h"
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
+#include "hydrophobicityParser.h"
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
 
@@ -46,6 +47,9 @@ public:
 private Q_SLOTS:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
+    void on_actionNew_group_triggered();
+    void on_actionApply_Numbering_triggered();
+    void on_actionImport_hydrophobicity_dataset_triggered();
 
     void addAntibodyObject(std::string name_, std::string sequence_, std::string groupName_);
     void addChainGroup(std::string groupName_, std::string numberingScheme_);
@@ -53,10 +57,6 @@ private Q_SLOTS:
 
     void updateWorkingWindow();
     void updateDebugWindow();
-
-    void on_actionNew_group_triggered();
-
-    void on_actionApply_Numbering_triggered();
 
 private:
     Ui::MainWindow *ui;

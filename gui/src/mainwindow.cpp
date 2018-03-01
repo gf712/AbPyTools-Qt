@@ -24,7 +24,7 @@ MainWindow::~MainWindow()
 }
 
 // #####################################################################################################################
-//                                                  FILE MENU
+//                                               FILE MENU SLOTS
 // #####################################################################################################################
 
 void MainWindow::on_actionNew_group_triggered()
@@ -62,6 +62,30 @@ void MainWindow::on_actionOpen_triggered()
 
     connect(fileLoaderPointer, SIGNAL(fileLoaderDialogFilename(std::string, QString)),
             this, SLOT(addFASTA(std::string, QString)));
+
+}
+
+// #####################################################################################################################
+//                                               ANALYSIS MENU SLOTS
+// #####################################################################################################################
+
+
+void MainWindow::on_actionApply_Numbering_triggered()
+{
+
+    chainGroups->applyNumbering();
+}
+
+void MainWindow::on_actionImport_hydrophobicity_dataset_triggered()
+{
+    // load hydrophobicity dataset
+    // open file dialog to choose FASTA file
+    QFileDialog dialog;
+    QString filename = dialog.getOpenFileName(this, tr("Open Hydrophobicity Data File"),"",tr("hpb files (*.hpb)"));
+
+    auto hParser = hydrophobicityParser(filename.toStdString());
+
+    hParser.parse();
 
 }
 
@@ -199,10 +223,4 @@ void MainWindow::loadFASTADebugText() {
 
     cacheDebugText.append(debugText);
     updateDebugWindow();
-}
-
-void MainWindow::on_actionApply_Numbering_triggered()
-{
-
-    chainGroups->applyNumbering();
 }
