@@ -22,6 +22,7 @@ class AntibodyChainCPP {
 
 public:
     AntibodyChainCPP() {aligned=false;}
+    AntibodyChainCPP(std::string sequence, std::string name, std::string numbering_scheme);
     AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme);
     ~AntibodyChainCPP() = default;
 

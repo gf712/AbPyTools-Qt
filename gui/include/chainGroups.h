@@ -17,6 +17,7 @@ public:
     ~ChainGroups();
 
     void addGroup(std::string name_, std::string numeringScheme_);
+    void addChain(std::string groupName_, std::string name_, std::string sequence_);
 
     // GETTERS
     std::string getNumberingScheme(std::string groupName) {return chainCollectionGroups[groupName]->getNumberingScheme();}

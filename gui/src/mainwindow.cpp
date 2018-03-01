@@ -48,8 +48,8 @@ void MainWindow::on_actionNew_triggered()
     auto newSequenceDialogPointer = new newSequenceDialog(this, chainGroups->getGroupNames());
     newSequenceDialogPointer->show();
 
-    connect(newSequenceDialogPointer, SIGNAL(buttonBoxAccepted(std::string, std::string)),
-            this, SLOT(addAntibodyObject(std::string, std::string)));
+    connect(newSequenceDialogPointer, SIGNAL(buttonBoxAccepted(std::string, std::string, std::string)),
+            this, SLOT(addAntibodyObject(std::string, std::string, std::string)));
 
 }
 
@@ -68,19 +68,17 @@ void MainWindow::on_actionOpen_triggered()
 }
 
 
-void MainWindow::addAntibodyObject(std::string name_, std::string sequence_) {
+void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std::string groupName) {
 
     qDebug() << "ACCEPTED BUTTON RECEIVED";
 
-    antibodyObject->setName(name_);
+    qDebug() << QString::fromStdString(groupName) << QString::fromStdString(name_) << QString::fromStdString(sequence_);
+    chainGroups->addChain(groupName, name_, sequence_);
 
-    antibodyObject->setSequence(sequence_);
-
-    antibodyObjects->append(*antibodyObject);
-
+    qDebug() << "ADDED CHAIN";
     // write to windows
-    addAntibodyObjectText();
-    addAntibodyObjectDebugText();
+    addAntibodyObjectText(groupName);
+//    addAntibodyObjectDebugText();
 
 }
 
@@ -110,21 +108,9 @@ void MainWindow::updateDebugWindow() {
 // #####################################################################################################################
 
 
-void MainWindow::addAntibodyObjectText() {
+void MainWindow::addAntibodyObjectText(std::string name_) {
 
-    QRegularExpression re("Loaded antibody chains: \\d+");
-
-    auto text = QString("Loaded antibody chains: %1");
-    text = text.arg(antibodyObjects->getNumberOfChains());
-
-    if (!startedWorking) {
-        cacheText.replace("Nothing to display", "");
-        cacheText.append(text);
-        startedWorking = true;
-    }
-
-    else
-        cacheText.replace(re, text);
+    addGroupText(name_);
 
 }
 

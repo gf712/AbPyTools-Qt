@@ -9,6 +9,8 @@ set (CMAKE_CXX_STANDARD 11)
 #                                       HUNTER
 ############################################################################################
 
+#set(HUNTER_ENABLED ON CACHE BOOL "whether to use hunter to build dependencies with hunter")
+
 # get hunter for package management in cmake
 include("cmake/HunterGate.cmake")
 HunterGate(
@@ -16,7 +18,6 @@ HunterGate(
         SHA1 "371aef6239eff8639fe2cd94afef0f4d9f733302"
         LOCAL
 )
-
 
 # project name
 project(AbPyTools-Qt)
@@ -28,8 +29,12 @@ find_package(PythonLibs 3.5 REQUIRED)
 hunter_add_package(Boost COMPONENTS test python filesystem)
 hunter_add_package(Qt)
 
+#if (NOT ${HUNTER_ENABLED})
+#    list(APPEND ${CMAKE_PREFIX_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/disabled-mode")
+#endif()
+
 find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesystem system)
-find_package(Qt5 COMPONENTS Widgets Core REQUIRED)
+find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core)
 
 ############################################################################################
 #                                     DECLARATIONS

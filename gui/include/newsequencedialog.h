@@ -20,7 +20,7 @@ private slots:
     void on_buttonBox_accepted();
 
 signals:
-    void buttonBoxAccepted(std::string name_, std::string sequence_);
+    void buttonBoxAccepted(std::string name_, std::string sequence_, std::string groupName);
 
 private:
     Ui::newSequenceDialog *ui;

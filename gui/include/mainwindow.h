@@ -32,7 +32,7 @@ public:
     Ui::MainWindow* getUI() {return ui;}
 
     // Display message editors
-    void addAntibodyObjectText();
+    void addAntibodyObjectText(std::string name_);
     void addAntibodyObjectDebugText();
     void loadFASTADebugText();
     void addGroupText(std::string name);
@@ -40,7 +40,7 @@ public:
 private slots:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
-    void addAntibodyObject(std::string name_, std::string sequence_);
+    void addAntibodyObject(std::string name_, std::string sequence_, std::string groupName_);
     void addChainGroup(std::string groupName_, std::string numberingScheme_);
 
     void updateWorkingWindow();

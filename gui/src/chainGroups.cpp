@@ -22,6 +22,13 @@ void ChainGroups::addGroup(std::string name, std::string numberingScheme) {
 }
 
 
+void ChainGroups::addChain(std::string chainGroupName_, std::string name_, std::string sequence_) {
+
+    chainCollectionGroups[chainGroupName_]->append(name_, sequence_);
+
+}
+
+
 QStringList ChainGroups::getGroupNames() {
 
     QStringList keys;

@@ -7,6 +7,34 @@
 
 using namespace boost::python;
 
+AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::string numbering_scheme) {
+
+    aligned = false;
+
+    Py_Initialize();
+
+    module = PyImport_ImportModule(module_name);
+    if (module == nullptr) {
+        throw ModuleImportException(std::string("Could not import AbPyTools!"));
+    }
+
+    static PyObject* Chain = PyObject_GetAttrString(module, "Chain");
+
+    if (Chain == nullptr) {
+        throw ClassImportException(std::string("Could not import Chain class from abpytools!"));
+    }
+
+    // now we can instantiate the python object
+    chainObject = PyObject_CallFunction(Chain, "ssOs", sequence.c_str(), name.c_str(), Py_None, numbering_scheme.c_str());
+
+    if (chainObject == nullptr) {
+        std::cout << "Error instantiating object";
+    }
+
+}
+
+
+
 AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme) {
 
     aligned = false;

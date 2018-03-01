@@ -30,6 +30,7 @@ public:
     // METHODS
     void load();
     void append(AntibodyChainCPP &AntibodyObject_);
+    void append(std::string name_, std::string sequence);
     void updateAntibodyObjectVector(AntibodyChainCPP antibodyObject);
 
     // GETTERS

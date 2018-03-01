@@ -72,6 +72,15 @@ void ChainCollectionCPP::append(AntibodyChainCPP &antibodyObject_) {
 
 }
 
+void ChainCollectionCPP::append(std::string name_, std::string sequence_) {
+
+    // function to append more antibody objects, using name and sequence
+    auto antibodyObject = AntibodyChainCPP(name_, sequence_, numberingScheme);
+
+    updateAntibodyObjectVector(antibodyObject);
+
+}
+
 void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP antibodyObject) {
 
     std::cout << "Appending pointer" << "\n";
