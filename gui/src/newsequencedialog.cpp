@@ -1,11 +1,13 @@
 #include "newsequencedialog.h"
 #include "ui_newsequencedialog.h"
 
-newSequenceDialog::newSequenceDialog(QWidget *parent) :
+newSequenceDialog::newSequenceDialog(QWidget *parent, QStringList groupNames) :
     QDialog(parent),
     ui(new Ui::newSequenceDialog)
 {
     ui->setupUi(this);
+
+    ui->comboBox->addItems(groupNames);
 }
 
 newSequenceDialog::~newSequenceDialog()

@@ -21,6 +21,7 @@ public:
     // GETTERS
     std::string getNumberingScheme(std::string groupName) {return chainCollectionGroups[groupName]->getNumberingScheme();}
     int getNumberOfSequences(std::string groupName) {return chainCollectionGroups[groupName]->getNumberOfChains();}
+    QStringList getGroupNames();
     ChainCollectionCPP* getChainCollection(std::string groupName) { return chainCollectionGroups[groupName];}
 
 private:

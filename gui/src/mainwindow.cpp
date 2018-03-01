@@ -45,7 +45,7 @@ void MainWindow::on_actionNew_triggered()
     antibodyObject = new AntibodyChainCPP();
 
     // opens new dialog to add sequence
-    auto newSequenceDialogPointer = new newSequenceDialog(this);
+    auto newSequenceDialogPointer = new newSequenceDialog(this, chainGroups->getGroupNames());
     newSequenceDialogPointer->show();
 
     connect(newSequenceDialogPointer, SIGNAL(buttonBoxAccepted(std::string, std::string)),

@@ -10,6 +10,7 @@ NewGroupDialog::NewGroupDialog(QWidget *parent) :
     ui(new Ui::NewGroupDialog)
 {
     ui->setupUi(this);
+
 }
 
 NewGroupDialog::~NewGroupDialog()

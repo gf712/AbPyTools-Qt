@@ -13,7 +13,7 @@ class newSequenceDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit newSequenceDialog(QWidget *parent = 0);
+    newSequenceDialog(QWidget *parent = 0, QStringList groupNames = QStringList());
     ~newSequenceDialog();
 
 private slots:
