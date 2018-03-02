@@ -74,6 +74,8 @@ void MainWindow::on_actionApply_Numbering_triggered()
 {
 
     chainGroups->applyNumbering();
+
+    updateWorkingWindowGroup();
 }
 
 void MainWindow::on_actionImport_hydrophobicity_dataset_triggered()
@@ -100,7 +102,7 @@ void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std
     qDebug() << "ADDED CHAIN";
     
     // write to windows
-    addAntibodyObjectText(groupName);
+//    addAntibodyObjectText(groupName);
 //    addAntibodyObjectDebugText();
 
 }
@@ -109,7 +111,7 @@ void MainWindow::addChainGroup(std::string groupName_, std::string numberingSche
 
     chainGroups->addGroup(groupName_, numberingScheme_);
 
-    addGroupText(groupName_);
+    updateWorkingWindowGroup();
 }
 
 
@@ -140,7 +142,7 @@ void MainWindow::addFASTA(std::string groupName_, QString filename_) {
         addAntibodyObjectDebugText(chainObject);
     }
 
-    addAntibodyObjectText(groupName_);
+    updateWorkingWindowGroup();
 
 }
 
@@ -163,33 +165,50 @@ void MainWindow::updateDebugWindow() {
 
 }
 
-void MainWindow::addAntibodyObjectText(std::string name_) {
+//void MainWindow::addAntibodyObjectText(std::string name_) {
+//
+//    addGroupText(name_);
+//
+//}
 
-    addGroupText(name_);
+//void MainWindow::addGroupText(std::string name) {
+//
+//    auto text = QString("\nGroup name: %1\n -numbering scheme: %2\n -number of sequences: %3\n -loaded: %4");
+//    text = text.arg(QString::fromStdString(name),
+//                    QString::fromStdString(chainGroups->getNumberingScheme(name)),
+//                    QString::number(chainGroups->getNumberOfSequences(name)),
+//                    "false");
+//
+//    if (!startedWorking) {
+//        cacheText.replace("Nothing to display", "");
+//        cacheText.append(text);
+//        startedWorking = true;
+//    }
+//
+//    else {
+//
+//        cacheText.append(text);
+//
+//    }
+//
+//    updateWorkingWindow();
+//}
 
-}
+void MainWindow::updateWorkingWindowGroup() {
 
-void MainWindow::addGroupText(std::string name) {
+    qDebug() << "Updating working window...";
 
-    auto text = QString("\nGroup name: %1\n -numbering scheme: %2\n -number of sequences: %3\n -loaded: %4");
-    text = text.arg(QString::fromStdString(name),
-                    QString::fromStdString(chainGroups->getNumberingScheme(name)),
-                    QString::number(chainGroups->getNumberOfSequences(name)),
-                    "false");
+    cacheText = "Welcome to AbPyTools-Qt:\n"
+                "------------------------\n";
 
-    if (!startedWorking) {
-        cacheText.replace("Nothing to display", "");
-        cacheText.append(text);
-        startedWorking = true;
-    }
+    for (auto const &name: chainGroups->getGroupNames()) {
 
-    else {
-
-        cacheText.append(text);
+        cacheText.append(chainGroups->getInfo(name));
 
     }
 
     updateWorkingWindow();
+
 }
 
 void MainWindow::addAntibodyObjectDebugText(AntibodyChainCPP *object_) {

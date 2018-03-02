@@ -37,6 +37,46 @@ QStringList ChainGroups::getGroupNames() {
     return keys;
 }
 
+QString ChainGroups::getInfo(std::string groupName) {
+
+    QString text = "Group name: %1\n"
+            "   - number of sequences: %2\n"
+            "   - numbering scheme: %3\n"
+            "   - loaded: %4\n"
+            "   - hydrophobicity values: %5\n";
+
+    QString boolText = chainCollectionGroups[groupName]->isLoaded() ? "true" : "false";
+
+    text = text.arg(QString::fromStdString(groupName),
+                    QString::number(chainCollectionGroups[groupName]->getNumberOfChains()),
+                    QString::fromStdString(chainCollectionGroups[groupName]->getNumberingScheme()),
+                    boolText,
+                    QString("TODO"));
+
+    return text;
+
+}
+
+QString ChainGroups::getInfo(QString groupName) {
+
+    QString text = "Group name: %1\n"
+            "   - number of sequences: %2\n"
+            "   - numbering scheme: %3\n"
+            "   - loaded: %4\n"
+            "   - hydrophobicity values: %5\n";
+
+    QString boolText = chainCollectionGroups[groupName.toStdString()]->isLoaded() ? "true" : "false";
+
+    text = text.arg(groupName,
+                    QString::number(chainCollectionGroups[groupName.toStdString()]->getNumberOfChains()),
+                    QString::fromStdString(chainCollectionGroups[groupName.toStdString()]->getNumberingScheme()),
+                    boolText,
+                    QString("TODO"));
+
+    return text;
+
+}
+
 void ChainGroups::applyNumbering() {
 
     QTextStream out(stdout);

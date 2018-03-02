@@ -39,10 +39,12 @@ public:
     Ui::MainWindow* getUI() {return ui;}
 
     // Display message editors
-    void addAntibodyObjectText(std::string name_);
+//    void addAntibodyObjectText(std::string name_);
     void addAntibodyObjectDebugText(AntibodyChainCPP *object_);
     void loadFASTADebugText();
-    void addGroupText(std::string name);
+//    void addGroupText(std::string name);
+
+    void updateWorkingWindowGroup();
 
 private Q_SLOTS:
     void on_actionOpen_triggered();
@@ -69,7 +71,10 @@ private:
     std::string numberingScheme;
     QTimer *timer;
 
-    QString cacheText = "Welcome to AbPyTools-Qt:\nNothing to display"; // stores text to display in working window
+    QString cacheText = "Welcome to AbPyTools-Qt:\n"
+                        "------------------------\n"
+                        "Nothing to display"; // stores text to display in working window
+
     QString cacheDebugText = "Welcome to AbPyTools-Qt Debug Mode:\n"; // stores text to display in working window
 
     bool startedWorking;

@@ -27,6 +27,8 @@ public:
     int getNumberOfSequences(std::string groupName) {return chainCollectionGroups[groupName]->getNumberOfChains();}
     QStringList getGroupNames();
     ChainCollectionCPP* getChainCollection(std::string groupName) { return chainCollectionGroups[groupName];}
+    QString getInfo(std::string groupName);
+    QString getInfo(QString groupName);
 
     void applyNumbering();
 

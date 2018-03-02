@@ -38,6 +38,7 @@ public:
     T genericGetter(boost::optional<T>);
 
     int getNumberOfChains() { return numberOfChains;}
+    bool isLoaded() { return loaded;}
     std::vector<std::string> getNames() {return names;}
     std::vector<std::string> getSequences() {return sequences;}
     std::vector<AntibodyChainCPP*> getAntibodyObjectPointers() {return antibodyObjectPointers;}
