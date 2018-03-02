@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// backend headers + 3rd party non-gui headers
 #include "chain.h"
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
@@ -8,11 +9,17 @@
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
 
+// group class headers
 #include "chainGroups.h"
+#include "hydrophobicityGroup.h"
+
+// ui class headers
 #include "newsequencedialog.h"
 #include "newgroupdialog.h"
 #include "fileloaderdialog.h"
+#include "editdialog.h"
 
+// Qt headers
 #include <QMainWindow>
 #include <QTimer>
 #include <QString>
@@ -21,6 +28,8 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QMessageBox>
+#include <QStringList>
 
 
 namespace Ui {
@@ -46,6 +55,11 @@ public:
 
     void updateWorkingWindowGroup();
 
+Q_SIGNALS:
+    void sendGroupNamesToChild(QStringList groupNames);
+    void sendHydrophobicityDatasetNamesToChild(QStringList datasetNames);
+    void sendNumberingSchemeNames(QStringList numberingSchemes);
+
 private Q_SLOTS:
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
@@ -57,12 +71,17 @@ private Q_SLOTS:
     void addChainGroup(std::string groupName_, std::string numberingScheme_);
     void addFASTA(std::string groupName_, QString filename_);
 
+    void editGroup(std::string groupName_, std::string hydrophobicityDataSet, std::string numberingScheme);
+
     void updateWorkingWindow();
     void updateDebugWindow();
+
+    void on_actionGroup_triggered();
 
 private:
     Ui::MainWindow *ui;
     ChainGroups *chainGroups;
+    hydrophobicityGroups *hGroups;
     AntibodyChainCPP *antibodyObject;
     ChainCollectionCPP *antibodyObjects;
     FastaParser *fastaParser;

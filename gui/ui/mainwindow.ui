@@ -121,6 +121,7 @@
       <string>Hydrophobicity</string>
      </property>
      <addaction name="actionImport_hydrophobicity_dataset"/>
+     <addaction name="actionApply_hydrophobicity_values"/>
      <addaction name="actionCluster"/>
     </widget>
     <widget class="QMenu" name="menuNumbering">
@@ -136,7 +137,14 @@
     <addaction name="actionCharges"/>
     <addaction name="actionStructure"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionGroup"/>
+   </widget>
    <addaction name="menuAbPyTools"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuAnalysis"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -196,6 +204,16 @@
   <action name="actionEdit_numbering_scheme">
    <property name="text">
     <string>Edit numbering scheme</string>
+   </property>
+  </action>
+  <action name="actionApply_hydrophobicity_values">
+   <property name="text">
+    <string>Apply hydrophobicity values</string>
+   </property>
+  </action>
+  <action name="actionGroup">
+   <property name="text">
+    <string>Group</string>
    </property>
   </action>
  </widget>

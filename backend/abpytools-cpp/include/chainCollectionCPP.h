@@ -9,7 +9,9 @@
 #include <string>
 #include "chain.h"
 #include "chainCollectionCPP.h"
+
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/optional.hpp>
 
 using namespace boost::numeric::ublas;
@@ -44,6 +46,9 @@ public:
     std::vector<AntibodyChainCPP*> getAntibodyObjectPointers() {return antibodyObjectPointers;}
     std::string getChainType() {return chainType;}
     std::string getNumberingScheme() {return numberingScheme;}
+
+    matrix<double> getHydrophobicityValues(hydrophobicityParser &customHValues_);
+
     matrix<double> getAminoAcidCharges() {return genericGetter<matrix<double>>(aminoAcidCharges);}
     std::vector<double> getTotalCharges() {return genericGetter<std::vector<double>>(total_charge);}
 

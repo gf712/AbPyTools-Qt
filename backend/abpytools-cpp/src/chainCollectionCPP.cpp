@@ -131,3 +131,22 @@ void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP &antibodyOb
     std::cout << "Appended pointer" << "\n";
 
 }
+
+matrix<double> ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &customHValues_) {
+
+    matrix<double> hydrophobicityMatrix(numberOfChains, 1);
+
+    if (chainType.compare("heavy") == 0)
+        hydrophobicityMatrix.resize(numberOfChains, 158);
+    else
+        hydrophobicityMatrix.resize(numberOfChains, 120);
+
+    for (int i = 0; i < numberOfChains; ++i) {
+//        project(hydrophobicityMatrix, 0, hydrophobicityMatrix.size2()) = antibodyObjectPointers[i]->getHydrophobicityMatrix(customHValues_);
+//        row(hydrophobicityMatrix, i) =
+        auto chainHVector = antibodyObjectPointers[i]->getHydrophobicityMatrix(customHValues_);
+        std::copy(chainHVector.begin(), chainHVector.end(), hydrophobicityMatrix.begin2() + i);
+    }
+
+    return hydrophobicityMatrix;
+}

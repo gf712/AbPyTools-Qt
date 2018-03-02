@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     chainGroups = new ChainGroups;
+    hGroups = new hydrophobicityGroups;
     antibodyObjects = new ChainCollectionCPP();
     ui->workingAreaTextBrowser->isReadOnly();
     ui->debugAreaTextBrowser->isReadOnly();
@@ -62,7 +63,6 @@ void MainWindow::on_actionOpen_triggered()
 
     connect(fileLoaderPointer, SIGNAL(fileLoaderDialogFilename(std::string, QString)),
             this, SLOT(addFASTA(std::string, QString)));
-
 }
 
 // #####################################################################################################################
@@ -85,10 +85,19 @@ void MainWindow::on_actionImport_hydrophobicity_dataset_triggered()
     QFileDialog dialog;
     QString filename = dialog.getOpenFileName(this, tr("Open Hydrophobicity Data File"),"",tr("hpb files (*.hpb)"));
 
-    auto hParser = hydrophobicityParser(filename.toStdString());
+    bool response = hGroups->parseNewFile(filename.toStdString());
 
-    hParser.parse();
+    QMessageBox msgBox;
 
+    if (response) {
+
+        QFileInfo fi(filename);
+
+        msgBox.setText("Successfully loaded hpb file!");
+    }
+    else
+        msgBox.setText("Failed to load hpb file!");
+    msgBox.exec();
 }
 
 
@@ -144,6 +153,49 @@ void MainWindow::addFASTA(std::string groupName_, QString filename_) {
 
     updateWorkingWindowGroup();
 
+}
+
+
+// #####################################################################################################################
+//                                               EDIT MENU SLOTS
+// #####################################################################################################################
+
+
+void MainWindow::on_actionGroup_triggered()
+{
+
+    auto editGroupPointer = new editDialog(this);
+
+    editGroupPointer->show();
+
+    connect(editGroupPointer, SIGNAL(editDialogUpdateGroup(std::string, std::string, std::string)),
+            this, SLOT(editGroup(std::string, std::string, std::string)));
+
+    connect(this, SIGNAL(sendGroupNamesToChild(QStringList)),
+            editGroupPointer, SLOT(receiveGroupNamesFromParent(QStringList)));
+
+    connect(this, SIGNAL(sendHydrophobicityDatasetNamesToChild(QStringList)),
+            editGroupPointer, SLOT(receiveHydrophobicityDatasetNamesFromParent(QStringList)));
+
+    connect(this, SIGNAL(sendNumberingSchemeNames(QStringList)),
+            editGroupPointer, SLOT(receiveNumberingSchemeNamesFromParent(QStringList)));
+
+    QStringList numberingSchemes;
+    numberingSchemes << "Chothia" << "Kabat" << "Martin";
+    
+    Q_EMIT(sendGroupNamesToChild(chainGroups->getGroupNames()));
+    Q_EMIT(sendHydrophobicityDatasetNamesToChild(hGroups->getDatasetNames()));
+    Q_EMIT(sendNumberingSchemeNames(numberingSchemes));
+
+}
+
+
+void MainWindow::editGroup(std::string groupName_, std::string hydrophobicityDataSet, std::string numberingScheme) {
+
+    chainGroups->addHydrophobicityValues(groupName_, hGroups->getHydrophobicityParser(groupName_));
+    chainGroups->setNumberingScheme(groupName_, numberingScheme);
+
+    updateWorkingWindowGroup();
 }
 
 

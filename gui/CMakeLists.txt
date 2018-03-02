@@ -20,6 +20,8 @@ set(SOURCE_FILES
         src/chainGroups.cpp
         src/newgroupdialog.cpp
         src/fileloaderdialog.cpp
+        src/hydrophobicityGroup.cpp
+        src/editdialog.cpp
         )
 
 set(HEADER_FILES
@@ -28,6 +30,8 @@ set(HEADER_FILES
         include/chainGroups.h
         include/newgroupdialog.h
         include/fileloaderdialog.h
+        include/hydrophobicityGroup.h
+        include/editdialog.h
         )
 
 set(UI_FILES
@@ -35,6 +39,7 @@ set(UI_FILES
         ui/newsequencedialog.ui
         ui/newgroupdialog.ui
         ui/fileloaderdialog.ui
+        ui/editdialog.ui
         )
 
 add_library(AbPyToolsGUIlib STATIC

@@ -26,6 +26,20 @@ void ChainGroups::addChain(std::string chainGroupName_, std::string name_, std::
 }
 
 
+void ChainGroups::addHydrophobicityValues(std::string chainGroupName_, hydrophobicityParser *hParser) {
+
+    chainCollectionHDatabase[chainGroupName_] = hParser;
+
+}
+
+
+matrix<double> ChainGroups::getHydrophobicityValues(std::string chainGroupName_) {
+
+    return chainCollectionGroups[chainGroupName_]->getHydrophobicityValues(*chainCollectionHDatabase[chainGroupName_]);
+
+}
+
+
 QStringList ChainGroups::getGroupNames() {
 
     QStringList keys;
@@ -99,5 +113,12 @@ void ChainGroups::applyNumbering() {
         }
 
     }
+
+}
+
+
+void ChainGroups::setNumberingScheme(std::string groupName_, std::string numberingScheme_) {
+
+    chainCollectionGroups[groupName_]->setNumberingScheme(numberingScheme_);
 
 }
