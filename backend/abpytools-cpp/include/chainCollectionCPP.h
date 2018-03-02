@@ -51,6 +51,7 @@ public:
 
 private:
     int numberOfChains;
+    bool loaded;
     // optional attributes that are set from python API
     // or by specific constructors
     std::vector<std::string> names;

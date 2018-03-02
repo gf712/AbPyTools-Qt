@@ -9,6 +9,7 @@ ChainCollectionCPP::ChainCollectionCPP() {
 
     // constructor without any objects
     numberOfChains = 0;
+    loaded = false;
 
 }
 
@@ -62,14 +63,19 @@ void ChainCollectionCPP::load() {
     // TODO: add openmp support to project and use it here
     for (auto const &antibodyObject: antibodyObjectPointers) {
 
-        std::cout << "iterating..";
+        std::cout << "iterating over " << antibodyObject->getName() << std::endl;
 
-        try {
-            antibodyObject->load();
+        if (!antibodyObject->isAligned()) {
+
+            try {
+                antibodyObject->load();
+            }
+            catch (...) {
+                throw "Could not load sequence";
+            }
         }
-        catch (...) {
-            throw "Could not load sequence";
-        }
+        else
+            std::cout << "Sequence already aligned" << std::endl;
     }
 
     std::string chainType_ = antibodyObjectPointers[0]->getChain();
@@ -86,11 +92,14 @@ void ChainCollectionCPP::load() {
         if (antibodyObject->getNumberingScheme() != numberingScheme_) {
             throw "Not all the chains were numerbered with the same scheme!";
         }
+        if (!antibodyObject->isAligned())
+            throw "Antibody was not aligned!";
     }
 
     // no errors
     chainType = chainType_;
     numberingScheme = numberingScheme_;
+    loaded = true;
 
 }
 

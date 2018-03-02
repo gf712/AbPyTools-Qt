@@ -181,6 +181,7 @@ std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(hydrophobicityPars
 void AntibodyChainCPP::load() {
     try {
         PyObject_CallMethod(chainObject, "load", "");
+        aligned = true;
 
     }
     catch (error_already_set&) {

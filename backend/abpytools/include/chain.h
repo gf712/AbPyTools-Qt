@@ -27,6 +27,7 @@ public:
     ~AntibodyChainCPP() = default;
 
     // GETTERS (for python @property)
+    bool isAligned() { return aligned;}
     std::string getName();
     std::string getSequence();
     std::string getAlignedSequence();

@@ -22,6 +22,11 @@ void FileLoaderDialog::on_fileLoaderDialogLoadFile_clicked()
     QFileDialog dialog;
     filename = dialog.getOpenFileName(this, tr("Open FASTA File"),"",tr("FASTA files (*.fasta)"));
 
+    auto fi = QFileInfo(filename);
+
+    // display name of loaded file
+    ui->fileLoaderDialogLoadFile->setText(fi.completeBaseName());
+
 }
 
 void FileLoaderDialog::on_buttonBox_accepted()
