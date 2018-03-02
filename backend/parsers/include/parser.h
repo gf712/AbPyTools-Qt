@@ -7,6 +7,7 @@
 
 #include <exception.h>
 #include <boost/filesystem/operations.hpp>
+//#include <boost/filesystem/convenience.hpp>
 
 class Parser {
 
@@ -14,9 +15,11 @@ public:
     Parser(std::string filepath_);
 
     std::string getFilepath() { return filepath;}
+    std::string getBasename() { return basename;}
 
 private:
     std::string filepath;
+    std::string basename;
 
 };
 

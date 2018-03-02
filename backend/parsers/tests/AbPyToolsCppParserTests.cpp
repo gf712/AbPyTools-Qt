@@ -10,7 +10,6 @@
 #include "fastaParser.h"
 #include <iostream>
 
-
 BOOST_AUTO_TEST_SUITE(AbPyToolsHydrophobicityTests)
 
     BOOST_AUTO_TEST_CASE(ParseFile) {
@@ -27,6 +26,7 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsHydrophobicityTests)
         BOOST_TEST(testObject.getAminoAcidHydrophobicityMap(1)["A"] == 0.440);
         BOOST_TEST(testObject.getAminoAcidHydrophobicityMap(3).size() == 20);
         BOOST_TEST(testObject.getAminoAcidHydrophobicityMap(1).size() == 20);
+        BOOST_TEST(testObject.getBasename().compare(std::string("abraham")) == 0);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

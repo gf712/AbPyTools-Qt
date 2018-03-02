@@ -17,7 +17,6 @@
 #include <iterator>
 
 
-
 class AntibodyChainCPP {
 
 public:
