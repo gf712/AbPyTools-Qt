@@ -14,7 +14,7 @@
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/optional.hpp>
 
-#include <mlpack/core.hpp>
+#include "pca.h"
 
 using namespace boost::numeric::ublas;
 
@@ -49,8 +49,13 @@ public:
     std::string getChainType() {return chainType;}
     std::string getNumberingScheme() {return numberingScheme;}
 
+    PCA* getPCAObject() { return pcaObject;}
+
 //    matrix<double> getHydrophobicityValues(hydrophobicityParser &customHValues_);
-    arma::mat getHydrophobicityValues(hydrophobicityParser &customHValues_);
+    // ANALYSIS METHODS
+    arma::mat getHydrophobicityValues(hydrophobicityParser &customHValues_, bool store=true);
+    arma::mat performPCA(hydrophobicityParser &customHValues_, int nDimensions, bool store=false);
+    arma::mat performPCA(int nDimensions);
 
     matrix<double> getAminoAcidCharges() {return genericGetter<matrix<double>>(aminoAcidCharges);}
     std::vector<double> getTotalCharges() {return genericGetter<std::vector<double>>(total_charge);}
@@ -69,10 +74,14 @@ private:
     std::string numberingScheme;
     std::string chainType;
 
+    boost::optional<arma::mat> hydrophobicityMatrix;
     boost::optional<matrix<double>> aminoAcidCharges;
     boost::optional<std::vector<double>> total_charge;
 
     std::vector<AntibodyChainCPP*> antibodyObjectPointers;
+
+    PCA *pcaObject;
+
 };
 
 #endif //ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H

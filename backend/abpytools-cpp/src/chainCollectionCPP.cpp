@@ -133,16 +133,16 @@ void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP &antibodyOb
 }
 
 
-arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &customHValues_) {
+arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &customHValues_, bool store) {
 
     std::cout << "getHydrophobicityValues TEST" << std::endl;
 
-    arma::mat hydrophobicityMatrix(0,0);
+    arma::mat hydrophobicityMatrix_(0,0);
 
     if (chainType.compare("heavy") == 0)
-        hydrophobicityMatrix.resize(numberOfChains, 158);
+        hydrophobicityMatrix_.resize(numberOfChains, 158);
     else
-        hydrophobicityMatrix.resize(numberOfChains, 120);
+        hydrophobicityMatrix_.resize(numberOfChains, 120);
 
 //    std::cout << "SIZE: " << hydrophobicityMatrix.size() << std::endl;
 
@@ -152,8 +152,41 @@ arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &cust
 
 //        std::cout << "ROWVEC SIZE: " << arma::conv_to<arma::rowvec>::from(chainHVector).size() << std::endl;
 
-        hydrophobicityMatrix.row(i) = arma::conv_to<arma::rowvec>::from(chainHVector);
+        hydrophobicityMatrix_.row(i) = arma::conv_to<arma::rowvec>::from(chainHVector);
     }
 
-    return hydrophobicityMatrix;
+    // store data in optional class member hydrophobicityMatrix
+    if (store)
+        hydrophobicityMatrix = hydrophobicityMatrix_;
+
+    return hydrophobicityMatrix_;
+}
+
+arma::mat ChainCollectionCPP::performPCA(hydrophobicityParser &customHValues_, int nDimensions, bool store) {
+
+    // performs PCA with given hydrophobicityParser
+
+    // by default does not keep matrix
+    auto hMatrix = getHydrophobicityValues(customHValues_, store);
+
+    pcaObject = new PCA(nDimensions);
+
+    return pcaObject->fit_transform(hMatrix);
+
+}
+
+arma::mat ChainCollectionCPP::performPCA(int nDimensions) {
+
+    // performs PCA with cached matrix (if none available throws exception)
+
+    if (!hydrophobicityMatrix) {
+
+        throw "No hydrophobicity matrix cached";
+
+    }
+
+    pcaObject = new PCA(nDimensions);
+
+    return pcaObject->fit_transform(*hydrophobicityMatrix);
+
 }

@@ -7,7 +7,8 @@ set(ABPYTOOLS_CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpyto
 
 set(SOURCE_FILES
         src/chainCollectionCPP.cpp
-        src/queryAbnum.cpp)
+        src/queryAbnum.cpp
+        src/pca.cpp)
 
 set(TARGET_NAME AbPyToolsCPPLib)
 
