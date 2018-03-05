@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.1)
-
 project(BackendUtils)
 
 set(BACKEND_UTILS_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)

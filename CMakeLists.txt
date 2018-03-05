@@ -36,7 +36,7 @@ hunter_add_package(Qt)
 #endif()
 
 find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesystem system)
-find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core)
+find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport)
 
 find_package(Numpy REQUIRED)
 find_package(MLPACK REQUIRED)
@@ -57,6 +57,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 #                                  ADD PROJECT DIRS
 ############################################################################################
 
+add_subdirectory(3rd_Party_)
 add_subdirectory(backend)
 add_subdirectory(gui)
 
