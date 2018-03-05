@@ -20,15 +20,23 @@ editDialog::~editDialog()
 
 void editDialog::on_editDialogGroupName_currentIndexChanged(const QString &arg1)
 {
-    groupName = arg1;
+//    groupName = arg1;
+
+//    connect(this, )
+
 //    ui->editDialogHValueDataset->setText(chainGroupReference.getNumberingScheme(arg1.toStdString()));
 }
 
 void editDialog::on_buttonBox_accepted()
 {
+
+    numberingScheme = ui->editDialogNumberingScheme->currentIndex();
+    groupName = ui->editDialogGroupName->currentText();
+    hydrophobicityDataSet = ui->editDialogHValueDataset->currentText();
+
     Q_EMIT editDialogUpdateGroup(groupName.toStdString(),
                                  hydrophobicityDataSet.toStdString(),
-                                 numberingScheme.toStdString());
+                                 numberingScheme);
 }
 
 void editDialog::receiveGroupNamesFromParent(QStringList groupNames) {

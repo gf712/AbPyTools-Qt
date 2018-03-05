@@ -24,6 +24,7 @@ target_link_libraries(AbPyToolsCppParserLib
 
 file(COPY data/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
 file(COPY data/abraham.hpb DESTINATION ${CMAKE_BINARY_DIR}/backend/abpytools/data)
+file(COPY data/abraham.hpb DESTINATION ${CMAKE_BINARY_DIR}/backend/abpytools-cpp/data)
 
 add_subdirectory(tests)
 

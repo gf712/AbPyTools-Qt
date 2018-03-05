@@ -33,7 +33,7 @@ void ChainGroups::addHydrophobicityValues(std::string chainGroupName_, hydrophob
 }
 
 
-matrix<double> ChainGroups::getHydrophobicityValues(std::string chainGroupName_) {
+arma::mat ChainGroups::getHydrophobicityValues(std::string chainGroupName_) {
 
     return chainCollectionGroups[chainGroupName_]->getHydrophobicityValues(*chainCollectionHDatabase[chainGroupName_]);
 
@@ -120,5 +120,12 @@ void ChainGroups::applyNumbering() {
 void ChainGroups::setNumberingScheme(std::string groupName_, std::string numberingScheme_) {
 
     chainCollectionGroups[groupName_]->setNumberingScheme(numberingScheme_);
+
+}
+
+
+QString ChainGroups::getHydrophobicityParserName(std::string groupName_) {
+
+    return QString::fromStdString(chainCollectionHDatabase[groupName_]->getBasename());
 
 }

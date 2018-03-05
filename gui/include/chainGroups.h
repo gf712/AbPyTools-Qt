@@ -13,6 +13,9 @@
 #include <utility>
 #include <QDebug>
 
+#include <mlpack/methods/pca/pca.hpp>
+
+namespace mlpca = mlpack::pca;
 
 class ChainGroups {
 
@@ -36,8 +39,9 @@ public:
     ChainCollectionCPP* getChainCollection(std::string groupName) { return chainCollectionGroups[groupName];}
     QString getInfo(std::string groupName);
     QString getInfo(QString groupName);
+    QString getHydrophobicityParserName(std::string groupName_);
 
-    matrix<double> getHydrophobicityValues(std::string chainGroupName_);
+    arma::mat getHydrophobicityValues(std::string chainGroupName_);
 
     void applyNumbering();
 
@@ -45,6 +49,8 @@ private:
     std::unordered_map<std::string, ChainCollectionCPP*> chainCollectionGroups;
     std::unordered_map<std::string, hydrophobicityParser*> chainCollectionHDatabase;
     int internalCounter;
+    mlpca::PCA pcaObject;
+
 };
 
 

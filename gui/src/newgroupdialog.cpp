@@ -4,7 +4,6 @@
 // static variable definitions
 constexpr std::array<char[15], 3> NewGroupDialog::numberingSchemesVector;
 
-
 NewGroupDialog::NewGroupDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NewGroupDialog)

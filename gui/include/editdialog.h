@@ -18,7 +18,7 @@ public:
     ~editDialog();
 
 Q_SIGNALS:
-    void editDialogUpdateGroup(std::string groupName, std::string hydrophobicityDataSet, std::string numberingScheme);
+    void editDialogUpdateGroup(std::string groupName, std::string hydrophobicityDataSet, int numberingScheme);
 
 private Q_SLOTS:
     void on_editDialogGroupName_currentIndexChanged(const QString &arg1);
@@ -30,7 +30,8 @@ private Q_SLOTS:
 private:
     Ui::editDialog *ui;
 //    ChainGroups &chainGroupReference;
-    QString groupName, hydrophobicityDataSet, numberingScheme;
+    QString groupName, hydrophobicityDataSet;
+    int numberingScheme;
 };
 
 #endif // EDITDIALOG_H

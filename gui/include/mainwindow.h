@@ -30,6 +30,7 @@
 #include <QDateTime>
 #include <QMessageBox>
 #include <QStringList>
+#include <QDialog>
 
 
 namespace Ui {
@@ -60,7 +61,12 @@ Q_SIGNALS:
     void sendHydrophobicityDatasetNamesToChild(QStringList datasetNames);
     void sendNumberingSchemeNames(QStringList numberingSchemes);
 
+    void sendHydophobicityDatasetNameToChildOnRequestSignal(QString);
+
 private Q_SLOTS:
+
+    void sendHydophobicityDatasetNameToChildOnRequest(QString);
+
     void on_actionOpen_triggered();
     void on_actionNew_triggered();
     void on_actionNew_group_triggered();
@@ -71,7 +77,7 @@ private Q_SLOTS:
     void addChainGroup(std::string groupName_, std::string numberingScheme_);
     void addFASTA(std::string groupName_, QString filename_);
 
-    void editGroup(std::string groupName_, std::string hydrophobicityDataSet, std::string numberingScheme);
+    void editGroup(std::string groupName_, std::string hydrophobicityDataSet, int numberingScheme);
 
     void updateWorkingWindow();
     void updateDebugWindow();
@@ -97,6 +103,8 @@ private:
     QString cacheDebugText = "Welcome to AbPyTools-Qt Debug Mode:\n"; // stores text to display in working window
 
     bool startedWorking;
+    constexpr static std::array<char[15], 3> numberingSchemesVector = {"chothia", "kabat", "chothia_ext"};
+
 };
 
 #endif // MAINWINDOW_H

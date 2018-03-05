@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+// static variable definitions
+constexpr std::array<char[15], 3> MainWindow::numberingSchemesVector;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -168,8 +171,9 @@ void MainWindow::on_actionGroup_triggered()
 
     editGroupPointer->show();
 
-    connect(editGroupPointer, SIGNAL(editDialogUpdateGroup(std::string, std::string, std::string)),
-            this, SLOT(editGroup(std::string, std::string, std::string)));
+    // receive new settings when pressing OK
+    connect(editGroupPointer, SIGNAL(editDialogUpdateGroup(std::string, std::string, int)),
+            this, SLOT(editGroup(std::string, std::string, int)));
 
     connect(this, SIGNAL(sendGroupNamesToChild(QStringList)),
             editGroupPointer, SLOT(receiveGroupNamesFromParent(QStringList)));
@@ -179,6 +183,14 @@ void MainWindow::on_actionGroup_triggered()
 
     connect(this, SIGNAL(sendNumberingSchemeNames(QStringList)),
             editGroupPointer, SLOT(receiveNumberingSchemeNamesFromParent(QStringList)));
+
+    // receive message about changed group
+//    connect(editGroupPointer, SIGNAL(),
+//            this, SLOT());
+
+    // and change text accordingly using signal
+//    connect(editGroupPointer, SIGNAL(),
+//            this, SLOT());
 
     QStringList numberingSchemes;
     numberingSchemes << "Chothia" << "Kabat" << "Martin";
@@ -190,10 +202,19 @@ void MainWindow::on_actionGroup_triggered()
 }
 
 
-void MainWindow::editGroup(std::string groupName_, std::string hydrophobicityDataSet, std::string numberingScheme) {
+void MainWindow::sendHydophobicityDatasetNameToChildOnRequest(QString groupName_) {
+
+    Q_EMIT sendHydophobicityDatasetNameToChildOnRequestSignal(chainGroups->getHydrophobicityParserName(groupName_.toStdString()));
+
+}
+
+
+void MainWindow::editGroup(std::string groupName_, std::string hydrophobicityDataSet, int numberingScheme) {
+
+    std::cout << groupName_ << hydrophobicityDataSet << numberingScheme;
 
     chainGroups->addHydrophobicityValues(groupName_, hGroups->getHydrophobicityParser(groupName_));
-    chainGroups->setNumberingScheme(groupName_, numberingScheme);
+    chainGroups->setNumberingScheme(groupName_, numberingSchemesVector[numberingScheme]);
 
     updateWorkingWindowGroup();
 }

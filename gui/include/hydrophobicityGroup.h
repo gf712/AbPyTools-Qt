@@ -24,6 +24,7 @@ public:
     // GETTERS
     hydrophobicityParser* getHydrophobicityParser(std::string groupName) {return hValuesGroups[groupName]; }
     QStringList getDatasetNames();
+//    QString getDatasetName()
 
 private:
 

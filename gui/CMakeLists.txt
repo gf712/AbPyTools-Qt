@@ -57,7 +57,8 @@ target_link_libraries(AbPyToolsGUIlib
         AbPyToolsInterfaceLib
         AbPyToolsCPPLib
         Qt5::Widgets
-        Qt5::Core)
+        Qt5::Core
+        )
 
 add_executable(AbPyToolsQt
         src/main.cpp)
