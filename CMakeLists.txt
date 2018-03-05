@@ -46,8 +46,9 @@ find_package(MLPACK REQUIRED)
 ############################################################################################
 
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage -fPIC -O0")
-set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -fPIC -O3")
 
 set(ADD_QT_QPA_FONTDIR ON)
 
@@ -57,7 +58,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 #                                  ADD PROJECT DIRS
 ############################################################################################
 
-add_subdirectory(3rd_Party_)
+#add_subdirectory(3rd_Party_)
 add_subdirectory(backend)
 add_subdirectory(gui)
 

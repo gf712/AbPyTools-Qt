@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -45,7 +48,7 @@
       <height>621</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="workingAreaLayout">
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
@@ -64,10 +67,10 @@
       <x>430</x>
       <y>20</y>
       <width>491</width>
-      <height>621</height>
+      <height>491</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
+    <layout class="QVBoxLayout" name="plotLayout">
      <item>
       <widget class="QLabel" name="label_2">
        <property name="maximumSize">
@@ -82,16 +85,27 @@
       </widget>
      </item>
      <item>
-      <widget class="QFrame" name="frame">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+      <widget class="QCustomPlot" name="plotArea" native="true">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>500</height>
+        </size>
        </property>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>520</y>
+      <width>491</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="plotSettingLayout"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -123,6 +137,7 @@
      <addaction name="actionImport_hydrophobicity_dataset"/>
      <addaction name="actionApply_hydrophobicity_values"/>
      <addaction name="actionCluster"/>
+     <addaction name="actionPlot_PCA"/>
     </widget>
     <widget class="QMenu" name="menuNumbering">
      <property name="title">
@@ -216,8 +231,21 @@
     <string>Group</string>
    </property>
   </action>
+  <action name="actionPlot_PCA">
+   <property name="text">
+    <string>Plot PCA</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

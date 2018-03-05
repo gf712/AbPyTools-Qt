@@ -22,6 +22,7 @@ set(SOURCE_FILES
         src/fileloaderdialog.cpp
         src/hydrophobicityGroup.cpp
         src/editdialog.cpp
+        src/qcustomplot.cpp
         )
 
 set(HEADER_FILES
@@ -32,6 +33,7 @@ set(HEADER_FILES
         include/fileloaderdialog.h
         include/hydrophobicityGroup.h
         include/editdialog.h
+        include/qcustomplot.h
         )
 
 set(UI_FILES
@@ -51,14 +53,20 @@ target_include_directories(AbPyToolsGUIlib PUBLIC
         include/
         $<TARGET_PROPERTY:Qt5::Core,INTERFACE_INCLUDE_DIRECTORIES>
         $<TARGET_PROPERTY:Qt5::Widgets,INTERFACE_INCLUDE_DIRECTORIES>
+#        ${QCUSTOMPLOT_INCLUDE}
         )
+
 
 target_link_libraries(AbPyToolsGUIlib
         AbPyToolsInterfaceLib
         AbPyToolsCPPLib
+#        QCUSTOMPLOT_LIB
         Qt5::Widgets
         Qt5::Core
+        Qt5::Gui
+        Qt5::PrintSupport
         )
+
 
 add_executable(AbPyToolsQt
         src/main.cpp)

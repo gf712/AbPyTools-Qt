@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->workingAreaTextBrowser->isReadOnly();
     ui->debugAreaTextBrowser->isReadOnly();
 
+    ui->plotSettingLayout->addWidget(new QLabel("Plot settings"), 0, 0);
+
     startedWorking = false;
 
     // display welcome message in working and debug windows
@@ -194,17 +196,10 @@ void MainWindow::on_actionGroup_triggered()
 
     QStringList numberingSchemes;
     numberingSchemes << "Chothia" << "Kabat" << "Martin";
-    
+
     Q_EMIT(sendGroupNamesToChild(chainGroups->getGroupNames()));
     Q_EMIT(sendHydrophobicityDatasetNamesToChild(hGroups->getDatasetNames()));
     Q_EMIT(sendNumberingSchemeNames(numberingSchemes));
-
-}
-
-
-void MainWindow::sendHydophobicityDatasetNameToChildOnRequest(QString groupName_) {
-
-    Q_EMIT sendHydophobicityDatasetNameToChildOnRequestSignal(chainGroups->getHydrophobicityParserName(groupName_.toStdString()));
 
 }
 
@@ -219,6 +214,31 @@ void MainWindow::editGroup(std::string groupName_, std::string hydrophobicityDat
     updateWorkingWindowGroup();
 }
 
+
+void MainWindow::sendHydophobicityDatasetNameToChildOnRequest(QString groupName_) {
+
+    Q_EMIT sendHydophobicityDatasetNameToChildOnRequestSignal(chainGroups->getHydrophobicityParserName(groupName_.toStdString()));
+
+}
+
+// #####################################################################################################################
+//                                               ANALYSIS MENU SLOTS
+// #####################################################################################################################
+
+
+void MainWindow::changeDatasetForPCA(QString GroupName) {
+
+    // group has changed, replot PCs given values in xAxisData and yAxisData
+
+    int pc1 = ui->plotSettingLayout->dataset->currentIndex();
+    int pc2 = ui->plotSettingLayout->dataset->currentIndex();
+
+
+
+    ui->plotArea->graph(0)->set(x, y);
+
+
+}
 
 // #####################################################################################################################
 //                                          MESSAGE DISPLAY ROUTINES
@@ -315,4 +335,33 @@ void MainWindow::loadFASTADebugText() {
 
     cacheDebugText.append(debugText);
     updateDebugWindow();
+}
+
+void MainWindow::on_actionPlot_PCA_triggered()
+{
+
+    auto *dataset = new QComboBox();
+    auto *xAxisData = new QComboBox();
+    auto *yAxisData = new QComboBox();
+
+
+    for(auto const &pair: chainGroups->performedPCA()) {
+
+        if (pair.second) {
+            // add group name if pca has been performed
+            dataset->addItem(QString::fromStdString(pair.first));
+        }
+    }
+
+//    ui->plotSettingLayout->
+    ui->plotSettingLayout->addWidget(new QLabel("Group"), 1, 0);
+    ui->plotSettingLayout->addWidget(dataset, 1, 1);
+    ui->plotSettingLayout->addWidget(new QLabel("X-axis PC"), 2, 0);
+    ui->plotSettingLayout->addWidget(xAxisData, 2, 1);
+    ui->plotSettingLayout->addWidget(new QLabel("Y-axis PC"), 3, 0);
+    ui->plotSettingLayout->addWidget(yAxisData, 3, 1);
+
+    ui->plotArea->addGraph();
+
+    connect(dataset, currentTextChanged(QString), this, changeDatasetForPCA(QString))
 }

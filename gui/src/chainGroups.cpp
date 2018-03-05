@@ -129,3 +129,18 @@ QString ChainGroups::getHydrophobicityParserName(std::string groupName_) {
     return QString::fromStdString(chainCollectionHDatabase[groupName_]->getBasename());
 
 }
+
+
+void ChainGroups::performPCA(std::string groupName) {
+
+    // perform PCA with given hydrophobicity dataset
+    chainCollectionGroups[groupName_]->fit(chainCollectionHDatabase[groupName_]);
+
+}
+
+QVector<double> ChainGroups::getPrincipalComponent(QString chainGroupName_, int pc) {
+
+    // get PC
+
+
+}
