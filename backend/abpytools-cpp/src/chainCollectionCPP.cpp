@@ -132,20 +132,27 @@ void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP &antibodyOb
 
 }
 
-matrix<double> ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &customHValues_) {
 
-    matrix<double> hydrophobicityMatrix(numberOfChains, 1);
+arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &customHValues_) {
+
+    std::cout << "getHydrophobicityValues TEST" << std::endl;
+
+    arma::mat hydrophobicityMatrix(0,0);
 
     if (chainType.compare("heavy") == 0)
         hydrophobicityMatrix.resize(numberOfChains, 158);
     else
         hydrophobicityMatrix.resize(numberOfChains, 120);
 
+//    std::cout << "SIZE: " << hydrophobicityMatrix.size() << std::endl;
+
     for (int i = 0; i < numberOfChains; ++i) {
-//        project(hydrophobicityMatrix, 0, hydrophobicityMatrix.size2()) = antibodyObjectPointers[i]->getHydrophobicityMatrix(customHValues_);
-//        row(hydrophobicityMatrix, i) =
+
         auto chainHVector = antibodyObjectPointers[i]->getHydrophobicityMatrix(customHValues_);
-        std::copy(chainHVector.begin(), chainHVector.end(), hydrophobicityMatrix.begin2() + i);
+
+//        std::cout << "ROWVEC SIZE: " << arma::conv_to<arma::rowvec>::from(chainHVector).size() << std::endl;
+
+        hydrophobicityMatrix.row(i) = arma::conv_to<arma::rowvec>::from(chainHVector);
     }
 
     return hydrophobicityMatrix;

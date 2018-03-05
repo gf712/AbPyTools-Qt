@@ -16,6 +16,7 @@ addons:
       - libxi-dev
       - libxcb1-dev
       - libx11-xcb-dev
+      - libmlpack-dev
 
 # Install dependencies
 before_install:

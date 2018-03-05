@@ -14,6 +14,8 @@
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/optional.hpp>
 
+#include <mlpack/core.hpp>
+
 using namespace boost::numeric::ublas;
 
 class ChainCollectionCPP {
@@ -47,7 +49,8 @@ public:
     std::string getChainType() {return chainType;}
     std::string getNumberingScheme() {return numberingScheme;}
 
-    matrix<double> getHydrophobicityValues(hydrophobicityParser &customHValues_);
+//    matrix<double> getHydrophobicityValues(hydrophobicityParser &customHValues_);
+    arma::mat getHydrophobicityValues(hydrophobicityParser &customHValues_);
 
     matrix<double> getAminoAcidCharges() {return genericGetter<matrix<double>>(aminoAcidCharges);}
     std::vector<double> getTotalCharges() {return genericGetter<std::vector<double>>(total_charge);}

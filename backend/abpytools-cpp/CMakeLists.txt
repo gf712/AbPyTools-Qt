@@ -14,9 +14,6 @@ set(TARGET_NAME AbPyToolsCPPLib)
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
 
-target_link_libraries(${TARGET_NAME}
-        AbPyToolsInterfaceLib
-        )
 
 target_include_directories(${TARGET_NAME}
         INTERFACE include/
@@ -26,6 +23,12 @@ target_include_directories(${TARGET_NAME} SYSTEM
         PUBLIC ${PYTHON_INCLUDE_DIRS}
         ${ABPYTOOLS_CPP_DIR}
         ${PYTHON_NUMPY_INCLUDE_DIR}
+        ${MLPACK_INCLUDE_DIRS}
+        )
+
+target_link_libraries(${TARGET_NAME}
+        AbPyToolsInterfaceLib
+        ${MLPACK_LIBRARIES}
         )
 
 add_subdirectory(tests)

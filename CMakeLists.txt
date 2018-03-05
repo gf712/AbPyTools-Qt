@@ -5,6 +5,8 @@ enable_testing()
 # C++ code is all written in c++ 11 standard
 set (CMAKE_CXX_STANDARD 11)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
 ############################################################################################
 #                                       HUNTER
 ############################################################################################
@@ -36,6 +38,9 @@ hunter_add_package(Qt)
 find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesystem system)
 find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core)
 
+find_package(Numpy REQUIRED)
+find_package(MLPACK REQUIRED)
+
 ############################################################################################
 #                                     DECLARATIONS
 ############################################################################################
@@ -47,8 +52,6 @@ set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 set(ADD_QT_QPA_FONTDIR ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-find_package(Numpy REQUIRED)
 
 ############################################################################################
 #                                  ADD PROJECT DIRS
