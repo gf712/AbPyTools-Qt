@@ -78,4 +78,15 @@ public:
 
 };
 
+
+class ChainSequenceNotNumberedException: public std::runtime_error {
+
+public:
+
+    ChainSequenceNotNumberedException(): runtime_error("Numbering has not been applied!") {}
+
+    explicit ChainSequenceNotNumberedException(std::string msg): runtime_error(msg.c_str()) {}
+
+};
+
 #endif //ABPYTOOLS_QT_EXCEPTION_H
