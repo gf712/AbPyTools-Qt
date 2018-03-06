@@ -135,16 +135,14 @@ void ChainCollectionCPP::updateAntibodyObjectVector(AntibodyChainCPP &antibodyOb
 
 arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &customHValues_, bool store) {
 
-    std::cout << "getHydrophobicityValues TEST" << std::endl;
-
     arma::mat hydrophobicityMatrix_(0,0);
 
-    if (chainType.compare("heavy") == 0)
+    if (chainType == "heavy")
         hydrophobicityMatrix_.resize(numberOfChains, 158);
-    else
+    else if (chainType == "light")
         hydrophobicityMatrix_.resize(numberOfChains, 120);
-
-//    std::cout << "SIZE: " << hydrophobicityMatrix.size() << std::endl;
+    else
+        throw ChainSequenceNotNumberedException(chainType);
 
     for (int i = 0; i < numberOfChains; ++i) {
 
@@ -162,31 +160,57 @@ arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &cust
     return hydrophobicityMatrix_;
 }
 
-arma::mat ChainCollectionCPP::performPCA(hydrophobicityParser &customHValues_, int nDimensions, bool store) {
+void ChainCollectionCPP::performPCA(hydrophobicityParser &customHValues_, int nDimensions, bool store) {
 
     // performs PCA with given hydrophobicityParser
 
     // by default does not keep matrix
     auto hMatrix = getHydrophobicityValues(customHValues_, store);
 
-    pcaObject = new PCA(nDimensions);
+    if (store) hydrophobicityMatrix = hMatrix;
 
-    return pcaObject->fit_transform(hMatrix);
+    if (!pcaObject) {
+        pcaObject = new PCA(nDimensions);
+    }
+    else {
+        (*pcaObject)->setNDimensions(nDimensions);
+    }
+
+    (*pcaObject)->fit(hMatrix);
 
 }
 
-arma::mat ChainCollectionCPP::performPCA(int nDimensions) {
+void ChainCollectionCPP::performPCA(int nDimensions) {
 
     // performs PCA with cached matrix (if none available throws exception)
 
     if (!hydrophobicityMatrix) {
-
         throw "No hydrophobicity matrix cached";
-
     }
 
-    pcaObject = new PCA(nDimensions);
+    if (!pcaObject) {
+        pcaObject = new PCA(nDimensions);
+    }
+    else {
+        (*pcaObject)->setNDimensions(nDimensions);
+    }
 
-    return pcaObject->fit_transform(*hydrophobicityMatrix);
+    (*pcaObject)->fit(*hydrophobicityMatrix);
+
+}
+
+
+arma::vec ChainCollectionCPP::getPrincipalComponent(int pc) {
+
+    // get PCs
+    if (!pcaObject) {
+        // if pcaObject method fit hasn't been called throw error
+        throw "pcaObject fit method has to be called first";
+    }
+
+    std::cout << "EigVec cols: " << (*pcaObject)->getEigenvectors().n_cols << "\n";
+    std::cout << "EigVec rows: " << (*pcaObject)->getEigenvectors().n_rows << "\n";
+
+    return (*pcaObject)->getEigenvectors().submat(arma::span::all, arma::span(pc));
 
 }

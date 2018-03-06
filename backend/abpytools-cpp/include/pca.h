@@ -38,8 +38,8 @@ public:
     // GETTERS
     arma::vec getExplainedVariance() { return  explainedVariance;}
     arma::vec getExplainedVarianceRatio() { return explainedVarianceRatio;}
-    arma::vec getEigenvalues();
-    arma::mat getEigenvectors();
+    arma::vec getEigenvalues() {return eigenvalues;}
+    arma::mat getEigenvectors() {return eigenvectors;}
 
     int getNDimensions() {
         // return 0 if nDimensions is not defined

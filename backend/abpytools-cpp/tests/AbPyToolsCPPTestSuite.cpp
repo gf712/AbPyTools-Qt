@@ -81,9 +81,11 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
 
         testChainCollectionObject->load();
 
-        arma::mat result = testChainCollectionObject->performPCA(hObject, 2, false);
+        testChainCollectionObject->performPCA(hObject, 2, false);
 
-        BOOST_TEST(result(1, 1) == 0.70710678, tt::tolerance(10e-9));
+        arma::vec result = testChainCollectionObject->getPrincipalComponent(1);
+
+        BOOST_TEST(result(1) == 0.70710678, tt::tolerance(10e-9));
     }
 
 BOOST_AUTO_TEST_SUITE_END()

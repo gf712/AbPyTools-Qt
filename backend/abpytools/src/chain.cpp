@@ -114,6 +114,9 @@ std::string AntibodyChainCPP::getChain() {
     if (!chain) {
         chain = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "chain"));
     }
+
+    std::cout << "call getChain(): " << *chain << std::endl;
+
     return *chain;
 }
 
@@ -179,18 +182,27 @@ std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(hydrophobicityPars
 }
 
 void AntibodyChainCPP::load() {
-    try {
-        PyObject_CallMethod(chainObject, "load", "");
+
+    if (!aligned) {
+        try {
+            PyObject_CallMethod(chainObject, "load", "");
+
+        }
+        catch (error_already_set &) {
+            PyObject * pType, *pValue, *pTraceback;
+
+            PyErr_Fetch(&pType, &pValue, &pTraceback);
+
+            throw PythonAbPyToolsError(pType, pValue, pTraceback);
+        }
+    }
+
+    std::cout << "call getChain() from load(): " << getChain() << std::endl;
+
+    if (getChain() == "heavy" or getChain() == "light")
         aligned = true;
-
-    }
-    catch (error_already_set&) {
-        PyObject *pType,*pValue,*pTraceback;
-
-        PyErr_Fetch(&pType, &pValue, &pTraceback);
-
-        throw PythonAbPyToolsError(pType, pValue, pTraceback);
-    }
+//    else
+//        std::cout << getChain();
 }
 
 void AntibodyChainCPP::printSequence() {

@@ -49,13 +49,16 @@ public:
     std::string getChainType() {return chainType;}
     std::string getNumberingScheme() {return numberingScheme;}
 
-    PCA* getPCAObject() { return pcaObject;}
+    PCA* getPCAObject() { return !pcaObject ? throw "Error" : *pcaObject;}
 
 //    matrix<double> getHydrophobicityValues(hydrophobicityParser &customHValues_);
     // ANALYSIS METHODS
     arma::mat getHydrophobicityValues(hydrophobicityParser &customHValues_, bool store=true);
-    arma::mat performPCA(hydrophobicityParser &customHValues_, int nDimensions, bool store=false);
-    arma::mat performPCA(int nDimensions);
+
+    void performPCA(hydrophobicityParser &customHValues_, int nDimensions, bool store=false);
+    void performPCA(int nDimensions);
+
+    arma::vec getPrincipalComponent(int pc);
 
     matrix<double> getAminoAcidCharges() {return genericGetter<matrix<double>>(aminoAcidCharges);}
     std::vector<double> getTotalCharges() {return genericGetter<std::vector<double>>(total_charge);}
@@ -80,7 +83,7 @@ private:
 
     std::vector<AntibodyChainCPP*> antibodyObjectPointers;
 
-    PCA *pcaObject;
+    boost::optional<PCA*> pcaObject;
 
 };
 
