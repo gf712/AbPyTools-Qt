@@ -95,9 +95,6 @@ void MainWindow::on_actionImport_hydrophobicity_dataset_triggered()
     QMessageBox msgBox;
 
     if (response) {
-
-        QFileInfo fi(filename);
-
         msgBox.setText("Successfully loaded hpb file!");
     }
     else
@@ -206,12 +203,25 @@ void MainWindow::on_actionGroup_triggered()
 
 void MainWindow::editGroup(std::string groupName_, std::string hydrophobicityDataSet, int numberingScheme) {
 
-    std::cout << groupName_ << hydrophobicityDataSet << numberingScheme;
+//    std::cout << groupName_ << hydrophobicityDataSet << numberingScheme;
 
-    chainGroups->addHydrophobicityValues(groupName_, hGroups->getHydrophobicityParser(groupName_));
-    chainGroups->setNumberingScheme(groupName_, numberingSchemesVector[numberingScheme]);
+    if (groupName_.compare("")) {
 
-    updateWorkingWindowGroup();
+        qDebug() << "MAINWINDOW: \n"
+                 << "numberingScheme: " << numberingSchemesVector[numberingScheme]
+                 << "groupName: " << QString::fromStdString(groupName_)
+                 << "hydrophobicityDataSet" << QString::fromStdString(hydrophobicityDataSet)
+                 << hGroups->getDatasetNames();
+
+        if (hydrophobicityDataSet.compare("")) {
+            qDebug() << QString::fromStdString(hGroups->getHydrophobicityParser(hydrophobicityDataSet)->getBasename());
+            // if this value isn't empty add the newly added hydrophobicity parser
+            chainGroups->addHydrophobicityValues(groupName_, hGroups->getHydrophobicityParser(hydrophobicityDataSet));
+        }
+        chainGroups->setNumberingScheme(groupName_, numberingSchemesVector[numberingScheme]);
+        updateWorkingWindowGroup();
+    }
+
 }
 
 
@@ -226,18 +236,44 @@ void MainWindow::sendHydophobicityDatasetNameToChildOnRequest(QString groupName_
 // #####################################################################################################################
 
 
-void MainWindow::changeDatasetForPCA(QString GroupName) {
+void MainWindow::changeDatasetForPCA() {
+
+    qDebug() << "Getting info from PCA plot combobox";
 
     // group has changed, replot PCs given values in xAxisData and yAxisData
+    QComboBox *pc1Combobox = this->findChild<QComboBox*>("X_axis");
+    QComboBox *pc2Combobox = this->findChild<QComboBox*>("Y_axis");
+    QComboBox *nameCombobox = this->findChild<QComboBox*>("group_name");
 
-    int pc1 = ui->plotSettingLayout->dataset->currentIndex();
-    int pc2 = ui->plotSettingLayout->dataset->currentIndex();
+    if (pc1Combobox == 0 or pc2Combobox == 0 or nameCombobox == 0) {
+        qDebug() << "Could not find combobox";
+        return;
+    }
+    else {
+        qDebug() << "Found combobox";
+    }
 
 
+    qDebug() << "Got ui->plotSettingLayout children";
 
-    ui->plotArea->graph(0)->set(x, y);
+    int pc1 = pc1Combobox->currentIndex();
+    int pc2 = pc2Combobox->currentIndex();
+    QString groupname = nameCombobox->currentText();
 
+    qDebug() << "Got current index";
+    qDebug() << pc1 << pc2;
 
+    auto x = chainGroups->getPrincipalComponent(groupname, pc1);
+    auto y = chainGroups->getPrincipalComponent(groupname, pc2);
+
+    ui->plotArea->graph(0)->setData(x, y);
+    ui->plotArea->graph(0)->setLineStyle(QCPGraph::lsNone);
+    ui->plotArea->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 4));
+//    ui->plotArea->rescaleAxes();
+    ui->plotArea->xAxis->setRange(-1, 1);
+    ui->plotArea->yAxis->setRange(-1, 1);
+
+    ui->plotArea->replot();
 }
 
 // #####################################################################################################################
@@ -262,29 +298,6 @@ void MainWindow::updateDebugWindow() {
 //
 //    addGroupText(name_);
 //
-//}
-
-//void MainWindow::addGroupText(std::string name) {
-//
-//    auto text = QString("\nGroup name: %1\n -numbering scheme: %2\n -number of sequences: %3\n -loaded: %4");
-//    text = text.arg(QString::fromStdString(name),
-//                    QString::fromStdString(chainGroups->getNumberingScheme(name)),
-//                    QString::number(chainGroups->getNumberOfSequences(name)),
-//                    "false");
-//
-//    if (!startedWorking) {
-//        cacheText.replace("Nothing to display", "");
-//        cacheText.append(text);
-//        startedWorking = true;
-//    }
-//
-//    else {
-//
-//        cacheText.append(text);
-//
-//    }
-//
-//    updateWorkingWindow();
 //}
 
 void MainWindow::updateWorkingWindowGroup() {
@@ -337,31 +350,77 @@ void MainWindow::loadFASTADebugText() {
     updateDebugWindow();
 }
 
-void MainWindow::on_actionPlot_PCA_triggered()
+void MainWindow::on_actionPlotPCA_triggered()
 {
 
     auto *dataset = new QComboBox();
     auto *xAxisData = new QComboBox();
     auto *yAxisData = new QComboBox();
 
+    dataset->setObjectName("group_name");
+    xAxisData->setObjectName("X_axis");
+    yAxisData->setObjectName("Y_axis");
 
-    for(auto const &pair: chainGroups->performedPCA()) {
+    auto applyChanges = new QPushButton("Apply");
 
-        if (pair.second) {
+    for(auto const &name: chainGroups->getGroupNames()) {
+
+        if (chainGroups->getPerformedPCA(name)) {
             // add group name if pca has been performed
-            dataset->addItem(QString::fromStdString(pair.first));
+            dataset->addItem(name);
         }
     }
 
-//    ui->plotSettingLayout->
+    for (int i = 1; i < 10; ++i) {
+        xAxisData->addItem(QString::number(i));
+        yAxisData->addItem(QString::number(i));
+    }
+
+    xAxisData->setCurrentIndex(0);
+    yAxisData->setCurrentIndex(1);
+
     ui->plotSettingLayout->addWidget(new QLabel("Group"), 1, 0);
     ui->plotSettingLayout->addWidget(dataset, 1, 1);
     ui->plotSettingLayout->addWidget(new QLabel("X-axis PC"), 2, 0);
     ui->plotSettingLayout->addWidget(xAxisData, 2, 1);
     ui->plotSettingLayout->addWidget(new QLabel("Y-axis PC"), 3, 0);
     ui->plotSettingLayout->addWidget(yAxisData, 3, 1);
+    ui->plotSettingLayout->addWidget(applyChanges, 4, 1);
 
     ui->plotArea->addGraph();
 
-    connect(dataset, currentTextChanged(QString), this, changeDatasetForPCA(QString))
+    changeDatasetForPCA();
+
+    connect(applyChanges, SIGNAL(clicked()), this, SLOT(changeDatasetForPCA()));
+}
+
+void MainWindow::on_actionApplyPCA_triggered()
+{
+    for(auto const &name: chainGroups->getGroupNames()) {
+
+        qDebug() << "Checking: " << name;
+
+        if (!chainGroups->getPerformedPCA(name)) {
+
+            if (!chainGroups->getHasHDatabase(name)) {
+                QMessageBox msgBox;
+                msgBox.setText(QString("Group %1 does not have hydrophobicity values assigned to it!").arg(name));
+                msgBox.exec();
+                return;
+            }
+
+            try {
+                // perform PCA on first 10 dims
+                qDebug() << "Applying PCA to: " << name;
+                chainGroups->performPCA(name, 10);
+            }
+
+            catch (ChainSequenceNotNumberedException) {
+                QMessageBox msgBox;
+                msgBox.setText(QString("Numbering was not applied to group %1!").arg(name));
+                msgBox.exec();
+                return;
+            }
+        }
+    }
 }

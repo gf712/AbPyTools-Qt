@@ -12,7 +12,7 @@
 // group class headers
 #include "chainGroups.h"
 #include "hydrophobicityGroup.h"
-#include "../../3rd_Party_/qcustomplot/include/qcustomplot.h"
+#include "qcustomplot.h"
 
 // ui class headers
 #include "newsequencedialog.h"
@@ -32,6 +32,7 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QDialog>
+#include <QVector>
 
 namespace Ui {
 class MainWindow;
@@ -84,9 +85,11 @@ private Q_SLOTS:
 
     void on_actionGroup_triggered();
 
-    void on_actionPlot_PCA_triggered();
+    void changeDatasetForPCA();
 
-    void changeDatasetForPCA(QString groupName);
+    void on_actionPlotPCA_triggered();
+
+    void on_actionApplyPCA_triggered();
 
 private:
     Ui::MainWindow *ui;

@@ -14,6 +14,9 @@ void ChainGroups::addGroup(std::string name, std::string numberingScheme) {
 
     chainCollectionGroups[name] = chainCollection;
 
+    performedPCA[name] = false;
+    hasHDatabase[name] = false;
+
     internalCounter++;
 
 }
@@ -29,6 +32,7 @@ void ChainGroups::addChain(std::string chainGroupName_, std::string name_, std::
 void ChainGroups::addHydrophobicityValues(std::string chainGroupName_, hydrophobicityParser *hParser) {
 
     chainCollectionHDatabase[chainGroupName_] = hParser;
+    hasHDatabase[chainGroupName_] = true;
 
 }
 
@@ -65,8 +69,8 @@ QString ChainGroups::getInfo(std::string groupName) {
                     QString::number(chainCollectionGroups[groupName]->getNumberOfChains()),
                     QString::fromStdString(chainCollectionGroups[groupName]->getNumberingScheme()),
                     boolText,
-                    QString("TODO"));
-
+                    QString(getHydrophobicityParserName(groupName)),
+                    QString::fromStdString(chainCollectionGroups[groupName]->getChainType()));
     return text;
 
 }
@@ -77,7 +81,8 @@ QString ChainGroups::getInfo(QString groupName) {
             "   - number of sequences: %2\n"
             "   - numbering scheme: %3\n"
             "   - loaded: %4\n"
-            "   - hydrophobicity values: %5\n";
+            "   - hydrophobicity values: %5\n"
+            "   - chain type: %6\n";
 
     QString boolText = chainCollectionGroups[groupName.toStdString()]->isLoaded() ? "true" : "false";
 
@@ -85,7 +90,8 @@ QString ChainGroups::getInfo(QString groupName) {
                     QString::number(chainCollectionGroups[groupName.toStdString()]->getNumberOfChains()),
                     QString::fromStdString(chainCollectionGroups[groupName.toStdString()]->getNumberingScheme()),
                     boolText,
-                    QString("TODO"));
+                    QString(getHydrophobicityParserName(groupName)),
+                    QString::fromStdString(chainCollectionGroups[groupName.toStdString()]->getChainType()));
 
     return text;
 
@@ -126,21 +132,58 @@ void ChainGroups::setNumberingScheme(std::string groupName_, std::string numberi
 
 QString ChainGroups::getHydrophobicityParserName(std::string groupName_) {
 
-    return QString::fromStdString(chainCollectionHDatabase[groupName_]->getBasename());
-
+    if (chainCollectionHDatabase.find(groupName_) != chainCollectionHDatabase.end()) {
+        return QString::fromStdString(chainCollectionHDatabase[groupName_]->getBasename());
+    }
+    else {
+        return QString("None");
+    }
 }
 
 
-void ChainGroups::performPCA(std::string groupName) {
+QString ChainGroups::getHydrophobicityParserName(QString groupName_) {
+
+    if (chainCollectionHDatabase.find(groupName_.toStdString()) != chainCollectionHDatabase.end()) {
+        return QString::fromStdString(chainCollectionHDatabase[groupName_.toStdString()]->getBasename());
+    }
+    else {
+        return QString("None");
+    }
+}
+
+
+void ChainGroups::performPCA(std::string groupName, int nDimensions) {
+
+    if (!hasHDatabase[groupName]) {
+        throw "Error";
+    }
 
     // perform PCA with given hydrophobicity dataset
-    chainCollectionGroups[groupName_]->fit(chainCollectionHDatabase[groupName_]);
+    chainCollectionGroups[groupName]->performPCA(*chainCollectionHDatabase[groupName], nDimensions);
+    performedPCA[groupName] = true;
+}
 
+void ChainGroups::performPCA(QString groupName, int nDimensions) {
+    // perform PCA with given hydrophobicity dataset
+
+    if (!hasHDatabase[groupName.toStdString()]) {
+        throw "Error";
+    }
+
+    chainCollectionGroups[groupName.toStdString()]->performPCA(*chainCollectionHDatabase[groupName.toStdString()], nDimensions);
+    performedPCA[groupName.toStdString()] = true;
 }
 
 QVector<double> ChainGroups::getPrincipalComponent(QString chainGroupName_, int pc) {
 
-    // get PC
+    QVector<double> result;
 
+    // get PC from chain collection
+    for (auto const &value: chainCollectionGroups[chainGroupName_.toStdString()]->getPrincipalComponent(pc)) {
 
+        result.append(value);
+
+    }
+
+    return result;
 }

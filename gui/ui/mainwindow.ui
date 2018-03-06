@@ -134,10 +134,17 @@
      <property name="title">
       <string>Hydrophobicity</string>
      </property>
+     <widget class="QMenu" name="menuPCA">
+      <property name="title">
+       <string>PCA</string>
+      </property>
+      <addaction name="actionApplyPCA"/>
+      <addaction name="actionPlotPCA"/>
+     </widget>
      <addaction name="actionImport_hydrophobicity_dataset"/>
      <addaction name="actionApply_hydrophobicity_values"/>
      <addaction name="actionCluster"/>
-     <addaction name="actionPlot_PCA"/>
+     <addaction name="menuPCA"/>
     </widget>
     <widget class="QMenu" name="menuNumbering">
      <property name="title">
@@ -234,6 +241,21 @@
   <action name="actionPlot_PCA">
    <property name="text">
     <string>Plot PCA</string>
+   </property>
+  </action>
+  <action name="actionPerform_PCA">
+   <property name="text">
+    <string>Perform PCA</string>
+   </property>
+  </action>
+  <action name="actionApplyPCA">
+   <property name="text">
+    <string>Apply</string>
+   </property>
+  </action>
+  <action name="actionPlotPCA">
+   <property name="text">
+    <string>Plot</string>
    </property>
   </action>
  </widget>
