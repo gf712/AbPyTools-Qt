@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libEXCEPTIONS_LIB.a"
+)

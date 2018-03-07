@@ -1,0 +1,2 @@
+/usr/bin/ar qc libAbPyToolsInterfaceLib.a  CMakeFiles/AbPyToolsInterfaceLib.dir/src/chain.cpp.o
+/usr/bin/ranlib libAbPyToolsInterfaceLib.a

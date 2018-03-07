@@ -1,0 +1,2 @@
+/usr/bin/ar qc libAbPyToolsCppParserLib.a  CMakeFiles/AbPyToolsCppParserLib.dir/src/hydrophobicityParser.cpp.o CMakeFiles/AbPyToolsCppParserLib.dir/src/FastaParser.cpp.o CMakeFiles/AbPyToolsCppParserLib.dir/src/parser.cpp.o
+/usr/bin/ranlib libAbPyToolsCppParserLib.a

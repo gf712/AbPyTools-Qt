@@ -1,0 +1,2 @@
+/usr/bin/ar qc libAbPyToolsCPPLib.a  CMakeFiles/AbPyToolsCPPLib.dir/src/chainCollectionCPP.cpp.o CMakeFiles/AbPyToolsCPPLib.dir/src/queryAbnum.cpp.o CMakeFiles/AbPyToolsCPPLib.dir/src/pca.cpp.o
+/usr/bin/ranlib libAbPyToolsCPPLib.a
