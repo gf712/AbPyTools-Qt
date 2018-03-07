@@ -33,6 +33,7 @@
 #include <QStringList>
 #include <QDialog>
 #include <QVector>
+#include <QtConcurrent>
 
 namespace Ui {
 class MainWindow;
@@ -55,7 +56,7 @@ public:
     void loadFASTADebugText();
 //    void addGroupText(std::string name);
 
-    void updateWorkingWindowGroup();
+//    void updateWorkingWindowGroup();
 
 Q_SIGNALS:
     void sendGroupNamesToChild(QStringList groupNames);
@@ -63,8 +64,14 @@ Q_SIGNALS:
     void sendNumberingSchemeNames(QStringList numberingSchemes);
 
     void sendHydophobicityDatasetNameToChildOnRequestSignal(QString);
-
+    void pbar_numbering_helper_signal(int);
+    void numbering_helper_completed();
 private Q_SLOTS:
+
+    void updateWorkingWindowGroup();
+
+    void numbering_helper();
+    void pbar_numbering_helper_slot();
 
     void sendHydophobicityDatasetNameToChildOnRequest(QString);
 

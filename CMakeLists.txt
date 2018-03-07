@@ -36,7 +36,7 @@ hunter_add_package(Qt)
 #endif()
 
 find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesystem system)
-find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport)
+find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport Concurrent)
 
 find_package(Numpy REQUIRED)
 find_package(MLPACK REQUIRED)

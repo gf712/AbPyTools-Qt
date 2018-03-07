@@ -15,8 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->workingAreaTextBrowser->isReadOnly();
     ui->debugAreaTextBrowser->isReadOnly();
 
-    ui->plotSettingLayout->addWidget(new QLabel("Plot settings"), 0, 0);
-
     startedWorking = false;
 
     // display welcome message in working and debug windows
@@ -77,11 +75,58 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionApply_Numbering_triggered()
 {
+    auto *pbar = new QProgressDialog("Numbering sequences.", "Cancel", 0, 100);
 
-    chainGroups->applyNumbering();
+    auto *pBarhelperTimer = new QTimer(this);
+    pBarhelperTimer->start(500);
 
-    updateWorkingWindowGroup();
+    // create thread to run chain numbering thread and use watcher to handle signals and slots
+    QFuture<void> future = QtConcurrent::run(this, &MainWindow::numbering_helper);
+    QFutureWatcher<void> watcher;
+
+    // update progress bar
+    // connect timer to slot that processes chainGroup progress
+    connect(pBarhelperTimer, SIGNAL(timeout()), this, SLOT(pbar_numbering_helper_slot()));
+    // which in turn sends back pbar_numbering_helper_signal(int) signal with progress value
+    connect(this, SIGNAL(pbar_numbering_helper_signal(int)), pbar, SLOT(setValue(int)));
+
+    // destroy thread if process is cancelled
+    connect(pbar, SIGNAL(canceled()), &watcher, SLOT(cancel()));
+
+    // when thread ends need to:
+    // - cancel dialog -> hides it
+    // - stop timer
+    // - update working window
+//    connect(&watcher, SIGNAL(finished()), pbar, SLOT(cancel()));
+//    connect(&watcher, SIGNAL(finished()), pBarhelperTimer, SLOT(stop()));
+//    connect(&watcher, SIGNAL(finished()), this, SLOT(updateWorkingWindowGroup()));
+    connect(this, SIGNAL(numbering_helper_completed()), pbar, SLOT(cancel()));
+    connect(this, SIGNAL(numbering_helper_completed()), pBarhelperTimer, SLOT(stop()));
+    connect(this, SIGNAL(numbering_helper_completed()), this, SLOT(updateWorkingWindowGroup()));
+
+    // assign future to watcher
+    watcher.setFuture(future);
 }
+
+void MainWindow::numbering_helper() {
+
+    // running this with a slot allows to determine order
+    // in which qt slots are called before the numbering starts
+    chainGroups->applyNumbering();
+    Q_EMIT(numbering_helper_completed());
+}
+
+
+void MainWindow::pbar_numbering_helper_slot() {
+
+    qDebug() << "Hello";
+    qDebug() << static_cast<int>(std::ceil(chainGroups->numberingProgress()));
+
+    auto progress = static_cast<int>(std::ceil(chainGroups->numberingProgress()));
+
+    Q_EMIT(pbar_numbering_helper_signal(progress));
+}
+
 
 void MainWindow::on_actionImport_hydrophobicity_dataset_triggered()
 {

@@ -10,6 +10,9 @@ ChainCollectionCPP::ChainCollectionCPP() {
     // constructor without any objects
     numberOfChains = 0;
     loaded = false;
+    int nLoaded = 0;
+    int nFailed = 0;
+    int nTried = 0;
 
 }
 
@@ -43,6 +46,10 @@ ChainCollectionCPP::ChainCollectionCPP(std::vector <AntibodyChainCPP> antibodyOb
 
     }
 
+    int nLoaded = 0;
+    int nFailed = 0;
+    int nTried = 0;
+
 }
 
 ChainCollectionCPP::ChainCollectionCPP(char *path, char *numberingScheme) {
@@ -69,13 +76,21 @@ void ChainCollectionCPP::load() {
 
             try {
                 antibodyObject->load();
+                if (!antibodyObject->isAligned())
+                    nFailed++;
+                else
+                    nLoaded++;
             }
             catch (...) {
                 throw "Could not load sequence";
+                nFailed++;
             }
+
+            nTried++;
         }
-        else
+        else {
             std::cout << "Sequence already aligned" << std::endl;
+        }
     }
 
     std::string chainType_ = antibodyObjectPointers[0]->getChain();

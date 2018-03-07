@@ -105,9 +105,6 @@ void ChainGroups::applyNumbering() {
 
     for (auto &pair: chainCollectionGroups) {
 
-        qDebug() << QString::fromStdString(pair.first) << " " << QString::fromStdString(pair.second->getNames()[0]);
-        qDebug() << QString::fromStdString(pair.second->getSequences()[0]);
-
         try {
             pair.second->load();
         }
@@ -186,4 +183,20 @@ QVector<double> ChainGroups::getPrincipalComponent(QString chainGroupName_, int 
     }
 
     return result;
+}
+
+double ChainGroups::numberingProgress() {
+
+    double total = 0;
+    double completed = 0;
+
+    for (auto const &groupPair: chainCollectionGroups) {
+        total += groupPair.second->getNumberOfChains();
+//        std::cout << groupPair.first << ", number of tries: " << groupPair.second->getNTried() << std::endl;
+        completed += groupPair.second->getNTried();
+    }
+
+    std::cout << completed << " / " << total << " * 100=" << (completed / total) * 100;
+
+    return (completed / total) * 100;
 }

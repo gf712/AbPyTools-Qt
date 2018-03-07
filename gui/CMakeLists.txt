@@ -51,8 +51,8 @@ add_library(AbPyToolsGUIlib STATIC
 
 target_include_directories(AbPyToolsGUIlib PUBLIC
         include/
-        $<TARGET_PROPERTY:Qt5::Core,INTERFACE_INCLUDE_DIRECTORIES>
-        $<TARGET_PROPERTY:Qt5::Widgets,INTERFACE_INCLUDE_DIRECTORIES>
+#        $<TARGET_PROPERTY:Qt5::Core,INTERFACE_INCLUDE_DIRECTORIES>
+#        $<TARGET_PROPERTY:Qt5::Widgets,INTERFACE_INCLUDE_DIRECTORIES>
 #        ${QCUSTOMPLOT_INCLUDE}
         )
 
@@ -65,6 +65,7 @@ target_link_libraries(AbPyToolsGUIlib
         Qt5::Core
         Qt5::Gui
         Qt5::PrintSupport
+        Qt5::Concurrent
         )
 
 

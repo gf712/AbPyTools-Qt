@@ -9,103 +9,140 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1238</width>
-    <height>706</height>
+    <width>1013</width>
+    <height>676</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>927</x>
-      <y>20</y>
-      <width>301</width>
-      <height>621</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="debugAreaLabel">
-       <property name="text">
-        <string>DEBUG AREA</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTextBrowser" name="debugAreaTextBrowser"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>401</width>
-      <height>621</height>
+      <width>971</width>
+      <height>591</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="workingAreaLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>WORKING AREA</string>
-       </property>
-      </widget>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <layout class="QVBoxLayout" name="plotLayout">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>529</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>PLOTTING AREA</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCustomPlot" name="plotArea" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>400</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>500</width>
+           <height>500</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
-     <item>
-      <widget class="QTextBrowser" name="workingAreaTextBrowser"/>
+     <item row="2" column="1">
+      <layout class="QGridLayout" name="plotSettingLayout"/>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>20</y>
-      <width>491</width>
-      <height>491</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="plotLayout">
-     <item>
-      <widget class="QLabel" name="label_2">
+     <item row="0" column="2" rowspan="3">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QLabel" name="debugAreaLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>DEBUG AREA</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignRight">
+        <widget class="QTextBrowser" name="debugAreaTextBrowser">
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>550</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0" rowspan="3">
+      <layout class="QVBoxLayout" name="workingAreaLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>WORKING AREA</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="workingAreaTextBrowser">
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>550</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="label_3">
        <property name="maximumSize">
         <size>
-         <width>529</width>
+         <width>16777215</width>
          <height>20</height>
         </size>
        </property>
        <property name="text">
-        <string>PLOTTING AREA</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCustomPlot" name="plotArea" native="true">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>500</height>
-        </size>
+        <string>Plot settings:</string>
        </property>
       </widget>
      </item>
     </layout>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>520</y>
-      <width>491</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="plotSettingLayout"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -113,7 +150,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1238</width>
+     <width>1013</width>
      <height>22</height>
     </rect>
    </property>

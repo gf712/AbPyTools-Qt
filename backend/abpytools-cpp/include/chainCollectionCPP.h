@@ -48,6 +48,7 @@ public:
     std::vector<AntibodyChainCPP*> getAntibodyObjectPointers() {return antibodyObjectPointers;}
     std::string getChainType() {return chainType;}
     std::string getNumberingScheme() {return numberingScheme;}
+    int getNTried() {return nTried;}
 
     PCA* getPCAObject() { return !pcaObject ? throw "Error" : *pcaObject;}
 
@@ -69,6 +70,9 @@ public:
 private:
     int numberOfChains;
     bool loaded;
+    int nLoaded;
+    int nFailed;
+    int nTried;
     // optional attributes that are set from python API
     // or by specific constructors
     std::vector<std::string> names;

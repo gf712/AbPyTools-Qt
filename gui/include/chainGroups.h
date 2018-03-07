@@ -57,6 +57,7 @@ public:
     QVector<double> getPrincipalComponent(QString chainGroupName_, int pc);
 
     void applyNumbering();
+    double numberingProgress();
 
 private:
     std::unordered_map<std::string, ChainCollectionCPP*> chainCollectionGroups;
