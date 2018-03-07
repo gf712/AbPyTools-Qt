@@ -20,7 +20,7 @@ addons:
 # Install dependencies
 before_install:
     - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    - sudo add-apt-repository ppa:titas-chanda/armadillo
+    - sudo add-apt-repository ppa:titas-chanda/armadillo -y
     - sudo apt-get update -y
     - sudo apt-get install gcc-5 g++-5 libmlpack-dev -y
     # increase priority of gcc5 and g++5
