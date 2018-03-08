@@ -6,8 +6,6 @@
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
 #include "hydrophobicityParser.h"
-#include <boost/range/combine.hpp>
-#include <boost/foreach.hpp>
 
 // group class headers
 #include "chainGroups.h"
@@ -66,12 +64,18 @@ Q_SIGNALS:
     void sendHydophobicityDatasetNameToChildOnRequestSignal(QString);
     void pbar_numbering_helper_signal(int);
     void numbering_helper_completed();
+    void pbar_addFASTA_SIGNAL(int);
+    void FASTA_helper_completed();
+
 private Q_SLOTS:
 
     void updateWorkingWindowGroup();
 
     void numbering_helper();
-    void pbar_numbering_helper_slot();
+    void pbar_numbering();
+
+    void addFASTA_helper(std::string groupName_, QString filename_);
+    void pbar_addFASTA();
 
     void sendHydophobicityDatasetNameToChildOnRequest(QString);
 

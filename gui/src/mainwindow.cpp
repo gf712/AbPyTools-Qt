@@ -60,12 +60,14 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
 
+
     auto fileLoaderPointer = new FileLoaderDialog(this, chainGroups->getGroupNames());
 
     fileLoaderPointer->show();
 
     connect(fileLoaderPointer, SIGNAL(fileLoaderDialogFilename(std::string, QString)),
             this, SLOT(addFASTA(std::string, QString)));
+
 }
 
 // #####################################################################################################################
@@ -76,8 +78,10 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionApply_Numbering_triggered()
 {
     auto *pbar = new QProgressDialog("Numbering sequences.", "Cancel", 0, 100);
+    pbar->show();
 
     auto *pBarhelperTimer = new QTimer(this);
+    // update progress bar every 500ms
     pBarhelperTimer->start(500);
 
     // create thread to run chain numbering thread and use watcher to handle signals and slots
@@ -86,7 +90,7 @@ void MainWindow::on_actionApply_Numbering_triggered()
 
     // update progress bar
     // connect timer to slot that processes chainGroup progress
-    connect(pBarhelperTimer, SIGNAL(timeout()), this, SLOT(pbar_numbering_helper_slot()));
+    connect(pBarhelperTimer, SIGNAL(timeout()), this, SLOT(pbar_numbering()));
     // which in turn sends back pbar_numbering_helper_signal(int) signal with progress value
     connect(this, SIGNAL(pbar_numbering_helper_signal(int)), pbar, SLOT(setValue(int)));
 
@@ -113,18 +117,21 @@ void MainWindow::numbering_helper() {
     // running this with a slot allows to determine order
     // in which qt slots are called before the numbering starts
     chainGroups->applyNumbering();
+
+    qDebug() << "COMPLETED NUMBERING";
+
     Q_EMIT(numbering_helper_completed());
 }
 
 
-void MainWindow::pbar_numbering_helper_slot() {
+void MainWindow::pbar_numbering() {
 
-    qDebug() << "Hello";
     qDebug() << static_cast<int>(std::ceil(chainGroups->numberingProgress()));
 
     auto progress = static_cast<int>(std::ceil(chainGroups->numberingProgress()));
 
     Q_EMIT(pbar_numbering_helper_signal(progress));
+
 }
 
 
@@ -173,32 +180,55 @@ void MainWindow::addChainGroup(std::string groupName_, std::string numberingSche
 
 void MainWindow::addFASTA(std::string groupName_, QString filename_) {
 
-    qDebug() << "Parsing FASTA file";
+    auto *pbar = new QProgressDialog("Loading sequences.", "Cancel", 0, 100);
 
-    fastaParser = new FastaParser(filename_.toStdString());
+    auto *pBarhelperTimer = new QTimer(this);
+    pbar->show();
 
-    fastaParser->parse();
+    pBarhelperTimer->setProperty("groupName", QString::fromStdString(groupName_));
+    // update progress bar every 5ms
+    pBarhelperTimer->start(5);
 
-    qDebug() << "Parsed FASTA file";
+    // create thread to run chain numbering thread and use watcher to handle signals and slots
+    QFuture<void> future = QtConcurrent::run(this, &MainWindow::addFASTA_helper, groupName_, filename_);
+    QFutureWatcher<void> watcher;
 
-    std::string name_i, sequence_i;
+    // assign future to watcher
+    watcher.setFuture(future);
 
-    auto names = fastaParser->getNames();
-    auto sequences = fastaParser->getSequences();
+    // update progress bar
+    // connect timer to slot that processes chainGroup progress
+    connect(pBarhelperTimer, SIGNAL(timeout()), this, SLOT(pbar_addFASTA()));
+    // which in turn sends back pbar_numbering_helper_signal(int) signal with progress value
+    connect(this, SIGNAL(pbar_addFASTA_SIGNAL(int)), pbar, SLOT(setValue(int)));
 
-    // it's like python in C++..
-    BOOST_FOREACH(boost::tie(name_i, sequence_i), boost::combine(names, sequences)) {
+    // destroy thread if process is cancelled
+    connect(pbar, SIGNAL(canceled()), &watcher, SLOT(cancel()));
 
-        qDebug() << QString::fromStdString(name_i) << QString::fromStdString(sequence_i);
+    connect(this, SIGNAL(FASTA_helper_completed()), pbar, SLOT(close()));
+    connect(this, SIGNAL(FASTA_helper_completed()), pBarhelperTimer, SLOT(stop()));
+}
 
-        addAntibodyObject(name_i, sequence_i, groupName_);
 
-        auto chainObject = new AntibodyChainCPP(sequence_i, name_i, "chothia");
+void MainWindow::addFASTA_helper(std::string groupName_, QString filename_) {
 
-        addAntibodyObjectDebugText(chainObject);
-    }
+    qDebug() << "Calling chainGroups->loadFASTA(groupName_, filename_.toStdString())";
 
-    updateWorkingWindowGroup();
+    chainGroups->loadFASTA(groupName_, filename_.toStdString());
+
+    Q_EMIT(FASTA_helper_completed());
+}
+
+
+void MainWindow::pbar_addFASTA() {
+
+    QString groupName = (static_cast<QProgressDialog*>(sender())->property("groupName")).toString();
+
+    auto progress = static_cast<int>(std::ceil(chainGroups->fastaParsingProgress(groupName.toStdString())));
+
+    qDebug() << "pbar_addFASTA() progress: " << progress;
+
+    Q_EMIT(pbar_addFASTA_SIGNAL(progress));
 
 }
 

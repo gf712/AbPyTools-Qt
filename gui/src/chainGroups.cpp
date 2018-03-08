@@ -119,6 +119,37 @@ void ChainGroups::applyNumbering() {
 
 }
 
+void ChainGroups::loadFASTA(std::string chainGroupName_, std::string filename_) {
+
+    std::cout << "Parsing FASTA file" << std::endl;
+
+    auto fastaParser = FastaParser(filename_);
+
+    fastaParser.parse();
+
+    std::cout << "Parsed FASTA file" << std::endl;
+
+    groupFASTALoadingProgressRecord[chainGroupName_] = 0.0;
+    double loadingProgressIncrement = 1.0 / static_cast<double>(fastaParser.getTotalLines());
+
+    auto names = fastaParser.getNames();
+    auto sequences = fastaParser.getSequences();
+
+    // it's like python in C++..
+    std::string name_i, sequence_i;
+    BOOST_FOREACH(boost::tie(name_i, sequence_i), boost::combine(names, sequences)) {
+
+        std::cout << "name: " << name_i << std::endl;
+        std::cout << "sequence: " << sequence_i << std::endl;
+
+        addChain(chainGroupName_, name_i, sequence_i);
+
+        groupFASTALoadingProgressRecord[chainGroupName_] += loadingProgressIncrement;
+
+        std::cout << "progress: " << groupFASTALoadingProgressRecord[chainGroupName_] << std::endl;
+    }
+}
+
 
 void ChainGroups::setNumberingScheme(std::string groupName_, std::string numberingScheme_) {
 
@@ -192,11 +223,17 @@ double ChainGroups::numberingProgress() {
 
     for (auto const &groupPair: chainCollectionGroups) {
         total += groupPair.second->getNumberOfChains();
-//        std::cout << groupPair.first << ", number of tries: " << groupPair.second->getNTried() << std::endl;
+        std::cout << groupPair.first << ", number of tries: " << groupPair.second->getNTried() << std::endl;
         completed += groupPair.second->getNTried();
     }
 
-    std::cout << completed << " / " << total << " * 100=" << (completed / total) * 100;
+    std::cout << completed << " / " << total << " * 100 = " << (completed / total) * 100;
 
     return (completed / total) * 100;
+}
+
+double ChainGroups::fastaParsingProgress(std::string groupName_) {
+
+    return groupFASTALoadingProgressRecord[groupName_] * 100;
+
 }

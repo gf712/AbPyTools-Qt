@@ -6,11 +6,14 @@
 #define ABPYTOOLS_QT_CHAINGROUPS_H
 
 #include <unordered_map>
+#include <utility>
+#include <boost/range/combine.hpp>
+#include <boost/foreach.hpp>
 #include "chainCollectionCPP.h"
 
 #include "hydrophobicityParser.h"
+#include "fastaParser.h"
 
-#include <utility>
 #include <QDebug>
 
 class ChainGroups {
@@ -57,9 +60,13 @@ public:
     QVector<double> getPrincipalComponent(QString chainGroupName_, int pc);
 
     void applyNumbering();
+    void loadFASTA(std::string chainGroupName_, std::string filename_);
+
+    double fastaParsingProgress(std::string groupName_);
     double numberingProgress();
 
 private:
+    std::unordered_map<std::string, double> groupFASTALoadingProgressRecord;
     std::unordered_map<std::string, ChainCollectionCPP*> chainCollectionGroups;
     std::unordered_map<std::string, hydrophobicityParser*> chainCollectionHDatabase;
     std::unordered_map<std::string, bool> hasHDatabase;
