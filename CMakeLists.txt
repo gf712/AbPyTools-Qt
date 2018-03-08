@@ -40,6 +40,7 @@ find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport Concurrent
 
 find_package(Numpy REQUIRED)
 find_package(MLPACK REQUIRED)
+find_package(Armadillo REQUIRED)
 
 ############################################################################################
 #                                     DECLARATIONS

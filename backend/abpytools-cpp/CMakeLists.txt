@@ -30,6 +30,7 @@ target_include_directories(${TARGET_NAME} SYSTEM
 target_link_libraries(${TARGET_NAME}
         AbPyToolsInterfaceLib
         ${MLPACK_LIBRARIES}
+        ${ARMADILLO_LIBRARIES}
         )
 
 add_subdirectory(tests)

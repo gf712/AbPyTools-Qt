@@ -28,7 +28,5 @@ file(COPY data/abraham.hpb DESTINATION ${CMAKE_BINARY_DIR}/backend/abpytools-cpp
 
 add_subdirectory(tests)
 
-message(${AbPyToolsCppParserTests_BINARY_DIR})
-
 add_test(NAME AbPyToolsParseCppTests COMMAND AbPyToolsCppParserTest
          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})

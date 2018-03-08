@@ -12,8 +12,6 @@ include_directories(${ABPYTOOLS_CPP_PARSER_DIR})
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
 
-message(${PYTHON_NUMPY_INCLUDE_DIR})
-
 target_include_directories(${TARGET_NAME}
         INTERFACE include/)
 
