@@ -5,5 +5,5 @@ add_executable(GUIAbPyToolsCPPTest
         )
 
 target_link_libraries(BackendAbPyToolsCPPTest
-        AbPyToolsInterfaceLib
+        ABPYTOOLSINTERFACE_LIBRARIES
         Boost::unit_test_framework)

@@ -5,12 +5,12 @@ set(ABPYTOOLS_CPP_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpyt
 set(SOURCE_FILES
         src/chain.cpp)
 
-set(TARGET_NAME AbPyToolsInterfaceLib)
-
-include_directories(${ABPYTOOLS_CPP_PARSER_DIR})
+set(TARGET_NAME ABPYTOOLSINTERFACE_LIBRARIES)
 
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
+
+set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytools-interface")
 
 target_include_directories(${TARGET_NAME}
         INTERFACE include/)
@@ -22,8 +22,8 @@ target_include_directories(${TARGET_NAME} SYSTEM
         ${PYTHON_NUMPY_INCLUDE_DIR})
 
 target_link_libraries(${TARGET_NAME}
-        ${EXCEPTIONS_LIB}
-        AbPyToolsCppParserLib
+        ${ABPYTOOLSCPP_EXCEPTIONS_LIBRARIES}
+        ABPYTOOLSCPP_PARSER_LIBRARIES
         ${PYTHON_LIBRARY})
 
 add_subdirectory(tests)

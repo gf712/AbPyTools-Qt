@@ -10,11 +10,12 @@ set(SOURCE_FILES
         src/queryAbnum.cpp
         src/pca.cpp)
 
-set(TARGET_NAME AbPyToolsCPPLib)
+set(TARGET_NAME ABPYTOOLSCPP_LIBRARIES)
 
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES})
 
+set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytoolscpp")
 
 target_include_directories(${TARGET_NAME}
         INTERFACE include/
@@ -28,7 +29,7 @@ target_include_directories(${TARGET_NAME} SYSTEM
         )
 
 target_link_libraries(${TARGET_NAME}
-        AbPyToolsInterfaceLib
+        ABPYTOOLSINTERFACE_LIBRARIES
         ${MLPACK_LIBRARIES}
         ${ARMADILLO_LIBRARIES}
         )

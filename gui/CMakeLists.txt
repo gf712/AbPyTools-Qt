@@ -44,23 +44,22 @@ set(UI_FILES
         ui/editdialog.ui
         )
 
-add_library(AbPyToolsGUIlib STATIC
+set(TARGET_NAME ABPYTOOLS_GUI_LIBRARIES)
+
+add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES}
         ${HEADER_FILES}
         ${UI_FILES})
 
-target_include_directories(AbPyToolsGUIlib PUBLIC
+set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytools-gui")
+
+target_include_directories(${TARGET_NAME} PUBLIC
         include/
-#        $<TARGET_PROPERTY:Qt5::Core,INTERFACE_INCLUDE_DIRECTORIES>
-#        $<TARGET_PROPERTY:Qt5::Widgets,INTERFACE_INCLUDE_DIRECTORIES>
-#        ${QCUSTOMPLOT_INCLUDE}
         )
 
-
-target_link_libraries(AbPyToolsGUIlib
-        AbPyToolsInterfaceLib
-        AbPyToolsCPPLib
-#        QCUSTOMPLOT_LIB
+target_link_libraries(${TARGET_NAME}
+        ABPYTOOLSINTERFACE_LIBRARIES
+        ABPYTOOLSCPP_LIBRARIES
         Qt5::Widgets
         Qt5::Core
         Qt5::Gui
@@ -73,5 +72,5 @@ add_executable(AbPyToolsQt
         src/main.cpp)
 
 target_link_libraries(AbPyToolsQt
-        AbPyToolsGUIlib
+        ${TARGET_NAME}
 )

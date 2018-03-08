@@ -7,17 +7,21 @@ set(SOURCE_FILES
 
 set(ABPYTOOLS_CPP_PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpytools cpp parser include directory")
 
-add_library(AbPyToolsCppParserLib STATIC
-            ${SOURCE_FILES})
+set(TARGET_NAME ABPYTOOLSCPP_PARSER_LIBRARIES)
 
-target_include_directories(AbPyToolsCppParserLib
+add_library(${TARGET_NAME} STATIC
+        ${SOURCE_FILES})
+
+set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytoolscpp-parsers")
+
+target_include_directories(${TARGET_NAME}
         INTERFACE include/)
 
-target_include_directories(AbPyToolsCppParserLib SYSTEM
+target_include_directories(${TARGET_NAME} SYSTEM
         PUBLIC ${BACKEND_UTILS_DIRS})
 
-target_link_libraries(AbPyToolsCppParserLib
-        EXCEPTIONS_LIB
+target_link_libraries(${TARGET_NAME}
+        ABPYTOOLSCPP_EXCEPTIONS_LIBRARIES
         Boost::filesystem
         Boost::system
         Boost::python3)
