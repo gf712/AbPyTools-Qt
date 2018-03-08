@@ -3,20 +3,18 @@
 AbPyTools-Qt
 ============
 
-This is a new version of [AbPyTools](https://github.com/gf712/AbPyTools) which has a frontend that can be easily used in addition to the existing
-Python3 API. Checkout the [wiki](https://github.com/gf712/AbPyTools-Qt/wiki) for more information.
+This is a new version of [AbPyTools](https://github.com/gf712/AbPyTools) which has a frontend that can be easily used in addition to the existing Python3 API. Checkout the [wiki](https://github.com/gf712/AbPyTools-Qt/wiki) for more information.
 
 Project Mission & Summary
 =========================
-- Provide an easy to use interface to work with heavy and light antibody chains
+- Provide an easy to use GUI to work with heavy and light antibody chains
 - Further optimise AbPyTools python code using C/C++ backend
 - Integrate machine learning algorithms for data analysis
 
 How does it work?
 =================
-- AbPyTools-Qt aims to provide an interface that allows any user to easily manipulate 
-antibody sequences. By splitting work into groups it is possible to analyse
-several sets of antibody chains (and in future whole Fabs) with ease.
+- AbPyTools-Qt aims to provide an interface that allows any user to easily manipulate antibody sequences. By splitting work into groups it is possible to analyse several sets of antibody chains (and in future whole Fabs) with ease.
+- The background integrates the existing python code from [AbPyTools](https://github.com/gf712/AbPyTools) and uses C++ libraries such as [armadillo](http://arma.sourceforge.net/) and [mlpack](https://www.mlpack.org/) to optimise and scale up matrix manipulation tasks (necessary for machine learning).
 
 Build from source
 =================
@@ -69,13 +67,22 @@ to change disable this behaviour run cmake like this:
 
 Changelog
 =========
+### v0.3 (TBA):
+- integrate structural analysis
+- release binaries (linux)
 
-v0.1 (TBC):
+### v0.2 (TBA):
+- further integration with abpytools
+- improved UI
+- memory management
+- clustering
+
+### v0.1 (08/03/2018):
+- hydrophobicity matrix PCA and PC plotting
 - Simple GUI to call some basic functions found in AbPyTools
-- Sort out installation of all depencies, AbPyTools, Boost and Qt
+- Easy(ish) installation with:
     - cmake
     - make
-    - qmake
 - Tests:
     - Continuous integration 
     - Code coverage
