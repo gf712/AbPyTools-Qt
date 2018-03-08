@@ -10,9 +10,9 @@ ChainCollectionCPP::ChainCollectionCPP() {
     // constructor without any objects
     numberOfChains = 0;
     loaded = false;
-    int nLoaded = 0;
-    int nFailed = 0;
-    int nTried = 0;
+    nLoaded = 0;
+    nFailed = 0;
+    nTried = 0;
 
 }
 
@@ -46,9 +46,9 @@ ChainCollectionCPP::ChainCollectionCPP(std::vector <AntibodyChainCPP> antibodyOb
 
     }
 
-    int nLoaded = 0;
-    int nFailed = 0;
-    int nTried = 0;
+    nLoaded = 0;
+    nFailed = 0;
+    nTried = 0;
 
 }
 
@@ -66,6 +66,11 @@ T ChainCollectionCPP::genericGetter(boost::optional<T> optionalParam_) {
 }
 
 void ChainCollectionCPP::load() {
+
+    std::cout << "nTried: " << nTried
+              << "nFailed: " << nFailed
+              << "nLoaded: " << nLoaded
+              << std::endl;
 
     // TODO: add openmp support to project and use it here
     for (auto const &antibodyObject: antibodyObjectPointers) {
