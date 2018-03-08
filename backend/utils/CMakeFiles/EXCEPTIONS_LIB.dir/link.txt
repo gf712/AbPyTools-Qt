@@ -1,2 +1,0 @@
-/usr/bin/ar qc libEXCEPTIONS_LIB.a  CMakeFiles/EXCEPTIONS_LIB.dir/src/exception.cpp.o
-/usr/bin/ranlib libEXCEPTIONS_LIB.a
