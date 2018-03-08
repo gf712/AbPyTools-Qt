@@ -12,7 +12,7 @@
 
 namespace mlpca = mlpack::pca;
 
-class PCA {
+class PCA: public mlpca::PCA {
     // Wrapper around mlpack PCA implementation
     // based on methods/pca/pca_impl.hpp
     // but with a touch of python's sklearn library
@@ -65,8 +65,6 @@ private:
 
     arma::vec eigenvalues;
     arma::mat eigenvectors;
-
-    mlpca::PCA pcaObject;
 
 };
 

@@ -6,9 +6,7 @@
 
 void PCA::fit(arma::mat data) {
 
-    pcaObject = mlpca::PCA();
-
-    pcaObject.Apply(data, data, eigenvalues, eigenvectors);
+    Apply(data, data, eigenvalues, eigenvectors);
 
     explainedVariance = arma::cumsum(eigenvalues);
 
