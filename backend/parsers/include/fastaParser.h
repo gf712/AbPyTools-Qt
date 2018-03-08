@@ -17,6 +17,7 @@ public:
     ~FastaParser() = default;
 
     void parse();
+    bool ParserRules(std::string line);
 
     std::vector<std::string> getNames() { return names; }
     std::vector<std::string> getSequences() {return sequences; }

@@ -5,10 +5,10 @@
 #ifndef ABPYTOOLS_QT_HYDROPHOBICITYPARSER_H
 #define ABPYTOOLS_QT_HYDROPHOBICITYPARSER_H
 
+#include "parser.h"
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-#include "parser.h"
 
 class hydrophobicityParser: public Parser {
 
@@ -20,6 +20,8 @@ public:
 
     // GETTERS
     std::unordered_map<std::string, double> getAminoAcidHydrophobicityMap(int letter);
+
+    bool ParserRules(std::string line) {}
 
 private:
     std::string filepath;

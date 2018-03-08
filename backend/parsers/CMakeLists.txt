@@ -10,7 +10,8 @@ set(ABPYTOOLS_CPP_PARSER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL 
 set(TARGET_NAME ABPYTOOLSCPP_PARSER_LIBRARIES)
 
 add_library(${TARGET_NAME} STATIC
-        ${SOURCE_FILES})
+        ${SOURCE_FILES}
+        )
 
 set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytoolscpp-parsers")
 

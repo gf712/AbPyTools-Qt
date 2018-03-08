@@ -45,6 +45,7 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsFASTATests)
 
         BOOST_TEST(testObject.getSequences().size() == 2);
         BOOST_TEST(testObject.getNames().size() == 2);
+        BOOST_TEST(testObject.getTotalLines() == 2);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
