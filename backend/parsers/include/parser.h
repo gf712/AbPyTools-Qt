@@ -5,7 +5,7 @@
 #ifndef ABPYTOOLS_QT_PARSER_H
 #define ABPYTOOLS_QT_PARSER_H
 
-#include <exception.h>
+#include <abpytools_exceptions.h>
 #include <boost/filesystem/operations.hpp>
 //#include <boost/filesystem/convenience.hpp>
 

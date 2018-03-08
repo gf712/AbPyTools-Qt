@@ -6,7 +6,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include "exception.h"
+#include "abpytools_exceptions.h"
 
 std::vector<std::string> aaList{"ALA", "ARG", "ASN", "ASP", "CYS", "GLN", "GLU",
                                 "GLY", "HIS", "ILE", "LEU", "LYS", "MET", "PHE",

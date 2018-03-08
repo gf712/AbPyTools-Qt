@@ -3,7 +3,7 @@
 //
 
 #include "../include/chain.h"
-#include "exception.h"
+#include "abpytools_exceptions.h"
 
 using namespace boost::python;
 

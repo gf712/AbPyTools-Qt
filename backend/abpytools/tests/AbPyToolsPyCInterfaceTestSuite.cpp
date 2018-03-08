@@ -7,7 +7,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include "chain.h"
-#include "exception.h"
+#include "abpytools_exceptions.h"
 #include "hydrophobicityParser.h"
 
 using namespace std;

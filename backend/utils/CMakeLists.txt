@@ -4,7 +4,7 @@ set(BACKEND_UTILS_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 set(TARGET_NAME EXCEPTIONS_LIB)
 
 add_library(${TARGET_NAME} STATIC
-        src/exception.cpp)
+        src/abpytools_exceptions.cpp)
 
 target_include_directories(${TARGET_NAME}
         PUBLIC include/
