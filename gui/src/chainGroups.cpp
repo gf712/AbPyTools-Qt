@@ -130,7 +130,7 @@ void ChainGroups::loadFASTA(std::string chainGroupName_, std::string filename_) 
     std::cout << "Parsed FASTA file" << std::endl;
 
     groupFASTALoadingProgressRecord[chainGroupName_] = 0.0;
-    double loadingProgressIncrement = 1.0 / static_cast<double>(fastaParser.getTotalLines());
+    double loadingProgressIncrement = 1.0 / static_cast<double>(fastaParser.gettotalEntries());
 
     auto names = fastaParser.getNames();
     auto sequences = fastaParser.getSequences();

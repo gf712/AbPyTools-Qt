@@ -207,6 +207,7 @@ void MainWindow::addFASTA(std::string groupName_, QString filename_) {
 
     connect(this, SIGNAL(FASTA_helper_completed()), pbar, SLOT(close()));
     connect(this, SIGNAL(FASTA_helper_completed()), pBarhelperTimer, SLOT(stop()));
+//    connect(this, SIGNAL(FASTA_helper_completed()), )
 }
 
 

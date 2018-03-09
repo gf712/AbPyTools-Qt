@@ -17,5 +17,5 @@ Parser::Parser(std::string filepath_) {
     // store basename
     basename = boost::filesystem::path(filepath_).stem().string();
 
-    totalLines = 0;
+    totalEntries = 0;
 }

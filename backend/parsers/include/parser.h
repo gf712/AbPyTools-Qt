@@ -17,18 +17,18 @@ public:
     Parser(std::string filepath_);
     virtual ~Parser() {};
 
-    virtual bool ParserRules(std::string line) {totalLines++; return true;}
+    virtual bool ParserRules(std::string line) {totalEntries++; return true;}
 
     std::string getFilepath() { return filepath;}
     std::string getBasename() { return basename;}
-    int getTotalLines() {return totalLines;}
+    int gettotalEntries() {return totalEntries;}
 
 private:
     std::string filepath;
     std::string basename;
 
 protected:
-    int totalLines;
+    int totalEntries;
 
 };
 

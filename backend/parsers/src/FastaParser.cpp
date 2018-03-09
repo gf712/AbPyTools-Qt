@@ -18,7 +18,7 @@ void FastaParser::parse() {
             // this is the name of the entry -> remove '>'
             names.push_back(line.substr(1, line.size()));
             expectingSequence = true;
-            Parser::totalLines++;
+            Parser::totalEntries++;
         }
 
         else if (expectingSequence) {
