@@ -10,7 +10,7 @@ sudo apt-get install gcc-5 g++-5 libmlpack-dev -y
 # increase priority of gcc5 and g++5
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
 
-if [$HUNTER_ENABLED == 0]
+if [[ $HUNTER_ENABLED == 0 ]]
 then
     # install Qt and boost manually
     wget -O boost_1_66_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.gz/download
