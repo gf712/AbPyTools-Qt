@@ -26,7 +26,7 @@ env:
 
 # Install dependencies
 before_install:
-    - cd $HOME
+    - cd $HOME/gf712
     - source AbPyTools-Qt/devtools/travis-ci/install_libraries.sh
     - source AbPyTools-Qt/devtools/travis-ci/install_miniconda.sh
 #    - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
