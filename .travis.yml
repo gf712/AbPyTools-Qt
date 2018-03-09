@@ -1,0 +1,52 @@
+sudo: true
+dist: trusty
+language: cpp
+os: linux
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - libgles2-mesa-dev
+      - libxrender-dev
+      - libfreetype6-dev
+      - libx11-dev
+      - libxext-dev
+      - libxfixes-dev
+      - libxi-dev
+      - libxcb1-dev
+      - libx11-xcb-dev
+
+python:
+ - "3.6-dev"
+
+env:
+  - HUNTER_ENABLED=0
+  - HUNTER_ENABLED=1
+
+# Install dependencies
+before_install:
+    - cd $HOME/build/gf712
+    - source AbPyTools-Qt/devtools/travis-ci/install_libraries.sh
+    - cd $HOME/build/gf712
+    - source AbPyTools-Qt/devtools/travis-ci/install_miniconda.sh
+    - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
+    - source activate test-environment
+    - cd $HOME/build/gf712
+    - source AbPyTools-Qt/devtools/travis-ci/install_abpytools.sh
+
+install:
+    # build package
+    - cd $HOME/build/gf712
+    - cd AbPyTools-Qt
+    - mkdir build
+    - cd build
+    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m \
+    -DPYTHON_LIBRARIES=$HOME/miniconda/lib/libpython3.6m.so \
+    -DHUNTER_ENABLED=$HUNTER_ENABLED ..
+    # speed up compiling by using up to 4 jobs at any time
+    - make -j4
+
+# Run tests
+script:
+    - env CTEST_OUTPUT_ON_FAILURE=1 make test

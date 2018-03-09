@@ -1,0 +1,1 @@
+hunter_config(boost VERSION 1.66.0)
