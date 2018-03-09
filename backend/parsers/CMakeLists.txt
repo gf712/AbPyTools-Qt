@@ -23,9 +23,8 @@ target_include_directories(${TARGET_NAME} SYSTEM
 
 target_link_libraries(${TARGET_NAME}
         ABPYTOOLSCPP_EXCEPTIONS_LIBRARIES
-        Boost::filesystem
-        Boost::system
-        Boost::python3)
+        ${Boost_LIBRARIES}
+        )
 
 file(COPY data/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
 file(COPY data/abraham.hpb DESTINATION ${CMAKE_BINARY_DIR}/backend/abpytools/data)

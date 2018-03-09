@@ -11,7 +11,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 #                                       HUNTER
 ############################################################################################
 
-#set(HUNTER_ENABLED ON CACHE BOOL "whether to use hunter to build dependencies with hunter")
+option(HUNTER_ENABLED "Enable hunter package manager" OFF) # Overwrite default value
 
 # get hunter for package management in cmake
 include("cmake/HunterGate.cmake")
@@ -26,14 +26,11 @@ project(AbPyTools-Qt)
 
 # find python3.5 or greater
 find_package(PythonLibs 3.5 REQUIRED)
+#find_package(PythonInterp 3.5 REQUIRED)
 
 # get boost and build unit_test_framework and python3 -> requires python3 interpreter
 hunter_add_package(Boost COMPONENTS test python filesystem)
 hunter_add_package(Qt)
-
-#if (NOT ${HUNTER_ENABLED})
-#    list(APPEND ${CMAKE_PREFIX_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Hunter/disabled-mode")
-#endif()
 
 find_package(Boost CONFIG COMPONENTS REQUIRED unit_test_framework python3 filesystem system)
 find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport Concurrent)
@@ -48,7 +45,7 @@ find_package(Armadillo REQUIRED)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage -fPIC -O0")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 --coverage")
 set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -fPIC -O3")
 
 set(ADD_QT_QPA_FONTDIR ON)

@@ -10,5 +10,5 @@ target_include_directories(AbPyToolsCPPTest PRIVATE
 
 target_link_libraries(AbPyToolsCPPTest
         ABPYTOOLSCPP_LIBRARIES
-        Boost::python3
-        Boost::unit_test_framework)
+        ${Boost_LIBRARIES}
+        )

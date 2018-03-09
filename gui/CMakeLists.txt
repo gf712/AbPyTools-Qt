@@ -67,7 +67,6 @@ target_link_libraries(${TARGET_NAME}
         Qt5::Concurrent
         )
 
-
 add_executable(AbPyToolsQt
         src/main.cpp)
 

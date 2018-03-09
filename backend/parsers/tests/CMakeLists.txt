@@ -13,4 +13,5 @@ target_include_directories(AbPyToolsCppParserTest PRIVATE
 
 target_link_libraries(AbPyToolsCppParserTest
         ABPYTOOLSCPP_PARSER_LIBRARIES
-        Boost::unit_test_framework)
+        ${Boost_LIBRARIES}
+        )
