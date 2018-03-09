@@ -30,7 +30,7 @@ before_install:
     - source AbPyTools-Qt/devtools/travis-ci/install_libraries.sh
     - cd $HOME/build/gf712
     - source AbPyTools-Qt/devtools/travis-ci/install_miniconda.sh
-#    - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
+    - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
     - source activate test-environment
     - cd $HOME/build/gf712
     - source AbPyTools-Qt/devtools/travis-ci/install_abpytools.sh
@@ -41,7 +41,9 @@ install:
     - cd AbPyTools-Qt
     - mkdir build
     - cd build
-    - cmake -DHUNTER_ENABLED=$HUNTER_ENABLED ..
+    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m \
+    -DPYTHON_LIBRARIES=$HOME/miniconda/lib/libpython3.6m.so \
+    -DHUNTER_ENABLED=$HUNTER_ENABLED ..
     # speed up compiling by using up to 4 jobs at any time
     - make -j4
 
