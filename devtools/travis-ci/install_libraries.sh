@@ -14,7 +14,7 @@ if [[ $HUNTER_ENABLED == 0 ]]
 then
     # install Qt and boost manually
     wget -O boost_1_66_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.gz/download
-    tar -xzvf boost_1_66_0.tar.gz
+    tar -xzf boost_1_66_0.tar.gz
     cd boost_1_66_0/
     sudo apt-get install autotools-dev libicu-dev build-essential libbz2-dev libboost-all-dev -y
     ./bootstrap.sh --with-python-version=3.6 --with-libraries=unit_test_framework,python3,filesystem,system

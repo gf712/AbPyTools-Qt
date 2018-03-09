@@ -26,11 +26,12 @@ env:
 
 # Install dependencies
 before_install:
-    - source devtools/travis-ci/install_libraries.sh
-    - source devtools/travis-ci/install_miniconda.sh
+    - cd $HOME
+    - source AbPyTools-Qt/devtools/travis-ci/install_libraries.sh
+    - source AbPyTools-Qt/devtools/travis-ci/install_miniconda.sh
 #    - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
     - source activate test-environment
-    - source devtools/travis-ci/install_abpytools.sh
+    - source AbPyTools-Qt/devtools/travis-ci/install_abpytools.sh
 
 install:
     # build package
