@@ -17,42 +17,27 @@ addons:
       - libxcb1-dev
       - libx11-xcb-dev
 
+python:
+ - "3.6-dev"
+
+env:
+  - HUNTER_ENABLED=0
+  - HUNTER_ENABLED=1
+
 # Install dependencies
 before_install:
-    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    - sudo add-apt-repository ppa:titas-chanda/armadillo -y
-    - sudo apt-get update -y
-    - sudo apt-get install gcc-5 g++-5 libmlpack-dev -y
-    # increase priority of gcc5 and g++5
-    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
-    # download and install miniconda
-    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    - bash miniconda.sh -b -p $HOME/miniconda
-    - export PATH="$HOME/miniconda/bin:$PATH"
-    # if we don't create this symlink there is a weird bug in boost because it looks for this specific directory
-    - hash -r
-    - conda config --set always_yes yes --set changeps1 no
-    - conda update -q conda
-    # Useful for debugging any issues with conda
-    - conda info -a
-    - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION scipy numpy pip matplotlib pandas
-    - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
-    # configure a headless display to test plot generation
+    - devtools/travis-ci/install_libraries.sh
+    - devtools/travis-ci/install_miniconda.sh
+#    - ln -s $HOME/miniconda/envs/test-environment/include/python3.6m $HOME/miniconda/envs/test-environment/include/python3.6
     - source activate test-environment
-    - "export DISPLAY=:99.0"
-    - "sh -e /etc/init.d/xvfb start"
-    - sleep 3 # give xvfb some time to start
-    - git clone https://github.com/gf712/AbPyTools
-    - cd AbPyTools
-    - python setup.py install
-    - python setup.py test
+    - devtools/travis-ci/install_abpytools.sh
 
 install:
     # build package
-    - cd -
+    - cd AbPyTools-Qt
     - mkdir build
     - cd build
-    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m -DPYTHON_LIBRARY=$HOME/miniconda/lib/libpython3.6m.so ..
+    - cmake -DHUNTER_ENABLED=$HUNTER_ENABLED ..
     # speed up compiling by using up to 4 jobs at any time
     - make -j4
 
