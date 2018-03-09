@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd $HOME/gf712
+cd $HOME
 
 # download and install miniconda
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -14,4 +14,4 @@ conda update -q conda
 conda info -a
 conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION scipy numpy pip matplotlib pandas
 
-cd $HOME/gf712
+cd $HOME

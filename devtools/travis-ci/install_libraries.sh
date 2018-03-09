@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# make sure this is HOME directory
-cd $HOME/gf712
+cd $HOME
 
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 sudo add-apt-repository ppa:titas-chanda/armadillo -y
@@ -27,4 +26,4 @@ then
     sudo apt-get install qt5-default qttools5-dev-tools -y
 fi
 
-cd $HOME/gf712
+cd $HOME
