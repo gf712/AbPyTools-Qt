@@ -25,7 +25,8 @@ AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::
     }
 
     // now we can instantiate the python object
-    chainObject = PyObject_CallFunction(Chain, "ssOs", sequence.c_str(), name.c_str(), Py_None, numbering_scheme.c_str());
+    chainObject = PyObject_CallFunction(Chain, "ssOs", sequence.c_str(), name.c_str(), Py_None,
+                                        numbering_scheme.c_str());
 
     if (chainObject == nullptr) {
         std::cout << "Error instantiating object";
@@ -80,7 +81,8 @@ std::string AntibodyChainCPP::getAlignedSequence() {
 
     if (!alignedSequence) {
         std::cout << "Calling aligned_sequence" << "\n";
-        PyObject* alignedSequenceArray = PyObject_GetAttrString(chainObject, "aligned_sequence");
+        auto* alignedSequenceArray = reinterpret_cast<PyArrayObject*>(PyObject_GetAttrString(chainObject,
+                                                                                             "aligned_sequence"));
 
         // let boost handle PyObject memory allocation
         object temp(handle<>(alignedSequenceArray));
@@ -122,7 +124,8 @@ std::string AntibodyChainCPP::getChain() {
 
 std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH, char *pka_database) {
 
-    PyObject* chargePyObject = PyObject_CallMethod(chainObject, "ab_charge", "ids", align, pH, pka_database);
+    auto* chargePyObject = reinterpret_cast<PyArrayObject*>(PyObject_CallMethod(chainObject, "ab_charge", "ids", align,
+                                                                                pH, pka_database));
 
     // let boost handle PyObject memory allocation
     object temp(handle<>(chargePyObject));
@@ -138,7 +141,9 @@ std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH,
 
 std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(char *hydrophobicity_scores) {
 
-    PyObject* hValuesPyObject = PyObject_CallMethod(chainObject, "ab_hydrophobicity_matrix", "s", hydrophobicity_scores);
+    auto* hValuesPyObject = reinterpret_cast<PyArrayObject*>(PyObject_CallMethod(chainObject,
+                                                                                 "ab_hydrophobicity_matrix",
+                                                                                 "s", hydrophobicity_scores));
 
     // let boost handle PyObject memory allocation
     object temp(handle<>(hValuesPyObject));
