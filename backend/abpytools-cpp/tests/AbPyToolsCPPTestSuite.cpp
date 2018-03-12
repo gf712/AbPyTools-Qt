@@ -21,7 +21,7 @@ struct ChainCollectionObjectFixture {
     ChainCollectionObjectFixture() {
 
         auto testObject = new AntibodyChainCPP(sequence, name, numbering_scheme);
-        testChainCollectionObject = new ChainCollectionCPP();
+        testChainCollectionObject = new ChainCollectionCPP(numbering_scheme);
 
         testChainCollectionObject->append(*testObject);
         testChainCollectionObject->append(*testObject);
@@ -38,7 +38,7 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
     BOOST_AUTO_TEST_CASE(chainCollectionEmptyContructor) {
 
         try {
-            ChainCollectionCPP testObject_ = ChainCollectionCPP();
+            ChainCollectionCPP testObject_ = ChainCollectionCPP("chothia");
         }
         catch (...) {
             BOOST_FAIL("Failed to instantiate ChainCollectionCPP");
@@ -56,6 +56,39 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
         BOOST_TEST(testChainCollectionObject->getChainType() == "heavy");
 
     }
+
+    BOOST_AUTO_TEST_CASE(chainCollectionInvalidNumbering0) {
+
+        auto *tempChainCollection = new ChainCollectionCPP("chothia");
+
+        testChainCollectionObject->append("falseSequence", "TEST");
+
+        std::cout << "testChainCollectionObject->getChainObject(2)->getNumberingScheme(): "
+                  << testChainCollectionObject->getAntibodyObject(2)->getNumberingScheme() << std::endl;
+
+        testChainCollectionObject->load(0, tempChainCollection);
+
+        BOOST_TEST(testChainCollectionObject->getChainType() == "heavy");
+        BOOST_TEST(testChainCollectionObject->getNumberOfChains() == 3);
+        BOOST_TEST(testChainCollectionObject->isPartial() == true);
+        BOOST_TEST(testChainCollectionObject->isLoaded() == true);
+        BOOST_TEST(tempChainCollection->getChainType() == "heavy");
+        BOOST_TEST(tempChainCollection->getNumberOfChains() == 2);
+        BOOST_TEST(tempChainCollection->isPartial() == false);
+        BOOST_TEST(tempChainCollection->isLoaded() == true);
+    }
+
+    BOOST_AUTO_TEST_CASE(chainCollectionInvalidNumbering1) {
+
+        testChainCollectionObject->append("falseSequence", "TEST");
+        testChainCollectionObject->load();
+
+        BOOST_TEST(testChainCollectionObject->getChainType() == "heavy");
+        BOOST_TEST(testChainCollectionObject->getNumberOfChains() == 2);
+        BOOST_TEST(testChainCollectionObject->isPartial() == false);
+        BOOST_TEST(testChainCollectionObject->isLoaded() == true);
+    }
+
 
     BOOST_AUTO_TEST_CASE(chainCollectionGetHydrophobicityMatrix) {
 

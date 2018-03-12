@@ -7,10 +7,7 @@
 void ChainGroups::addGroup(std::string name, std::string numberingScheme) {
 
 
-    auto chainCollection = new ChainCollectionCPP();
-
-    // makes sense to move, since this is the only copy we need
-    chainCollection->setNumberingScheme(std::move(numberingScheme));
+    auto chainCollection = new ChainCollectionCPP(numberingScheme);
 
     chainCollectionGroups[name] = chainCollection;
 
