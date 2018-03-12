@@ -5,7 +5,7 @@
 #ifndef ABPYTOOLS_QT_CHAIN_H
 #define ABPYTOOLS_QT_CHAIN_H
 
-//#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 #include <Python.h>
 #include <string>
