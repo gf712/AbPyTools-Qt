@@ -8,11 +8,11 @@ add_library(${TARGET_NAME} STATIC
 
 set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytoolscpp-exceptions")
 
-target_include_directories(${TARGET_NAME}
-        PUBLIC include/
-        PUBLIC ${PYTHON_INCLUDE_DIRS}
-        PUBLIC ${Boost_INCLUDE_DIRS}
+target_include_directories(${TARGET_NAME} PUBLIC
+        include/
+        ${PYTHON_INCLUDE_DIRS}
+        ${Boost_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET_NAME}
-        PUBLIC ${PYTHON_LIBRARY})
+        PUBLIC ${PYTHON_LIBRARIES})

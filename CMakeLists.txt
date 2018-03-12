@@ -26,7 +26,6 @@ project(AbPyTools-Qt)
 
 # find python3.5 or greater
 find_package(PythonLibs 3.5 REQUIRED)
-#find_package(PythonInterp 3.5 REQUIRED)
 
 # get boost and build unit_test_framework and python3 -> requires python3 interpreter
 hunter_add_package(Boost COMPONENTS test python filesystem)

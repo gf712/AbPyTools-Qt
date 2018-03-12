@@ -29,11 +29,11 @@ cd build
 AbPyTools-Qt requires Python >= 3.5. If you have several python versions in your system, it should automatically find the required version.
 If this fails, or for some reason you want to use a specific version (>=3.5) you can set the path with cmake:
 ```
-cmake -DPYTHON_INCLUDE_DIR=/path/to/python/include -DPYTHON_LIBRARY=/path/to/python/libs ..
+cmake -DPYTHON_INCLUDE_DIR=/path/to/python/include -DPYTHON_LIBRARIES=/path/to/python/libs ..
 ```
 For those building with anaconda this could look like:
 ```
-cmake -DPYTHON_INCLUDE_DIR=$HOME/anaconda3/include/python3.6m -DPYTHON_LIBRARY=$HOME/anaconda3/lib/libpython3.6m.so ..
+cmake -DPYTHON_INCLUDE_DIR=$HOME/anaconda3/include/python3.6m -DPYTHON_LIBRARIES=$HOME/anaconda3/lib/libpython3.6m.so ..
 ```
 
 Note that you need to use the same environment you used to install [AbPyTools](https://github.com/gf712/AbPyTools)!

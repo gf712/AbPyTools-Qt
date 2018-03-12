@@ -41,9 +41,7 @@ install:
     - cd AbPyTools-Qt
     - mkdir build
     - cd build
-    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m \
-    -DPYTHON_LIBRARIES=$HOME/miniconda/lib/libpython3.6m.so \
-    -DHUNTER_ENABLED=$HUNTER_ENABLED ..
+    - cmake -DPYTHON_INCLUDE_DIR=$HOME/miniconda/include/python3.6m -DPYTHON_LIBRARIES=$HOME/miniconda/lib/libpython3.6m.so -DHUNTER_ENABLED=$HUNTER_ENABLED ..
     # speed up compiling by using up to 4 jobs at any time
     - make -j4
 
