@@ -8,6 +8,8 @@ using namespace boost::python;
 
 AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::string numbering_scheme) {
 
+    std::cout << "sequence: " << sequence << ", name:" << name << ", numbering scheme: " << numbering_scheme;
+
     aligned = false;
 
     Py_Initialize();
@@ -24,11 +26,12 @@ AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::
     }
 
     // now we can instantiate the python object
+    // Chain(self, sequence='', name='Chain1', numbering=None, numbering_scheme='chothia')
     chainObject = PyObject_CallFunction(Chain, "ssOs", sequence.c_str(), name.c_str(), Py_None,
                                         numbering_scheme.c_str());
 
     if (chainObject == nullptr) {
-        std::cout << "Error instantiating object";
+        throw "Error instantiating object";
     }
 
 }
@@ -37,6 +40,8 @@ AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::
 
 AntibodyChainCPP::AntibodyChainCPP(const char &sequence, const char &name, const char &numbering_scheme) {
 
+    std::cout << "sequence: " << sequence << ", name:" << name << ", numbering scheme: " << numbering_scheme;
+
     aligned = false;
 
     Py_Initialize();
@@ -53,10 +58,11 @@ AntibodyChainCPP::AntibodyChainCPP(const char &sequence, const char &name, const
     }
 
     // now we can instantiate the python object
+    // Chain(self, sequence='', name='Chain1', numbering=None, numbering_scheme='chothia')
     chainObject = PyObject_CallFunction(Chain, "ssOs", sequence, name, Py_None, numbering_scheme);
 
     if (chainObject == nullptr) {
-        std::cout << "Error instantiating object";
+        throw "Error instantiating object";
     }
 
 }
@@ -97,8 +103,6 @@ std::string AntibodyChainCPP::getAlignedSequence() {
         for (int j = 0; j < arraySize; ++j) {
             (*alignedSequence).append((char*) PyArray_GETPTR1(alignedSequenceArray, j));
         }
-
-        std::cout << (*alignedSequence) << "\n";
     }
 
     return *alignedSequence;
@@ -108,6 +112,7 @@ std::string AntibodyChainCPP::getNumberingScheme() {
     if (!numbering_scheme) {
         numbering_scheme = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "numbering_scheme"));
     }
+
     return *numbering_scheme;
 }
 
@@ -115,8 +120,6 @@ std::string AntibodyChainCPP::getChain() {
     if (!chain) {
         chain = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "chain"));
     }
-
-    std::cout << "call getChain(): " << *chain << std::endl;
 
     return *chain;
 }
@@ -201,10 +204,9 @@ void AntibodyChainCPP::load() {
         }
     }
 
-    std::cout << "call getChain() from load(): " << getChain() << std::endl;
-
-    if (getChain() == "heavy" or getChain() == "light")
+    if (getChain() == "heavy" or getChain() == "light") {
         aligned = true;
+    }
 //    else
 //        std::cout << getChain();
 }
