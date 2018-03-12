@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     chainGroups = new ChainGroups;
     hGroups = new hydrophobicityGroups;
-    antibodyObjects = new ChainCollectionCPP();
     ui->workingAreaTextBrowser->isReadOnly();
     ui->debugAreaTextBrowser->isReadOnly();
 

@@ -106,8 +106,6 @@ private:
     Ui::MainWindow *ui;
     ChainGroups *chainGroups;
     hydrophobicityGroups *hGroups;
-    AntibodyChainCPP *antibodyObject;
-    ChainCollectionCPP *antibodyObjects;
     FastaParser *fastaParser;
     std::string name;
     std::string sequence;

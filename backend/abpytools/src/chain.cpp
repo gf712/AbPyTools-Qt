@@ -3,7 +3,6 @@
 //
 
 #include "../include/chain.h"
-#include "abpytools_exceptions.h"
 
 using namespace boost::python;
 
@@ -36,7 +35,7 @@ AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::
 
 
 
-AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme) {
+AntibodyChainCPP::AntibodyChainCPP(const char &sequence, const char &name, const char &numbering_scheme) {
 
     aligned = false;
 
