@@ -25,6 +25,7 @@ HunterGate(
 project(AbPyTools-Qt)
 
 # find python3.5 or greater
+find_package(PythonInterp 3.5 REQUIRED)
 find_package(PythonLibs 3.5 REQUIRED)
 
 # get boost and build unit_test_framework and python3 -> requires python3 interpreter
@@ -37,6 +38,7 @@ find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport Concurrent
 find_package(Numpy REQUIRED)
 find_package(MLPACK REQUIRED)
 find_package(Armadillo REQUIRED)
+find_package(AbPyTools REQUIRED)
 
 ############################################################################################
 #                                     DECLARATIONS
