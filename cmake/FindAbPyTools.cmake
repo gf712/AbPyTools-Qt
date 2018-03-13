@@ -17,15 +17,27 @@
 #   ABPYTOOOLS_VERSION_STRING - version number as a string (ex: "1.0.4")
 
 if (PYTHON_EXECUTABLE)
-    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c
-            "try: import abpytools; print(abpytools.__version__, end='')\nexcept:pass\n"
+    file(WRITE ${CMAKE_BINARY_DIR}/python_script.py
+            "
+try:
+  import abpytools
+  print(abpytools.__version__, end='')
+except:
+  pass
+"
+            )
+    execute_process(
+            COMMAND ${PYTHON_EXECUTABLE} python_script.py
             OUTPUT_VARIABLE ABPYTOOLS_VERSION_STRING)
+    file(REMOVE ${CMAKE_BINARY_DIR}/python_script.py)
 else()
     message(STATUS "Python executable not found.")
 endif(PYTHON_EXECUTABLE)
 
+
 # check if abpytools version could be obtained
-string(COMPARE EQUAL ${ABPYTOOLS_VERSION_STRING} "" _cmp)
+string(COMPARE EQUAL "${ABPYTOOLS_VERSION_STRING}" "" _cmp)
+
 if (NOT _cmp)
     set(ABPYTOOLS_LIBRARIES ${PYTHON_LIBRARIES})
     set(ABPYTOOLS_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
