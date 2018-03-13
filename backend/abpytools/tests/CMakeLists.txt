@@ -14,5 +14,6 @@ target_link_libraries(BackendAbPyToolsCPPTest
         ABPYTOOLSINTERFACE_LIBRARIES
 #        ${PYTHON_LIBRARY}
 #        ABPYTOOLSCPP_PARSER_LIBRARIES
-        ${Boost_LIBRARIES}
+        Boost::python3
+        Boost::unit_test_framework
         )
