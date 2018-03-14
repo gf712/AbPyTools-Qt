@@ -23,7 +23,7 @@ python:
 
 env:
   - HUNTER_ENABLED=0
-  - HUNTER_ENABLED=1
+#  - HUNTER_ENABLED=1
 
 # Install dependencies
 before_install:
