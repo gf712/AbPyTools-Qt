@@ -53,7 +53,7 @@ add_library(${TARGET_NAME} STATIC
 
 set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytools-gui")
 
-target_include_directories(${TARGET_NAME} PUBLIC
+target_include_directories(${TARGET_NAME} SYSTEM PUBLIC
         include/
         )
 
@@ -66,6 +66,12 @@ target_link_libraries(${TARGET_NAME}
         Qt5::PrintSupport
         Qt5::Concurrent
         )
+
+add_subdirectory(tests)
+
+add_test(NAME AbPyToolsGUITestSuite COMMAND AbPyToolsGUITestSuite
+         WORKING_DIRECTORY ${AbPyToolsCPPGUITests_BIN_DIR})
+
 
 add_executable(AbPyToolsQt
         src/main.cpp)
