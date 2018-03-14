@@ -116,27 +116,38 @@ void ChainCollectionCPP::load(int setting, ChainCollectionCPP* newChainCollectio
     // reset number of tries
     nTried = 0;
 
-    // TODO: add openmp support to project and use it here
+    // TODO: add openmp support to project and use it here to submit several requests at a time
     for (auto const &antibodyObject: antibodyObjectPointers) {
 
         std::cout << "iterating over " << antibodyObject->getName() << std::endl;
 
-        if (!antibodyObject->isAligned()) {
+        if (!antibodyObject->isAligned() and antibodyObject->getStatus() != "Unnumbered") {
 
             try {
                 antibodyObject->load();
-                if (!antibodyObject->isAligned())
-                    nFailed++;
-                else
-                    nLoaded++;
+//                if (!antibodyObject->isAligned())
+//                    nFailed++;
+//                else
+                nLoaded++;
             }
-            catch (...) {
-                throw "Could not load sequence";
+            catch (NumberingException) {
+//                throw "Could not number sequence";
                 nFailed++;
+            }
+            catch (ConnectionException)
+            {
+//                throw "Could not submit sever request";
+                nFailed++;
+            }
+            catch (...){
+                throw "Unexpected error!";
             }
 
             nTried++;
         }
+
+        else if (antibodyObject->getStatus() == "Unnumbered") nFailed++;
+
         else {
             std::cout << "Sequence already aligned" << std::endl;
         }
@@ -175,7 +186,6 @@ void ChainCollectionCPP::handleUnnumberedSequences(int setting, ChainCollectionC
                 newChainCollectionCPP->append(antibodyObject);
             }
         }
-
     }
 
     else if (setting == 1) {
