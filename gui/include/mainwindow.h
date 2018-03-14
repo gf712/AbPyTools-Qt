@@ -6,6 +6,7 @@
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
 #include "hydrophobicityParser.h"
+#include <cmath>
 
 // group class headers
 #include "chainGroups.h"
