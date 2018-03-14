@@ -124,6 +124,12 @@ std::string AntibodyChainCPP::getChain() {
     return *chain;
 }
 
+std::string AntibodyChainCPP::getStatus() {
+
+   return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "status"));
+}
+
+
 std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH, char *pka_database) {
 
     auto* chargePyObject = reinterpret_cast<PyArrayObject*>(PyObject_CallMethod(chainObject, "ab_charge", "ids", align,
@@ -188,27 +194,20 @@ std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(hydrophobicityPars
     return hValues;
 }
 
-void AntibodyChainCPP::load() {
+void AntibodyChainCPP::load(bool silent) {
 
     if (!aligned) {
-        try {
-            PyObject_CallMethod(chainObject, "load", "");
+        PyObject_CallMethod(chainObject, "load", "");
 
+        if (getStatus() == "Unnumbered") {
+            if (!silent) throw NumberingException();
         }
-        catch (error_already_set &) {
-            PyObject * pType, *pValue, *pTraceback;
-
-            PyErr_Fetch(&pType, &pValue, &pTraceback);
-
-            throw PythonAbPyToolsError(pType, pValue, pTraceback);
+        else if (getStatus() == "Not Loaded") {
+            if (!silent) throw ConnectionException();
         }
-    }
 
-    if (getChain() == "heavy" or getChain() == "light") {
-        aligned = true;
+        if (getChain() == "heavy" or getChain() == "light") aligned = true;
     }
-//    else
-//        std::cout << getChain();
 }
 
 void AntibodyChainCPP::printSequence() {

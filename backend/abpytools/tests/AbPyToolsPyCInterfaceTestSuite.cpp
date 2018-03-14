@@ -58,6 +58,18 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
+    BOOST_AUTO_TEST_CASE(UnnumberedSequenceTest) {
+
+        AntibodyChainCPP* testObject;
+        char name[5] = "test";
+        char sequence[5] = "TEST";
+        char numbering_scheme[10] = "chothia";
+        auto unnumberedTestObject = AntibodyChainCPP(sequence, name, numbering_scheme);
+        unnumberedTestObject.load(true);
+
+        BOOST_TEST(unnumberedTestObject.getStatus() == "Unnumbered");
+    }
+
     BOOST_AUTO_TEST_CASE(getterTest) {
 
         BOOST_TEST(testObject->getName() == name);
