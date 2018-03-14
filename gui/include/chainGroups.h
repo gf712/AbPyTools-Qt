@@ -40,14 +40,18 @@ public:
     void setNumberingScheme(std::string groupName_, std::string numberingScheme_);
 
     // GETTERS
-    std::string getNumberingScheme(std::string groupName) {return chainCollectionGroups[groupName]->getNumberingScheme();}
-    int getNumberOfSequences(std::string groupName) {return chainCollectionGroups[groupName]->getNumberOfChains();}
+    std::string getNumberingScheme(std::string groupName) {
+        if (groupExists(groupName)) return chainCollectionGroups[groupName]->getNumberingScheme();
+        else throw "Group does not exist!";
+    }
+
+    int getNumberOfSequences(std::string groupName) {
+        if (groupExists(groupName)) return chainCollectionGroups[groupName]->getNumberOfChains();
+        else throw "Group does not exist!";
+    }
 
     QStringList getGroupNames();
     ChainCollectionCPP* getChainCollection(std::string groupName) { return chainCollectionGroups[groupName];}
-
-    QString getInfo(std::string groupName);
-    QString getInfo(QString groupName);
 
     QString getHydrophobicityParserName(std::string groupName_);
     QString getHydrophobicityParserName(QString groupName_);
@@ -67,6 +71,12 @@ public:
 
     double fastaParsingProgress(std::string groupName_);
     double numberingProgress();
+
+    // MAINTENANCE
+    QString getInfo(std::string groupName);
+    QString getInfo(QString groupName);
+    bool groupExists(QString groupName_) {chainCollectionGroups.find(groupName_.toStdString()) != chainCollectionGroups.end();}
+    bool groupExists(std::string groupName_) {chainCollectionGroups.find(groupName_) != chainCollectionGroups.end();}
 
 private:
     std::unordered_map<std::string, double> groupFASTALoadingProgressRecord;

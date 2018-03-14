@@ -113,11 +113,9 @@ void ChainGroups::applyNumbering(int setting) {
 
     for (auto &pair: chainCollectionGroups) {
 
-//        if (setting==0) {
         // setting = 0 -> create a new group to add sequences that were successfully numbered and keep original group
         // setting = 1 -> delete non numbered sequences
         addGroup(pair.first+"_numbered", pair.second->getNumberingScheme());
-//        }
 
         try {
             pair.second->load(setting, chainCollectionGroups[pair.first+"_numbered"]);
@@ -243,8 +241,6 @@ double ChainGroups::numberingProgress() {
         std::cout << groupPair.first << ", number of tries: " << groupPair.second->getNTried() << std::endl;
         completed += groupPair.second->getNTried();
     }
-
-    std::cout << completed << " / " << total << " * 100 = " << (completed / total) * 100;
 
     return (completed / total) * 100;
 }

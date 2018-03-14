@@ -51,6 +51,8 @@ BOOST_FIXTURE_TEST_SUITE(ChainGroupTestSuite, ChainGroup1Fixture)
         ChainGroupObject->applyNumbering(1);
 
         BOOST_TEST(ChainGroupObject->getNumberOfSequences("Group1") == 1);
+//        BOOST_TEST(ChainGroupObject->getNumberOfSequences("Group1_numbered") == 0);
+        BOOST_TEST(ChainGroupObject->groupExists(std::string("Group1_numbered")) == false);
 
     }
 
