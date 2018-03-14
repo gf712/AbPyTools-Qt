@@ -16,7 +16,7 @@ then
     tar -xzf boost_1_66_0.tar.gz
     cd boost_1_66_0/
     sudo apt-get install autotools-dev libicu-dev build-essential libbz2-dev -y
-    ./bootstrap.sh --with-python=$HOME/miniconda/bin/python --with-libraries=test,python,filesystem,system
+    ./bootstrap.sh --with-python=$HOME/miniconda/envs/test-environment/bin/python --with-libraries=test,python,filesystem,system
     ./b2 -j4
     sudo ./b2 install
     # qt
