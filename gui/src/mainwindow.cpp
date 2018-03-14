@@ -115,7 +115,7 @@ void MainWindow::numbering_helper() {
 
     // running this with a slot allows to determine order
     // in which qt slots are called before the numbering starts
-    chainGroups->applyNumbering();
+    chainGroups->applyNumbering(1);
 
     qDebug() << "COMPLETED NUMBERING";
 

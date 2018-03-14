@@ -29,6 +29,9 @@ public:
     void addChain(std::string groupName_, std::string name_, std::string sequence_);
     void addHydrophobicityValues(std::string groupName_, hydrophobicityParser *hParse);
 
+    // REMOVE DATA
+    void removeGroup(std::string groupName_);
+
     // PERFORM ANALYSIS
     void performPCA(std::string groupName, int nDimensions);
     void performPCA(QString groupName, int nDimensions);
@@ -59,7 +62,7 @@ public:
 
     QVector<double> getPrincipalComponent(QString chainGroupName_, int pc);
 
-    void applyNumbering();
+    void applyNumbering(int setting);
     void loadFASTA(std::string chainGroupName_, std::string filename_);
 
     double fastaParsingProgress(std::string groupName_);
