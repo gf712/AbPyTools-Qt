@@ -14,7 +14,7 @@
 #   ABPYTOOOLS_VERSION_MAJOR - major version number
 #   ABPYTOOOLS_VERSION_MINOR - minor version number
 #   ABPYTOOOLS_VERSION_PATCH - patch version number
-#   ABPYTOOOLS_VERSION_STRING - version number as a string (ex: "1.0.4")
+#   ABPYTOOOLS_VERSION_STRING - version number as a string (ex: "0.2.3")
 
 if (PYTHON_EXECUTABLE)
     file(WRITE ${CMAKE_BINARY_DIR}/python_script.py
@@ -24,14 +24,13 @@ try:
   print(abpytools.__version__, end='')
 except:
   pass
-"
-            )
+")
     execute_process(
             COMMAND ${PYTHON_EXECUTABLE} python_script.py
             OUTPUT_VARIABLE ABPYTOOLS_VERSION_STRING)
     file(REMOVE ${CMAKE_BINARY_DIR}/python_script.py)
 else()
-    message(STATUS "Python executable not found.")
+    message(FATAL_ERROR "Python executable not found.")
 endif(PYTHON_EXECUTABLE)
 
 
@@ -47,6 +46,12 @@ if (NOT _cmp)
 else()
     message(FATAL_ERROR "Could not find AbPyTools in the given python environment!")
 endif ()
+
+if (${AbPyTools_FIND_VERSION} VERSION_GREATER ${ABPYTOOLS_VERSION_STRING})
+    message(STATUS "Could not find required version! Consider installing the newest abpytools version:")
+    message(STATUS "  pip install abpytools")
+#message("VERSION TO FIND: ${AbPyTools_FIND_VERSION}")
+endif()
 
 find_package_handle_standard_args(AbPyTools
         REQUIRED_VARS ABPYTOOLS_INCLUDE_DIRS ABPYTOOLS_LIBRARIES
