@@ -72,6 +72,7 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
         BOOST_TEST(testChainCollectionObject->getNumberOfChains() == 3);
         BOOST_TEST(testChainCollectionObject->isPartial() == true);
         BOOST_TEST(testChainCollectionObject->isLoaded() == true);
+
         BOOST_TEST(tempChainCollection->getChainType() == "heavy");
         BOOST_TEST(tempChainCollection->getNumberOfChains() == 2);
         BOOST_TEST(tempChainCollection->isPartial() == false);
@@ -118,7 +119,7 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
 
         arma::vec result = testChainCollectionObject->getPrincipalComponent(1);
 
-        BOOST_TEST(result(1) == 0.70710678, tt::tolerance(10e-9));
+        BOOST_TEST(result(1) == -3.219646771e-15, tt::tolerance(10e-9));
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -29,10 +29,10 @@ public:
     ~PCA();
 
     void fit(arma::mat data);
-    arma::mat transform(arma::mat data);
+    arma::mat transform();
     arma::mat fit_transform(arma::mat data) {
         fit(data);
-        return transform(data);
+        return transform();
     }
 
     // GETTERS
@@ -40,6 +40,7 @@ public:
     arma::vec getExplainedVarianceRatio() { return explainedVarianceRatio;}
     arma::vec getEigenvalues() {return eigenvalues;}
     arma::mat getEigenvectors() {return eigenvectors;}
+    arma::mat getTransformedData() {return transformedData;}
 
     int getNDimensions() {
         // return 0 if nDimensions is not defined
@@ -65,6 +66,8 @@ private:
 
     arma::vec eigenvalues;
     arma::mat eigenvectors;
+
+    arma::mat transformedData;
 
 };
 

@@ -350,9 +350,6 @@ arma::vec ChainCollectionCPP::getPrincipalComponent(int pc) {
         throw "pcaObject fit method has to be called first";
     }
 
-    std::cout << "EigVec cols: " << (*pcaObject)->getEigenvectors().n_cols << "\n";
-    std::cout << "EigVec rows: " << (*pcaObject)->getEigenvectors().n_rows << "\n";
-
-    return (*pcaObject)->getEigenvectors().submat(arma::span::all, arma::span(pc));
+    return (*pcaObject)->getTransformedData().submat(arma::span::all, arma::span(pc));
 
 }

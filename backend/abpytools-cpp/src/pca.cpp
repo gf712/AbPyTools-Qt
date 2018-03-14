@@ -6,7 +6,14 @@
 
 void PCA::fit(arma::mat data) {
 
-    Apply(data, data, eigenvalues, eigenvectors);
+    Apply(data, transformedData, eigenvalues, eigenvectors);
+
+    std::cout << "MLPACK PCA: \n";
+    std::cout << "Data cols: " << data.n_cols << "\n";
+    std::cout << "Data rows: " << data.n_rows << "\n";
+
+    std::cout << "EigVec cols: " << eigenvectors.n_cols << "\n";
+    std::cout << "EigVec rows: " << eigenvectors.n_rows << "\n";
 
     explainedVariance = arma::cumsum(eigenvalues);
 
@@ -18,7 +25,7 @@ void PCA::fit(arma::mat data) {
 
 }
 
-arma::mat PCA::transform(arma::mat data) {
+arma::mat PCA::transform() {
 
     if (!nDimensions) {
 
@@ -36,6 +43,6 @@ arma::mat PCA::transform(arma::mat data) {
         }
     }
 
-    return eigenvectors.submat(arma::span::all, arma::span(0, (*nDimensions) - 1));
+    return transformedData.submat(arma::span::all, arma::span(0, (*nDimensions) - 1));
 
 }
