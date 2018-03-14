@@ -30,8 +30,7 @@ before_install:
     - cd $HOME/build/gf712
     - source AbPyTools-Qt/devtools/travis-ci/install_miniconda.sh
     - cd $HOME/build/gf712
-    - source AbPyTools-Qt/devtools/travis-ci/install_abpytools.sh
-    - cd $HOME/build/gf712
+    - pip install abpytools==0.2.3
     - source AbPyTools-Qt/devtools/travis-ci/install_libraries.sh
 
 install:
