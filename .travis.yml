@@ -28,11 +28,11 @@ env:
 # Install dependencies
 before_install:
     - cd $HOME/build/gf712
-    - cd $HOME/build/gf712
     - source AbPyTools-Qt/devtools/travis-ci/install_miniconda.sh
-    - source AbPyTools-Qt/devtools/travis-ci/install_abpytools.sh
-    - source AbPyTools-Qt/devtools/travis-ci/install_libraries.sh
     - cd $HOME/build/gf712
+    - source AbPyTools-Qt/devtools/travis-ci/install_abpytools.sh
+    - cd $HOME/build/gf712
+    - source AbPyTools-Qt/devtools/travis-ci/install_libraries.sh
 
 install:
     # build package
