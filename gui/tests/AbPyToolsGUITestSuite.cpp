@@ -45,7 +45,7 @@ struct ChainGroup1Fixture {
 
 };
 
-BOOST_FIXTURE_TEST_SUITE(ChainGroupTestSuite, ChainGroup1Fixture, *utf::precondition(connection))
+BOOST_FIXTURE_TEST_SUITE(ChainGroupTestSuite, ChainGroup1Fixture)
 
 
     BOOST_AUTO_TEST_CASE(chainGroupNumberOfChains) {
@@ -53,7 +53,7 @@ BOOST_FIXTURE_TEST_SUITE(ChainGroupTestSuite, ChainGroup1Fixture, *utf::precondi
         BOOST_TEST(ChainGroupObject->getNumberOfSequences("Group1") == 2);
     }
 
-    BOOST_AUTO_TEST_CASE(chainGroupInvalidNumbering0) {
+    BOOST_AUTO_TEST_CASE(chainGroupInvalidNumbering0, *utf::precondition(connection)) {
 
         ChainGroupObject->applyNumbering(0);
 
@@ -62,7 +62,7 @@ BOOST_FIXTURE_TEST_SUITE(ChainGroupTestSuite, ChainGroup1Fixture, *utf::precondi
 
     }
 
-    BOOST_AUTO_TEST_CASE(chainGroupInvalidNumbering1) {
+    BOOST_AUTO_TEST_CASE(chainGroupInvalidNumbering1, *utf::precondition(connection)) {
 
         ChainGroupObject->applyNumbering(1);
 
