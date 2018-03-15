@@ -6,10 +6,22 @@
 #define BOOST_TEST_DYN_LINK
 
 #include <boost/test/included/unit_test.hpp>
+#include "connection_check.h"
 #include "chainCollectionCPP.h"
 
 namespace tt = boost::test_tools;
+namespace utf = boost::unit_test;
 
+tt::assertion_result connection(utf::test_unit_id) {
+
+    bool result = abnumConnection();
+
+    tt::assertion_result ans(result);
+
+    if (!result) ans.message() << "Failed to connect to abnum server!";
+
+    return ans;
+}
 
 struct ChainCollectionObjectFixture {
 
@@ -33,6 +45,7 @@ struct ChainCollectionObjectFixture {
 };
 
 
+
 BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixture)
 
     BOOST_AUTO_TEST_CASE(chainCollectionEmptyContructor) {
@@ -50,14 +63,14 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
         BOOST_TEST(testChainCollectionObject->getNumberOfChains() == 2);
     }
 
-    BOOST_AUTO_TEST_CASE(chainCollectionLoadTwoChains) {
+    BOOST_AUTO_TEST_CASE(chainCollectionLoadTwoChains, *utf::precondition(connection)) {
 
         testChainCollectionObject->load();
         BOOST_TEST(testChainCollectionObject->getChainType() == "heavy");
 
     }
 
-    BOOST_AUTO_TEST_CASE(chainCollectionInvalidNumbering0) {
+    BOOST_AUTO_TEST_CASE(chainCollectionInvalidNumbering0, *utf::precondition(connection)) {
 
         auto *tempChainCollection = new ChainCollectionCPP("chothia");
 
@@ -79,7 +92,7 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
         BOOST_TEST(tempChainCollection->isLoaded() == true);
     }
 
-    BOOST_AUTO_TEST_CASE(chainCollectionInvalidNumbering1) {
+    BOOST_AUTO_TEST_CASE(chainCollectionInvalidNumbering1, *utf::precondition(connection)) {
 
         testChainCollectionObject->append("falseSequence", "TEST");
         testChainCollectionObject->load();
@@ -91,7 +104,7 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
     }
 
 
-    BOOST_AUTO_TEST_CASE(chainCollectionGetHydrophobicityMatrix) {
+    BOOST_AUTO_TEST_CASE(chainCollectionGetHydrophobicityMatrix, *utf::precondition(connection)) {
 
         std::string path ="data/abraham.hpb";
         auto hObject = hydrophobicityParser(path);
@@ -107,7 +120,7 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
 
     }
 
-    BOOST_AUTO_TEST_CASE(chainCollectionHydrophobicityMatrixPCA) {
+    BOOST_AUTO_TEST_CASE(chainCollectionHydrophobicityMatrixPCA, *utf::precondition(connection)) {
 
         std::string path ="data/abraham.hpb";
         auto hObject = hydrophobicityParser(path);

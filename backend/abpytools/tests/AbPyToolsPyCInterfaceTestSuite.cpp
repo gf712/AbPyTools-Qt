@@ -9,9 +9,22 @@
 #include "chain.h"
 #include "abpytools_exceptions.h"
 #include "hydrophobicityParser.h"
+#include "connection_check.h"
 
-using namespace std;
 namespace tt = boost::test_tools;
+namespace utf = boost::unit_test;
+
+tt::assertion_result connection(utf::test_unit_id) {
+
+    bool result = abnumConnection();
+
+    tt::assertion_result ans(result);
+
+    if (!result) ans.message() << "Failed to connect to abnum server!";
+
+    return ans;
+}
+
 
 struct ChainObjectFixture {
 
@@ -56,7 +69,7 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsImportTests)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
+BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture, *utf::precondition(connection))
 
     BOOST_AUTO_TEST_CASE(UnnumberedSequenceTest) {
 
@@ -105,7 +118,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
         char database[10] = "Wikipedia";
 
-        vector<double> charges = testObject->getAminoAcidCharges(true, 7.4, database);
+        std::vector<double> charges = testObject->getAminoAcidCharges(true, 7.4, database);
 
         double sumOfCharges = std::accumulate(charges.begin(), charges.end(), 0.0);
 
@@ -118,7 +131,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
         char database[10] = "ew";
 
-        vector<double> hValues = testObject->getHydrophobicityMatrix(database);
+        std::vector<double> hValues = testObject->getHydrophobicityMatrix(database);
 
         double sumOfHValues = std::accumulate(hValues.begin(), hValues.end(), 0.0);
 
@@ -134,7 +147,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
         hParser.parse();
 
-        vector<double> hValues = testObject->getHydrophobicityMatrix(hParser);
+        std::vector<double> hValues = testObject->getHydrophobicityMatrix(hParser);
 
         double sumOfHValues = std::accumulate(hValues.begin(), hValues.end(), 0.0);
 

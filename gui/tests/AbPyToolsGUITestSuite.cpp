@@ -7,6 +7,22 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include "chainGroups.h"
+#include "connection_check.h"
+
+namespace tt = boost::test_tools;
+namespace utf = boost::unit_test;
+
+tt::assertion_result connection(utf::test_unit_id) {
+
+    bool result = abnumConnection();
+
+    tt::assertion_result ans(result);
+
+    if (!result) ans.message() << "Failed to connect to abnum server!";
+
+    return ans;
+}
+
 
 struct ChainGroup1Fixture {
 
@@ -29,7 +45,7 @@ struct ChainGroup1Fixture {
 
 };
 
-BOOST_FIXTURE_TEST_SUITE(ChainGroupTestSuite, ChainGroup1Fixture)
+BOOST_FIXTURE_TEST_SUITE(ChainGroupTestSuite, ChainGroup1Fixture, *utf::precondition(connection))
 
 
     BOOST_AUTO_TEST_CASE(chainGroupNumberOfChains) {
