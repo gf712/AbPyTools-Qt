@@ -69,10 +69,17 @@ BOOST_AUTO_TEST_SUITE(AbPyToolsImportTests)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture, *utf::precondition(connection))
+BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture)
 
-    BOOST_AUTO_TEST_CASE(UnnumberedSequenceTest) {
+    BOOST_AUTO_TEST_CASE(getterTest) {
 
+            BOOST_TEST(testObject->getName() == name);
+            BOOST_TEST(testObject->getSequence() == sequence);
+            BOOST_TEST(testObject->getNumberingScheme() == numbering_scheme);
+
+        }
+
+    BOOST_AUTO_TEST_CASE(UnnumberedSequenceTest, *utf::precondition(connection)) {
         AntibodyChainCPP* testObject;
         char name[5] = "test";
         char sequence[5] = "TEST";
@@ -83,13 +90,6 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture, *utf::precon
         BOOST_TEST(unnumberedTestObject.getStatus() == "Unnumbered");
     }
 
-    BOOST_AUTO_TEST_CASE(getterTest) {
-
-        BOOST_TEST(testObject->getName() == name);
-        BOOST_TEST(testObject->getSequence() == sequence);
-        BOOST_TEST(testObject->getNumberingScheme() == numbering_scheme);
-
-    }
 
     BOOST_AUTO_TEST_CASE(emptyConstructorTest) {
 
@@ -104,7 +104,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture, *utf::precon
     }
 
 
-    BOOST_AUTO_TEST_CASE(LoadTest) {
+    BOOST_AUTO_TEST_CASE(LoadTest, *utf::precondition(connection)) {
 
         char chain[6] = "heavy";
 
@@ -114,7 +114,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture, *utf::precon
 
     }
 
-    BOOST_AUTO_TEST_CASE(ChargeTest) {
+    BOOST_AUTO_TEST_CASE(ChargeTest, *utf::precondition(connection)) {
 
         char database[10] = "Wikipedia";
 
@@ -127,7 +127,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture, *utf::precon
 
     }
 
-    BOOST_AUTO_TEST_CASE(HydrophbocityTest) {
+    BOOST_AUTO_TEST_CASE(HydrophbocityTest, *utf::precondition(connection)) {
 
         char database[10] = "ew";
 
@@ -139,7 +139,7 @@ BOOST_FIXTURE_TEST_SUITE(AbPyToolsPyCInterface, ChainObjectFixture, *utf::precon
         BOOST_TEST(sumOfHValues == -8.01, tt::tolerance(10e-9));
     }
 
-    BOOST_AUTO_TEST_CASE(HydrophbocityParserTest) {
+    BOOST_AUTO_TEST_CASE(HydrophbocityParserTest, *utf::precondition(connection)) {
 
         std::string filepath = "data/abraham.hpb";
 
