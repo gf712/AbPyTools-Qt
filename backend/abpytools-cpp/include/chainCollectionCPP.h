@@ -5,7 +5,6 @@
 #ifndef ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H
 #define ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H
 
-#include <vector>
 #include <string>
 #include "chain.h"
 #include "chainCollectionCPP.h"

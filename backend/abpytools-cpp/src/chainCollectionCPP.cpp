@@ -108,6 +108,10 @@ T ChainCollectionCPP::genericGetter(boost::optional<T> optionalParam_) {
 
 void ChainCollectionCPP::load(int setting, ChainCollectionCPP* newChainCollectionCPP) {
 
+    // setting controls the behaviour when a sequence cannot be numbered:
+    // 0 - creates a new ChainCollectionCPP with all numbered sequences
+    // 1 - delete the entries that were not numbered
+
     std::cout << "nTried: " << nTried
               << "nFailed: " << nFailed
               << "nLoaded: " << nLoaded
@@ -168,10 +172,6 @@ void ChainCollectionCPP::load(int setting, ChainCollectionCPP* newChainCollectio
 
 
 void ChainCollectionCPP::handleUnnumberedSequences(int setting, ChainCollectionCPP* newChainCollectionCPP) {
-
-    // setting controls the behaviour when a sequence cannot be numbered:
-    // 0 - creates a new ChainCollectionCPP with all numbered sequences
-    // 1 - delete the entries that were not numbered
 
     if (setting == 0) {
 
@@ -309,6 +309,9 @@ void ChainCollectionCPP::performPCA(hydrophobicityParser &customHValues_, int nD
     // by default does not keep matrix
     auto hMatrix = getHydrophobicityValues(customHValues_, store);
 
+    std::cout << "H matrix cols: " << hMatrix.n_cols << std::endl;
+    std::cout << "H matrix rows: " << hMatrix.n_rows << std::endl;
+
     if (store) hydrophobicityMatrix = hMatrix;
 
     if (!pcaObject) {
@@ -336,6 +339,9 @@ void ChainCollectionCPP::performPCA(int nDimensions) {
     else {
         (*pcaObject)->setNDimensions(nDimensions);
     }
+
+    std::cout << "H matrix cols: " << (*hydrophobicityMatrix).n_cols << std::endl;
+    std::cout << "H matrix rows: " << (*hydrophobicityMatrix).n_rows << std::endl;
 
     (*pcaObject)->fit(*hydrophobicityMatrix);
 
