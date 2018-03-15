@@ -6,6 +6,7 @@
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
 #include "hydrophobicityParser.h"
+#include "connection_check.h"
 #include <cmath>
 
 // group class headers
@@ -103,6 +104,8 @@ private Q_SLOTS:
 
     void on_actionApplyPCA_triggered();
 
+    void get_abnum_connection_status();
+
 private:
     Ui::MainWindow *ui;
     ChainGroups *chainGroups;
@@ -112,6 +115,11 @@ private:
     std::string sequence;
     std::string numberingScheme;
     QTimer *timer;
+
+    QLabel *abnumConnected;
+    QLabel *abnumNotConnected;
+
+    bool abnumConnectionStatus;
 
     QString cacheText = "Welcome to AbPyTools-Qt:\n"
                         "------------------------\n"

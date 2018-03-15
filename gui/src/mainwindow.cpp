@@ -8,21 +8,47 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    Q_INIT_RESOURCE(sprites);
+
     ui->setupUi(this);
+
     chainGroups = new ChainGroups;
+    qDebug() << "Abnum is connected: " << chainGroups->isAbnumConnected();
     hGroups = new hydrophobicityGroups;
     ui->workingAreaTextBrowser->isReadOnly();
     ui->debugAreaTextBrowser->isReadOnly();
-
-    startedWorking = false;
+    ui->iconLayout->setAlignment(Qt::AlignRight);
 
     // display welcome message in working and debug windows
     updateWorkingWindow();
     updateDebugWindow();
+    startedWorking = false;
+
+    auto connectedPixmap = QPixmap(":/Sprites/Checkmark.png");
+    abnumConnected = new QLabel();
+    abnumConnected->setPixmap(connectedPixmap.scaled(15, 20, Qt::IgnoreAspectRatio,
+                                                     Qt::FastTransformation));
+
+    auto notConnectedPixmap = QPixmap(":/Sprites/Close-checkmark.png");
+    abnumNotConnected = new QLabel();
+    abnumNotConnected->setPixmap(notConnectedPixmap.scaled(15, 20, Qt::IgnoreAspectRatio,
+                                                           Qt::FastTransformation));
+
+    get_abnum_connection_status();
+
+    if (connectedPixmap.isNull()) qDebug() << "COULD NOT LOAD Checkmark.png";
+    if (notConnectedPixmap.isNull()) qDebug() << "COULD NOT LOAD Close-checkmark.png";
+
+    auto connectionTimer = new QTimer();
+    // every 1000ms check connection
+    connectionTimer->start(1000);
+    connect(connectionTimer, SIGNAL(timeout()), this, SLOT(get_abnum_connection_status()));
+
 }
 
 MainWindow::~MainWindow()
 {
+    Q_CLEANUP_RESOURCE(sprites);
     delete ui;
 }
 
@@ -373,6 +399,30 @@ void MainWindow::changeDatasetForPCA() {
     ui->plotArea->yAxis->setRange(ymin - delta, ymax + delta);
 
     ui->plotArea->replot();
+}
+
+// #####################################################################################################################
+//                                              ICON SLOTS
+// #####################################################################################################################
+
+void MainWindow::get_abnum_connection_status() {
+
+    if (chainGroups->isAbnumConnected()) {
+
+        qDebug() << "Connected";
+        ui->iconLayout->removeItem(0);
+        ui->iconLayout->addWidget(abnumConnected, 0);
+
+    }
+    else {
+
+        qDebug() << "Not connected";
+        ui->iconLayout->removeItem(0);
+        ui->iconLayout->addWidget(abnumNotConnected, 0);
+
+    }
+
+    qDebug() << "Updated connection image";
 }
 
 // #####################################################################################################################

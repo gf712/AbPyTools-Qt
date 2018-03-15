@@ -1,0 +1,16 @@
+//
+// Created by gil on 15/03/18.
+//
+
+#ifndef ABPYTOOLS_QT_ABNUMCONNECTIONWORKER_H
+#define ABPYTOOLS_QT_ABNUMCONNECTIONWORKER_H
+
+
+
+class abnumConnectionWorker {
+
+};
+
+
+
+#endif //ABPYTOOLS_QT_ABNUMCONNECTIONWORKER_H

@@ -10,6 +10,7 @@
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
 #include "chainCollectionCPP.h"
+#include "connection_check.h"
 
 #include "hydrophobicityParser.h"
 #include "fastaParser.h"
@@ -77,6 +78,11 @@ public:
     QString getInfo(QString groupName);
     bool groupExists(QString groupName_) {chainCollectionGroups.find(groupName_.toStdString()) != chainCollectionGroups.end();}
     bool groupExists(std::string groupName_) {chainCollectionGroups.find(groupName_) != chainCollectionGroups.end();}
+    bool isAbnumConnected() {
+        std::cout << "[ChainGroups] Is abnum connected: " << abnumConnection();
+        return abnumConnection();
+    }
+
 
 private:
     std::unordered_map<std::string, double> groupFASTALoadingProgressRecord;

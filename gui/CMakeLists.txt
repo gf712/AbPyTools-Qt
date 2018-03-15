@@ -4,12 +4,12 @@ project(AbPyToolsGUI)
 # https://cmake.org/pipermail/cmake/2009-January/026705.html
 ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # add ui/ directory to search path
 set(CMAKE_AUTOUIC_SEARCH_PATHS ui/)
@@ -44,12 +44,17 @@ set(UI_FILES
         ui/editdialog.ui
         )
 
+set(RESOURCE_FILES
+        sprites.qrc)
+
 set(TARGET_NAME ABPYTOOLS_GUI_LIBRARIES)
 
 add_library(${TARGET_NAME} STATIC
         ${SOURCE_FILES}
         ${HEADER_FILES}
-        ${UI_FILES})
+        ${UI_FILES}
+        ${RESOURCE_FILES}
+        )
 
 set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytools-gui")
 
@@ -72,6 +77,9 @@ add_subdirectory(tests)
 add_test(NAME AbPyToolsGUITestSuite COMMAND AbPyToolsGUITestSuite
          WORKING_DIRECTORY ${AbPyToolsCPPGUITests_BIN_DIR})
 
+###################################################################
+#                           BUILD APP
+###################################################################
 
 add_executable(AbPyToolsQt
         src/main.cpp)
