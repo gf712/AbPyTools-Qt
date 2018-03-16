@@ -6,9 +6,9 @@
 
 bool abnumConnection() {
 
-    std::string base_command = "ping -c ";
+    std::string base_command = "timeout 0.2 ping -c ";
     std::string max_attempts = "1";
-    std::string url = " www.bioinf.org.uk";
+    std::string url = " www.google.com";
     std::string mode = "r";
     FILE *in;
 
