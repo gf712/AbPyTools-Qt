@@ -23,6 +23,7 @@ set(SOURCE_FILES
         src/hydrophobicityGroup.cpp
         src/editdialog.cpp
         src/qcustomplot.cpp
+        src/abnumConnectionWorker.cpp
         )
 
 set(HEADER_FILES
@@ -34,6 +35,7 @@ set(HEADER_FILES
         include/hydrophobicityGroup.h
         include/editdialog.h
         include/qcustomplot.h
+        include/abnumConnectionWorker.h
         )
 
 set(UI_FILES

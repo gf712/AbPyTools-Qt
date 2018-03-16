@@ -13,6 +13,7 @@
 #include "chainGroups.h"
 #include "hydrophobicityGroup.h"
 #include "qcustomplot.h"
+#include "abnumConnectionWorker.h"
 
 // ui class headers
 #include "newsequencedialog.h"
@@ -54,6 +55,8 @@ public:
 //    void addAntibodyObjectText(std::string name_);
     void addAntibodyObjectDebugText(AntibodyChainCPP *object_);
     void loadFASTADebugText();
+    void startApp();
+    void startConnection();
 //    void addGroupText(std::string name);
 
 //    void updateWorkingWindowGroup();
@@ -104,7 +107,7 @@ private Q_SLOTS:
 
     void on_actionApplyPCA_triggered();
 
-    void get_abnum_connection_status();
+    void update_abnum_connection(bool isConnected_);
 
 private:
     Ui::MainWindow *ui;

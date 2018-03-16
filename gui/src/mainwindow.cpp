@@ -12,9 +12,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-    chainGroups = new ChainGroups;
-    qDebug() << "Abnum is connected: " << chainGroups->isAbnumConnected();
-    hGroups = new hydrophobicityGroups;
+    startApp();
+
+}
+
+MainWindow::~MainWindow()
+{
+    Q_CLEANUP_RESOURCE(sprites);
+    delete ui;
+}
+// #####################################################################################################################
+//                                                  MAIN ROUTINES
+// #####################################################################################################################
+
+void MainWindow::startApp() {
+
+    chainGroups = new ChainGroups();
+    hGroups = new hydrophobicityGroups();
+
     ui->workingAreaTextBrowser->isReadOnly();
     ui->debugAreaTextBrowser->isReadOnly();
     ui->iconLayout->setAlignment(Qt::AlignRight);
@@ -24,6 +39,14 @@ MainWindow::MainWindow(QWidget *parent) :
     updateDebugWindow();
     startedWorking = false;
 
+    // routines that live throughout the application
+    startConnection();
+}
+
+
+void MainWindow::startConnection() {
+
+    // starts thread to check internet connection
     auto connectedPixmap = QPixmap(":/Sprites/Checkmark.png");
     abnumConnected = new QLabel();
     abnumConnected->setPixmap(connectedPixmap.scaled(15, 20, Qt::IgnoreAspectRatio,
@@ -34,23 +57,17 @@ MainWindow::MainWindow(QWidget *parent) :
     abnumNotConnected->setPixmap(notConnectedPixmap.scaled(15, 20, Qt::IgnoreAspectRatio,
                                                            Qt::FastTransformation));
 
-    get_abnum_connection_status();
+    auto *connectionThread = new QThread();
+    auto *abnumConnection = new abnumConnectionWorker();
 
-    if (connectedPixmap.isNull()) qDebug() << "COULD NOT LOAD Checkmark.png";
-    if (notConnectedPixmap.isNull()) qDebug() << "COULD NOT LOAD Close-checkmark.png";
+    abnumConnection->moveToThread(connectionThread);
 
-    auto connectionTimer = new QTimer();
-    // every 1000ms check connection
-    connectionTimer->start(1000);
-    connect(connectionTimer, SIGNAL(timeout()), this, SLOT(get_abnum_connection_status()));
+    connect(connectionThread, SIGNAL(started()), abnumConnection, SLOT(checkConnection()));
+    connect(abnumConnection, SIGNAL(connectionStatus(bool)), this, SLOT(update_abnum_connection(bool)));
 
+    connectionThread->start();
 }
 
-MainWindow::~MainWindow()
-{
-    Q_CLEANUP_RESOURCE(sprites);
-    delete ui;
-}
 
 // #####################################################################################################################
 //                                               FILE MENU SLOTS
@@ -405,21 +422,26 @@ void MainWindow::changeDatasetForPCA() {
 //                                              ICON SLOTS
 // #####################################################################################################################
 
-void MainWindow::get_abnum_connection_status() {
+void MainWindow::update_abnum_connection(bool isConnected_) {
 
-    if (chainGroups->isAbnumConnected()) {
+    if (isConnected_) {
 
         qDebug() << "Connected";
-        ui->iconLayout->removeItem(0);
+        auto temp = ui->iconLayout->takeAt(0);
+        ui->iconLayout->removeItem(temp);
+        abnumNotConnected->hide();
         ui->iconLayout->addWidget(abnumConnected, 0);
-
+        abnumConnected->show();
     }
+
     else {
 
         qDebug() << "Not connected";
-        ui->iconLayout->removeItem(0);
+        auto temp = ui->iconLayout->takeAt(0);
+        ui->iconLayout->removeItem(temp);
+        abnumConnected->hide();
         ui->iconLayout->addWidget(abnumNotConnected, 0);
-
+        abnumNotConnected->show();
     }
 
     qDebug() << "Updated connection image";
