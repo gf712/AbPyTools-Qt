@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Sprites/Checkmark.png</file>
+        <file>Sprites/Close-checkmark.png</file>
+    </qresource>
+</RCC>

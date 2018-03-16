@@ -5,7 +5,6 @@
 #ifndef ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H
 #define ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H
 
-#include <vector>
 #include <string>
 #include "chain.h"
 #include "chainCollectionCPP.h"
@@ -26,29 +25,41 @@ class ChainCollectionCPP {
 
 public:
     // CONSTRUCTORS
-    ChainCollectionCPP();
+    ChainCollectionCPP(std::string NumberingScheme);
     ChainCollectionCPP(std::vector<AntibodyChainCPP> antibodyObjects);
     ChainCollectionCPP(char* path, char* numberingScheme);
     ~ChainCollectionCPP() = default;
 
     // METHODS
-    void load();
+    void load(int setting=1, ChainCollectionCPP* newChainCollectionCPP=nullptr);
     void append(AntibodyChainCPP &AntibodyObject_);
+    void append(AntibodyChainCPP *AntibodyObject_);
     void append(std::string name_, std::string sequence);
+
     void updateAntibodyObjectVector(AntibodyChainCPP &antibodyObject);
+    void updateAntibodyObjectVector(AntibodyChainCPP *antibodyObject);
+
+    void handleUnnumberedSequences(int setting, ChainCollectionCPP* newChainCollectionCPP);
+
+    void removeChain(int index);
+    void removeChain(std::string name);
 
     // GETTERS
     template <typename T>
     T genericGetter(boost::optional<T>);
 
     int getNumberOfChains() { return numberOfChains;}
+
     bool isLoaded() { return loaded;}
+    bool isPartial() {return partial;}
+
     std::vector<std::string> getNames() {return names;}
     std::vector<std::string> getSequences() {return sequences;}
-    std::vector<AntibodyChainCPP*> getAntibodyObjectPointers() {return antibodyObjectPointers;}
     std::string getChainType() {return chainType;}
+    std::vector<AntibodyChainCPP*> getAntibodyObjectPointers() {return antibodyObjectPointers;}
     std::string getNumberingScheme() {return numberingScheme;}
     int getNTried() {return nTried;}
+    AntibodyChainCPP* getAntibodyObject(int index) {return antibodyObjectPointers[index];}
 
     PCA* getPCAObject() { return !pcaObject ? throw "Error" : *pcaObject;}
 
@@ -66,8 +77,12 @@ public:
 
     // SETTERS
     void setNumberingScheme(std::string numberingScheme_) { numberingScheme = numberingScheme_;}
+    void setChainType(std::string chainType_) {chainType = chainType_;}
+    void setLoaded(bool loaded_) {loaded = loaded_;}
+    void setPartial(bool partial_) {partial = partial_;}
 
 private:
+    bool partial;
     int numberOfChains;
     bool loaded;
     int nLoaded;
@@ -89,6 +104,7 @@ private:
 
     boost::optional<PCA*> pcaObject;
 
+    std::unordered_map<std::string, bool> loadedMap;
 };
 
 #endif //ABPYTOOLS_QT_CHAINCOLLECTIONCPP_H

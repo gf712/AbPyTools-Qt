@@ -6,11 +6,7 @@
 
 void ChainGroups::addGroup(std::string name, std::string numberingScheme) {
 
-
-    auto chainCollection = new ChainCollectionCPP();
-
-    // makes sense to move, since this is the only copy we need
-    chainCollection->setNumberingScheme(std::move(numberingScheme));
+    auto chainCollection = new ChainCollectionCPP(numberingScheme);
 
     chainCollectionGroups[name] = chainCollection;
 
@@ -37,6 +33,15 @@ void ChainGroups::addHydrophobicityValues(std::string chainGroupName_, hydrophob
 }
 
 
+void ChainGroups::removeGroup(std::string groupName_) {
+
+    chainCollectionGroups.erase(groupName_);
+    performedPCA.erase(groupName_);
+    hasHDatabase.erase(groupName_);
+
+    internalCounter--;
+}
+
 arma::mat ChainGroups::getHydrophobicityValues(std::string chainGroupName_) {
 
     return chainCollectionGroups[chainGroupName_]->getHydrophobicityValues(*chainCollectionHDatabase[chainGroupName_]);
@@ -61,14 +66,18 @@ QString ChainGroups::getInfo(std::string groupName) {
             "   - number of sequences: %2\n"
             "   - numbering scheme: %3\n"
             "   - loaded: %4\n"
-            "   - hydrophobicity values: %5\n";
+            "   - partial: %5\n"
+            "   - hydrophobicity values: %6\n"
+            "   - chain type: %7\n";
 
     QString boolText = chainCollectionGroups[groupName]->isLoaded() ? "true" : "false";
+    QString partialText = chainCollectionGroups[groupName]->isPartial() ? "true" : "false";
 
     text = text.arg(QString::fromStdString(groupName),
                     QString::number(chainCollectionGroups[groupName]->getNumberOfChains()),
                     QString::fromStdString(chainCollectionGroups[groupName]->getNumberingScheme()),
                     boolText,
+                    partialText,
                     QString(getHydrophobicityParserName(groupName)),
                     QString::fromStdString(chainCollectionGroups[groupName]->getChainType()));
     return text;
@@ -81,15 +90,18 @@ QString ChainGroups::getInfo(QString groupName) {
             "   - number of sequences: %2\n"
             "   - numbering scheme: %3\n"
             "   - loaded: %4\n"
-            "   - hydrophobicity values: %5\n"
-            "   - chain type: %6\n";
+            "   - partial: %5\n"
+            "   - hydrophobicity values: %6\n"
+            "   - chain type: %7\n";
 
     QString boolText = chainCollectionGroups[groupName.toStdString()]->isLoaded() ? "true" : "false";
+    QString partialText = chainCollectionGroups[groupName.toStdString()]->isPartial() ? "true" : "false";
 
     text = text.arg(groupName,
                     QString::number(chainCollectionGroups[groupName.toStdString()]->getNumberOfChains()),
                     QString::fromStdString(chainCollectionGroups[groupName.toStdString()]->getNumberingScheme()),
                     boolText,
+                    partialText,
                     QString(getHydrophobicityParserName(groupName)),
                     QString::fromStdString(chainCollectionGroups[groupName.toStdString()]->getChainType()));
 
@@ -97,26 +109,29 @@ QString ChainGroups::getInfo(QString groupName) {
 
 }
 
-void ChainGroups::applyNumbering() {
-
-    QTextStream out(stdout);
-
-    out << "ERROR" << endl;
+void ChainGroups::applyNumbering(int setting) {
 
     for (auto &pair: chainCollectionGroups) {
 
+        // setting = 0 -> create a new group to add sequences that were successfully numbered and keep original group
+        // setting = 1 -> delete non numbered sequences
+        addGroup(pair.first+"_numbered", pair.second->getNumberingScheme());
+
         try {
-            pair.second->load();
+            pair.second->load(setting, chainCollectionGroups[pair.first+"_numbered"]);
         }
         catch (...) {
 //            QTextStream out(stdout);
 //
 //            out << boost::current_exception_diagnostic_information() << endl;
 //            qDebug() << QString::fromStdString(boost::current_exception_diagnostic_information());
+            throw "Error in ChainGroups::applyNumbering when calling load";
         }
 
+        if (chainCollectionGroups[pair.first+"_numbered"]->getNumberOfChains() == 0){
+            removeGroup(pair.first+"_numbered");
+        }
     }
-
 }
 
 void ChainGroups::loadFASTA(std::string chainGroupName_, std::string filename_) {
@@ -226,8 +241,6 @@ double ChainGroups::numberingProgress() {
         std::cout << groupPair.first << ", number of tries: " << groupPair.second->getNTried() << std::endl;
         completed += groupPair.second->getNTried();
     }
-
-    std::cout << completed << " / " << total << " * 100 = " << (completed / total) * 100;
 
     return (completed / total) * 100;
 }

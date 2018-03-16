@@ -9,21 +9,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1013</width>
-    <height>676</height>
+    <width>1021</width>
+    <height>701</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>20</y>
       <width>971</width>
-      <height>591</height>
+      <height>611</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -94,6 +94,9 @@
          </property>
         </widget>
        </item>
+       <item>
+        <layout class="QHBoxLayout" name="iconLayout"/>
+       </item>
       </layout>
      </item>
      <item row="0" column="0" rowspan="3">
@@ -122,7 +125,7 @@
          <property name="maximumSize">
           <size>
            <width>300</width>
-           <height>550</height>
+           <height>580</height>
           </size>
          </property>
         </widget>
@@ -150,7 +153,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1013</width>
+     <width>1021</width>
      <height>22</height>
     </rect>
    </property>

@@ -3,8 +3,6 @@
 # PYTHON_NUMPY_FOUND
 # will be set by this script
 
-cmake_minimum_required(VERSION 3.1)
-
 if(NOT PYTHON_EXECUTABLE)
     if(NumPy_FIND_QUIETLY)
         find_package(PythonInterp QUIET)

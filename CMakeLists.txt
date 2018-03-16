@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 
 enable_testing()
 
-# C++ code is all written in c++ 11 standard
+# C++ code is all written in C++11 standard
 set (CMAKE_CXX_STANDARD 11)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -25,8 +25,8 @@ HunterGate(
 project(AbPyTools-Qt)
 
 # find python3.5 or greater
+find_package(PythonInterp 3.5 REQUIRED)
 find_package(PythonLibs 3.5 REQUIRED)
-#find_package(PythonInterp 3.5 REQUIRED)
 
 # get boost and build unit_test_framework and python3 -> requires python3 interpreter
 hunter_add_package(Boost COMPONENTS test python filesystem)
@@ -38,6 +38,7 @@ find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport Concurrent
 find_package(Numpy REQUIRED)
 find_package(MLPACK REQUIRED)
 find_package(Armadillo REQUIRED)
+find_package(AbPyTools 0.2.3 REQUIRED)
 
 ############################################################################################
 #                                     DECLARATIONS
@@ -56,7 +57,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 #                                  ADD PROJECT DIRS
 ############################################################################################
 
-#add_subdirectory(3rd_Party_)
 add_subdirectory(backend)
 add_subdirectory(gui)
 

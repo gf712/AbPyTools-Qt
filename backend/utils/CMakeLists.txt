@@ -4,15 +4,19 @@ set(BACKEND_UTILS_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 set(TARGET_NAME ABPYTOOLSCPP_EXCEPTIONS_LIBRARIES)
 
 add_library(${TARGET_NAME} STATIC
-        src/abpytools_exceptions.cpp)
+        src/abpytools_exceptions.cpp
+        src/connection_check.cpp
+    )
 
 set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME "abpytoolscpp-exceptions")
 
-target_include_directories(${TARGET_NAME}
-        PUBLIC include/
-        PUBLIC ${PYTHON_INCLUDE_DIRS}
-        PUBLIC ${Boost_INCLUDE_DIRS}
+target_include_directories(${TARGET_NAME} PUBLIC
+        include/
+        ${PYTHON_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET_NAME}
-        PUBLIC ${PYTHON_LIBRARY})
+        PUBLIC
+        ${PYTHON_LIBRARIES}
+        Boost::unit_test_framework
+        )

@@ -15,8 +15,8 @@ then
     wget -O boost_1_66_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.gz/download
     tar -xzf boost_1_66_0.tar.gz
     cd boost_1_66_0/
-    sudo apt-get install autotools-dev libicu-dev build-essential libbz2-dev libboost-all-dev -y
-    ./bootstrap.sh --with-python-version=3.6 --with-libraries=test,python,filesystem,system
+    sudo apt-get install autotools-dev libicu-dev build-essential libbz2-dev -y
+    ./bootstrap.sh --with-python=$HOME/miniconda/envs/test-environment/bin/python --with-libraries=test,python,filesystem,system
     ./b2 -j4
     sudo ./b2 install
     # qt

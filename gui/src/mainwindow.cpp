@@ -8,24 +8,66 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    Q_INIT_RESOURCE(sprites);
+
     ui->setupUi(this);
-    chainGroups = new ChainGroups;
-    hGroups = new hydrophobicityGroups;
-    antibodyObjects = new ChainCollectionCPP();
-    ui->workingAreaTextBrowser->isReadOnly();
-    ui->debugAreaTextBrowser->isReadOnly();
 
-    startedWorking = false;
+    startApp();
 
-    // display welcome message in working and debug windows
-    updateWorkingWindow();
-    updateDebugWindow();
 }
 
 MainWindow::~MainWindow()
 {
+    Q_CLEANUP_RESOURCE(sprites);
     delete ui;
 }
+// #####################################################################################################################
+//                                                  MAIN ROUTINES
+// #####################################################################################################################
+
+void MainWindow::startApp() {
+
+    chainGroups = new ChainGroups();
+    hGroups = new hydrophobicityGroups();
+
+    ui->workingAreaTextBrowser->isReadOnly();
+    ui->debugAreaTextBrowser->isReadOnly();
+    ui->iconLayout->setAlignment(Qt::AlignRight);
+
+    // display welcome message in working and debug windows
+    updateWorkingWindow();
+    updateDebugWindow();
+    startedWorking = false;
+
+    // routines that live throughout the application
+    startConnection();
+}
+
+
+void MainWindow::startConnection() {
+
+    // starts thread to check internet connection
+    auto connectedPixmap = QPixmap(":/Sprites/Checkmark.png");
+    abnumConnected = new QLabel();
+    abnumConnected->setPixmap(connectedPixmap.scaled(15, 20, Qt::IgnoreAspectRatio,
+                                                     Qt::FastTransformation));
+
+    auto notConnectedPixmap = QPixmap(":/Sprites/Close-checkmark.png");
+    abnumNotConnected = new QLabel();
+    abnumNotConnected->setPixmap(notConnectedPixmap.scaled(15, 20, Qt::IgnoreAspectRatio,
+                                                           Qt::FastTransformation));
+
+    auto *connectionThread = new QThread();
+    auto *abnumConnection = new abnumConnectionWorker();
+
+    abnumConnection->moveToThread(connectionThread);
+
+    connect(connectionThread, SIGNAL(started()), abnumConnection, SLOT(checkConnection()));
+    connect(abnumConnection, SIGNAL(connectionStatus(bool)), this, SLOT(update_abnum_connection(bool)));
+
+    connectionThread->start();
+}
+
 
 // #####################################################################################################################
 //                                               FILE MENU SLOTS
@@ -116,7 +158,7 @@ void MainWindow::numbering_helper() {
 
     // running this with a slot allows to determine order
     // in which qt slots are called before the numbering starts
-    chainGroups->applyNumbering();
+    chainGroups->applyNumbering(0);
 
     qDebug() << "COMPLETED NUMBERING";
 
@@ -186,8 +228,8 @@ void MainWindow::addFASTA(std::string groupName_, QString filename_) {
     pbar->show();
 
     pBarhelperTimer->setProperty("groupName", QString::fromStdString(groupName_));
-    // update progress bar every 5ms
-    pBarhelperTimer->start(5);
+    // update progress bar every 1 ms
+    pBarhelperTimer->start(1);
 
     // create thread to run chain numbering thread and use watcher to handle signals and slots
     QFuture<void> future = QtConcurrent::run(this, &MainWindow::addFASTA_helper, groupName_, filename_);
@@ -207,7 +249,7 @@ void MainWindow::addFASTA(std::string groupName_, QString filename_) {
 
     connect(this, SIGNAL(FASTA_helper_completed()), pbar, SLOT(close()));
     connect(this, SIGNAL(FASTA_helper_completed()), pBarhelperTimer, SLOT(stop()));
-//    connect(this, SIGNAL(FASTA_helper_completed()), )
+    connect(this, SIGNAL(FASTA_helper_completed()), this, SLOT(updateWorkingWindowGroup()));
 }
 
 
@@ -311,7 +353,6 @@ void MainWindow::sendHydophobicityDatasetNameToChildOnRequest(QString groupName_
 //                                               ANALYSIS MENU SLOTS
 // #####################################################################################################################
 
-
 void MainWindow::changeDatasetForPCA() {
 
     qDebug() << "Getting info from PCA plot combobox";
@@ -346,10 +387,64 @@ void MainWindow::changeDatasetForPCA() {
     ui->plotArea->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->plotArea->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 4));
 //    ui->plotArea->rescaleAxes();
-    ui->plotArea->xAxis->setRange(-1, 1);
-    ui->plotArea->yAxis->setRange(-1, 1);
+
+    bool foundX, foundY;
+
+    auto xrange = ui->plotArea->graph(0)->data()->keyRange(foundX);
+    auto yrange = ui->plotArea->graph(0)->data()->valueRange(foundY);
+
+    double xmin = xmin < 0 ? xrange.lower * 1.1 : xrange.lower * 0.9;
+    double xmax = xmax < 0 ? xrange.upper * 0.9 : xrange.upper * 1.1;
+    double ymin = ymin < 0 ? yrange.lower * 1.1 : yrange.lower * 0.9;
+    double ymax = ymax < 0 ? yrange.upper * 0.9 : yrange.upper * 1.1;
+
+    std::cout << "PRE ADJUSTMENT: \n";
+    std::cout << "X_MIN: " << xrange.lower << std::endl;
+    std::cout << "X_MAX: " << xrange.upper << std::endl;
+    std::cout << "Y_MIN: " << yrange.lower << std::endl;
+    std::cout << "Y_MAX: " << yrange.upper << std::endl;
+
+    std::cout << "\nADJUSTED:\n";
+    std::cout << "X_MIN: " << xmin << std::endl;
+    std::cout << "X_MAX: " << xmax << std::endl;
+    std::cout << "Y_MIN: " << ymin << std::endl;
+    std::cout << "Y_MAX: " << ymax << std::endl;
+
+    double delta = (fabs(xmax) - fabs(xmin) > fabs(ymax) - fabs(ymax)) ? fabs(xmax) - fabs(xmin) : fabs(ymax) - fabs(ymax);
+
+    ui->plotArea->xAxis->setRange(xmin - delta, xmax + delta);
+    ui->plotArea->yAxis->setRange(ymin - delta, ymax + delta);
 
     ui->plotArea->replot();
+}
+
+// #####################################################################################################################
+//                                              ICON SLOTS
+// #####################################################################################################################
+
+void MainWindow::update_abnum_connection(bool isConnected_) {
+
+    if (isConnected_) {
+
+        qDebug() << "Connected";
+        auto temp = ui->iconLayout->takeAt(0);
+        ui->iconLayout->removeItem(temp);
+        abnumNotConnected->hide();
+        ui->iconLayout->addWidget(abnumConnected, 0);
+        abnumConnected->show();
+    }
+
+    else {
+
+        qDebug() << "Not connected";
+        auto temp = ui->iconLayout->takeAt(0);
+        ui->iconLayout->removeItem(temp);
+        abnumConnected->hide();
+        ui->iconLayout->addWidget(abnumNotConnected, 0);
+        abnumNotConnected->show();
+    }
+
+    qDebug() << "Updated connection image";
 }
 
 // #####################################################################################################################
