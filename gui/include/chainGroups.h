@@ -10,6 +10,7 @@
 #include <boost/range/combine.hpp>
 #include <boost/foreach.hpp>
 #include "chainCollectionCPP.h"
+#include "connection_check.h"
 
 #include "hydrophobicityParser.h"
 #include "fastaParser.h"
@@ -29,6 +30,9 @@ public:
     void addChain(std::string groupName_, std::string name_, std::string sequence_);
     void addHydrophobicityValues(std::string groupName_, hydrophobicityParser *hParse);
 
+    // REMOVE DATA
+    void removeGroup(std::string groupName_);
+
     // PERFORM ANALYSIS
     void performPCA(std::string groupName, int nDimensions);
     void performPCA(QString groupName, int nDimensions);
@@ -37,14 +41,18 @@ public:
     void setNumberingScheme(std::string groupName_, std::string numberingScheme_);
 
     // GETTERS
-    std::string getNumberingScheme(std::string groupName) {return chainCollectionGroups[groupName]->getNumberingScheme();}
-    int getNumberOfSequences(std::string groupName) {return chainCollectionGroups[groupName]->getNumberOfChains();}
+    std::string getNumberingScheme(std::string groupName) {
+        if (groupExists(groupName)) return chainCollectionGroups[groupName]->getNumberingScheme();
+        else throw "Group does not exist!";
+    }
+
+    int getNumberOfSequences(std::string groupName) {
+        if (groupExists(groupName)) return chainCollectionGroups[groupName]->getNumberOfChains();
+        else throw "Group does not exist!";
+    }
 
     QStringList getGroupNames();
     ChainCollectionCPP* getChainCollection(std::string groupName) { return chainCollectionGroups[groupName];}
-
-    QString getInfo(std::string groupName);
-    QString getInfo(QString groupName);
 
     QString getHydrophobicityParserName(std::string groupName_);
     QString getHydrophobicityParserName(QString groupName_);
@@ -59,11 +67,22 @@ public:
 
     QVector<double> getPrincipalComponent(QString chainGroupName_, int pc);
 
-    void applyNumbering();
+    void applyNumbering(int setting);
     void loadFASTA(std::string chainGroupName_, std::string filename_);
 
     double fastaParsingProgress(std::string groupName_);
     double numberingProgress();
+
+    // MAINTENANCE
+    QString getInfo(std::string groupName);
+    QString getInfo(QString groupName);
+    bool groupExists(QString groupName_) {chainCollectionGroups.find(groupName_.toStdString()) != chainCollectionGroups.end();}
+    bool groupExists(std::string groupName_) {chainCollectionGroups.find(groupName_) != chainCollectionGroups.end();}
+    bool isAbnumConnected() {
+        std::cout << "[ChainGroups] Is abnum connected: " << abnumConnection();
+        return abnumConnection();
+    }
+
 
 private:
     std::unordered_map<std::string, double> groupFASTALoadingProgressRecord;

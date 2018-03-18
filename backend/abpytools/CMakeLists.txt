@@ -18,13 +18,14 @@ target_include_directories(${TARGET_NAME}
 target_include_directories(${TARGET_NAME} SYSTEM
         PUBLIC ${PYTHON_INCLUDE_DIRS}
         ${BACKEND_UTILS_DIRS}
-        ${BOOST_INCLUDE_DIRS}
+#        ${BOOST_INCLUDE_DIRS}
         ${PYTHON_NUMPY_INCLUDE_DIR})
 
 target_link_libraries(${TARGET_NAME}
         ${ABPYTOOLSCPP_EXCEPTIONS_LIBRARIES}
         ABPYTOOLSCPP_PARSER_LIBRARIES
-        ${PYTHON_LIBRARY})
+        ${PYTHON_LIBRARY}
+        Boost::python3)
 
 add_subdirectory(tests)
 

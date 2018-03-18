@@ -22,7 +22,7 @@ class AntibodyChainCPP {
 public:
     AntibodyChainCPP() {aligned=false;}
     AntibodyChainCPP(std::string sequence, std::string name, std::string numbering_scheme);
-    AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme);
+    AntibodyChainCPP(const char &sequence, const char &name, const char &numbering_scheme);
     ~AntibodyChainCPP() = default;
 
     // GETTERS (for python @property)
@@ -34,6 +34,7 @@ public:
     std::string getChain();
     std::vector<double> getAminoAcidCharges(bool align, double pH, char *pka_database);
     std::vector<double> getHydrophobicityMatrix(char *hydrophobicity_scores);
+    std::string getStatus();
 
     // SETTERS
     // can start object with empty initialisera and set values after
@@ -48,7 +49,7 @@ public:
     std::vector<double> getHydrophobicityMatrix(hydrophobicityParser &customHValues_);
 
     // METHODS
-    void load();
+    void load(bool silent=false);
 
     // LOGGING METHODS
     void printSequence();

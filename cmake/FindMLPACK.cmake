@@ -3,8 +3,8 @@
 
 #.rst:
 # FindMLPACK
-# -------------
 #
+# -------------
 # Find MLPACK
 #
 # Find the MLPACK C++ library

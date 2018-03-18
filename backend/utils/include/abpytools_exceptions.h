@@ -89,4 +89,25 @@ public:
 
 };
 
+class NumberingException: public std::runtime_error {
+
+public:
+
+    NumberingException(): runtime_error("Numbering not possible with the given sequence!") {}
+
+    explicit NumberingException(std::string msg):runtime_error(msg.c_str()){}
+
+};
+
+
+class ConnectionException: public std::runtime_error {
+
+public:
+
+    ConnectionException(): runtime_error("Error whilst trying to establish a connection!") {}
+
+    explicit ConnectionException(std::string msg):runtime_error(msg.c_str()){}
+
+};
+
 #endif //ABPYTOOLS_QT_EXCEPTION_H

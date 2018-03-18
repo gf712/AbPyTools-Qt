@@ -3,11 +3,12 @@
 //
 
 #include "../include/chain.h"
-#include "abpytools_exceptions.h"
 
 using namespace boost::python;
 
 AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::string numbering_scheme) {
+
+    std::cout << "sequence: " << sequence << ", name:" << name << ", numbering scheme: " << numbering_scheme;
 
     aligned = false;
 
@@ -25,18 +26,21 @@ AntibodyChainCPP::AntibodyChainCPP(std::string sequence, std::string name, std::
     }
 
     // now we can instantiate the python object
+    // Chain(self, sequence='', name='Chain1', numbering=None, numbering_scheme='chothia')
     chainObject = PyObject_CallFunction(Chain, "ssOs", sequence.c_str(), name.c_str(), Py_None,
                                         numbering_scheme.c_str());
 
     if (chainObject == nullptr) {
-        std::cout << "Error instantiating object";
+        throw "Error instantiating object";
     }
 
 }
 
 
 
-AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_scheme) {
+AntibodyChainCPP::AntibodyChainCPP(const char &sequence, const char &name, const char &numbering_scheme) {
+
+    std::cout << "sequence: " << sequence << ", name:" << name << ", numbering scheme: " << numbering_scheme;
 
     aligned = false;
 
@@ -54,10 +58,11 @@ AntibodyChainCPP::AntibodyChainCPP(char *sequence, char *name, char *numbering_s
     }
 
     // now we can instantiate the python object
+    // Chain(self, sequence='', name='Chain1', numbering=None, numbering_scheme='chothia')
     chainObject = PyObject_CallFunction(Chain, "ssOs", sequence, name, Py_None, numbering_scheme);
 
     if (chainObject == nullptr) {
-        std::cout << "Error instantiating object";
+        throw "Error instantiating object";
     }
 
 }
@@ -98,8 +103,6 @@ std::string AntibodyChainCPP::getAlignedSequence() {
         for (int j = 0; j < arraySize; ++j) {
             (*alignedSequence).append((char*) PyArray_GETPTR1(alignedSequenceArray, j));
         }
-
-        std::cout << (*alignedSequence) << "\n";
     }
 
     return *alignedSequence;
@@ -109,6 +112,7 @@ std::string AntibodyChainCPP::getNumberingScheme() {
     if (!numbering_scheme) {
         numbering_scheme = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "numbering_scheme"));
     }
+
     return *numbering_scheme;
 }
 
@@ -117,10 +121,14 @@ std::string AntibodyChainCPP::getChain() {
         chain = PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "chain"));
     }
 
-    std::cout << "call getChain(): " << *chain << std::endl;
-
     return *chain;
 }
+
+std::string AntibodyChainCPP::getStatus() {
+
+   return PyUnicode_AsUTF8(PyObject_GetAttrString(chainObject, "status"));
+}
+
 
 std::vector<double> AntibodyChainCPP::getAminoAcidCharges(bool align, double pH, char *pka_database) {
 
@@ -186,28 +194,20 @@ std::vector<double> AntibodyChainCPP::getHydrophobicityMatrix(hydrophobicityPars
     return hValues;
 }
 
-void AntibodyChainCPP::load() {
+void AntibodyChainCPP::load(bool silent) {
 
     if (!aligned) {
-        try {
-            PyObject_CallMethod(chainObject, "load", "");
+        PyObject_CallMethod(chainObject, "load", "");
 
+        if (getStatus() == "Unnumbered") {
+            if (!silent) throw NumberingException();
         }
-        catch (error_already_set &) {
-            PyObject * pType, *pValue, *pTraceback;
-
-            PyErr_Fetch(&pType, &pValue, &pTraceback);
-
-            throw PythonAbPyToolsError(pType, pValue, pTraceback);
+        else if (getStatus() == "Not Loaded") {
+            if (!silent) throw ConnectionException();
         }
+
+        if (getChain() == "heavy" or getChain() == "light") aligned = true;
     }
-
-    std::cout << "call getChain() from load(): " << getChain() << std::endl;
-
-    if (getChain() == "heavy" or getChain() == "light")
-        aligned = true;
-//    else
-//        std::cout << getChain();
 }
 
 void AntibodyChainCPP::printSequence() {

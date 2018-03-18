@@ -23,7 +23,8 @@ target_include_directories(${TARGET_NAME} SYSTEM
 
 target_link_libraries(${TARGET_NAME}
         ABPYTOOLSCPP_EXCEPTIONS_LIBRARIES
-        ${Boost_LIBRARIES}
+        Boost::unit_test_framework
+        Boost::filesystem
         )
 
 file(COPY data/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)

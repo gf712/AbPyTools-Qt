@@ -6,11 +6,14 @@
 #include "chainCollectionCPP.h"
 #include "fastaParser.h"
 #include "hydrophobicityParser.h"
+#include "connection_check.h"
+#include <cmath>
 
 // group class headers
 #include "chainGroups.h"
 #include "hydrophobicityGroup.h"
 #include "qcustomplot.h"
+#include "abnumConnectionWorker.h"
 
 // ui class headers
 #include "newsequencedialog.h"
@@ -48,10 +51,13 @@ public:
     // GETTERS
     Ui::MainWindow* getUI() {return ui;}
 
-    // Display message editors
 //    void addAntibodyObjectText(std::string name_);
     void addAntibodyObjectDebugText(AntibodyChainCPP *object_);
     void loadFASTADebugText();
+    void startApp();
+    void startConnection();
+    void plotSettings();
+
 //    void addGroupText(std::string name);
 
 //    void updateWorkingWindowGroup();
@@ -102,17 +108,27 @@ private Q_SLOTS:
 
     void on_actionApplyPCA_triggered();
 
+    void update_abnum_connection(bool isConnected_);
+
+    void adjustXAxisLower();
+    void adjustYAxisLower();
+    void adjustXAxisUpper();
+    void adjustYAxisUpper();
+
 private:
     Ui::MainWindow *ui;
     ChainGroups *chainGroups;
     hydrophobicityGroups *hGroups;
-    AntibodyChainCPP *antibodyObject;
-    ChainCollectionCPP *antibodyObjects;
     FastaParser *fastaParser;
     std::string name;
     std::string sequence;
     std::string numberingScheme;
     QTimer *timer;
+
+    QLabel *abnumConnected;
+    QLabel *abnumNotConnected;
+
+    bool abnumConnectionStatus;
 
     QString cacheText = "Welcome to AbPyTools-Qt:\n"
                         "------------------------\n"
@@ -122,6 +138,11 @@ private:
 
     bool startedWorking;
     constexpr static std::array<char[15], 3> numberingSchemesVector = {"chothia", "kabat", "chothia_ext"};
+
+    QDoubleSpinBox *xAxisRangeUpper;
+    QDoubleSpinBox *xAxisRangeLower;
+    QDoubleSpinBox *yAxisRangeUpper;
+    QDoubleSpinBox *yAxisRangeLower;
 
 };
 
