@@ -1,0 +1,3 @@
+project(MachineLearningAlgorithms)
+
+add_subdirectory(Decomposition)

@@ -8,7 +8,7 @@ set(ABPYTOOLS_CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpyto
 set(SOURCE_FILES
         src/chainCollectionCPP.cpp
         src/queryAbnum.cpp
-        src/pca.cpp)
+        ../machine-learning/Decomposition/src/pca.cpp)
 
 set(TARGET_NAME ABPYTOOLSCPP_LIBRARIES)
 
@@ -25,13 +25,11 @@ target_include_directories(${TARGET_NAME} SYSTEM
         PUBLIC ${PYTHON_INCLUDE_DIRS}
         ${ABPYTOOLS_CPP_DIR}
         ${PYTHON_NUMPY_INCLUDE_DIR}
-        ${MLPACK_INCLUDE_DIRS}
         )
 
 target_link_libraries(${TARGET_NAME}
         ABPYTOOLSINTERFACE_LIBRARIES
-        ${MLPACK_LIBRARIES}
-        ${ARMADILLO_LIBRARIES}
+        DECOMPOSITION_ALGORITHMS_LIBRARIES
         )
 
 add_subdirectory(tests)
