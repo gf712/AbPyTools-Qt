@@ -40,7 +40,8 @@ void MainWindow::startApp() {
     startedWorking = false;
 
     // routines that live throughout the application
-    startConnection();
+    startConnection(); // starts connection thread
+    plotSettings(); // plot settings
 }
 
 
@@ -66,6 +67,57 @@ void MainWindow::startConnection() {
     connect(abnumConnection, SIGNAL(connectionStatus(bool)), this, SLOT(update_abnum_connection(bool)));
 
     connectionThread->start();
+}
+
+
+void MainWindow::plotSettings() {
+
+    ui->plotSettingLayoutPermanent->setVerticalSpacing(1);
+    ui->plotSettingLayoutCustom->setVerticalSpacing(1);
+
+    // populate titles
+    ui->plotSettingLayoutPermanent->addWidget(new QLabel("Plot settings"), 0, 0,  Qt::AlignTop);
+    ui->plotSettingLayoutCustom->addWidget(new QLabel("Analyis plot settings"), 0, 0, Qt::AlignTop);
+
+    // populates plot settings that are in every plot
+    xAxisRangeLower = new QDoubleSpinBox();
+    xAxisRangeUpper = new QDoubleSpinBox();
+    yAxisRangeLower = new QDoubleSpinBox();
+    yAxisRangeUpper = new QDoubleSpinBox();
+
+    xAxisRangeLower->setRange(-10e6, 10e6);
+    xAxisRangeUpper->setRange(-10e6, 10e6);
+    yAxisRangeLower->setRange(-10e6, 10e6);
+    yAxisRangeUpper->setRange(-10e6, 10e6);
+
+    xAxisRangeLower->setValue(-1.0);
+    xAxisRangeUpper->setValue( 1.0);
+    yAxisRangeLower->setValue(-1.0);
+    yAxisRangeUpper->setValue( 1.0);
+
+    // Display x-axis range buttons
+    ui->plotSettingLayoutPermanent->addWidget(new QLabel("X-axis"), 1, 0);
+    ui->plotSettingLayoutPermanent->addWidget(new QLabel("Lower range"), 2, 0);
+    ui->plotSettingLayoutPermanent->addWidget(xAxisRangeLower, 2, 1);
+    ui->plotSettingLayoutPermanent->addWidget(new QLabel("Upper range"), 3, 0);
+    ui->plotSettingLayoutPermanent->addWidget(xAxisRangeUpper, 3, 1);
+
+    // Display y-axis range
+    ui->plotSettingLayoutPermanent->addWidget(new QLabel("Y-axis"), 4, 0);
+    ui->plotSettingLayoutPermanent->addWidget(new QLabel("Lower range"), 5, 0);
+    ui->plotSettingLayoutPermanent->addWidget(yAxisRangeLower, 5, 1);
+    ui->plotSettingLayoutPermanent->addWidget(new QLabel("Upper range"), 6, 0);
+    ui->plotSettingLayoutPermanent->addWidget(yAxisRangeUpper, 6, 1);
+
+    connect(xAxisRangeLower, SIGNAL(editingFinished()), this, SLOT(adjustXAxisLower()));
+    connect(xAxisRangeUpper, SIGNAL(editingFinished()), this, SLOT(adjustXAxisUpper()));
+    connect(yAxisRangeLower, SIGNAL(editingFinished()), this, SLOT(adjustYAxisLower()));
+    connect(yAxisRangeUpper, SIGNAL(editingFinished()), this, SLOT(adjustYAxisUpper()));
+
+    adjustXAxisLower();
+    adjustXAxisUpper();
+    adjustYAxisLower();
+    adjustYAxisUpper();
 }
 
 
@@ -349,9 +401,120 @@ void MainWindow::sendHydophobicityDatasetNameToChildOnRequest(QString groupName_
 
 }
 
+
+// #####################################################################################################################
+//                                                 PLOTTING SLOTS
+// #####################################################################################################################
+
+void MainWindow::adjustXAxisLower() {
+
+    ui->plotArea->xAxis->setRange(xAxisRangeLower->value(), ui->plotArea->xAxis->range().upper);
+    ui->plotArea->replot();
+
+}
+
+void MainWindow::adjustYAxisLower() {
+
+    ui->plotArea->yAxis->setRange(xAxisRangeLower->value(), ui->plotArea->yAxis->range().upper);
+    ui->plotArea->replot();
+
+}
+
+void MainWindow::adjustXAxisUpper() {
+
+    ui->plotArea->xAxis->setRange(ui->plotArea->xAxis->range().lower, xAxisRangeUpper->value());
+    ui->plotArea->replot();
+
+}
+
+void MainWindow::adjustYAxisUpper() {
+
+    ui->plotArea->yAxis->setRange(ui->plotArea->yAxis->range().lower, yAxisRangeUpper->value());
+    ui->plotArea->replot();
+
+}
+
 // #####################################################################################################################
 //                                               ANALYSIS MENU SLOTS
 // #####################################################################################################################
+
+void MainWindow::on_actionApplyPCA_triggered()
+{
+    for(auto const &name: chainGroups->getGroupNames()) {
+
+        qDebug() << "Checking: " << name;
+
+        if (!chainGroups->getPerformedPCA(name)) {
+
+            if (!chainGroups->getHasHDatabase(name)) {
+                QMessageBox msgBox;
+                msgBox.setText(QString("Group %1 does not have hydrophobicity values assigned to it!").arg(name));
+                msgBox.exec();
+                return;
+            }
+
+            try {
+                // perform PCA on first 10 dims
+                qDebug() << "Applying PCA to: " << name;
+                chainGroups->performPCA(name, 10);
+            }
+
+            catch (ChainSequenceNotNumberedException) {
+                QMessageBox msgBox;
+                msgBox.setText(QString("Numbering was not applied to group %1!").arg(name));
+                msgBox.exec();
+                return;
+            }
+        }
+    }
+}
+
+
+void MainWindow::on_actionPlotPCA_triggered()
+{
+
+    auto *dataset = new QComboBox();
+    auto *xAxisData = new QComboBox();
+    auto *yAxisData = new QComboBox();
+
+    dataset->setObjectName("group_name");
+    xAxisData->setObjectName("X_axis");
+    yAxisData->setObjectName("Y_axis");
+
+    auto applyChanges = new QPushButton("Apply");
+
+    for(auto const &name: chainGroups->getGroupNames()) {
+
+        if (chainGroups->getPerformedPCA(name)) {
+            // add group name if pca has been performed
+            dataset->addItem(name);
+        }
+    }
+
+    for (int i = 1; i < 10; ++i) {
+        xAxisData->addItem(QString::number(i));
+        yAxisData->addItem(QString::number(i));
+    }
+
+    xAxisData->setCurrentIndex(0);
+    yAxisData->setCurrentIndex(1);
+
+    ui->plotSettingLayoutCustom->addWidget(new QLabel("Group"), 1, 0);
+    ui->plotSettingLayoutCustom->addWidget(dataset, 1, 1);
+    ui->plotSettingLayoutCustom->addWidget(new QLabel("X-axis PC"), 2, 0);
+    ui->plotSettingLayoutCustom->addWidget(xAxisData, 2, 1);
+    ui->plotSettingLayoutCustom->addWidget(new QLabel("Y-axis PC"), 3, 0);
+    ui->plotSettingLayoutCustom->addWidget(yAxisData, 3, 1);
+    ui->plotSettingLayoutCustom->addWidget(applyChanges, 4, 1);
+
+    ui->plotArea->addGraph();
+
+    changeDatasetForPCA();
+
+    connect(applyChanges, SIGNAL(clicked()), this, SLOT(changeDatasetForPCA()));
+}
+
+
 
 void MainWindow::changeDatasetForPCA() {
 
@@ -371,7 +534,7 @@ void MainWindow::changeDatasetForPCA() {
     }
 
 
-    qDebug() << "Got ui->plotSettingLayout children";
+    qDebug() << "Got ui->plotSettingLayoutCustom children";
 
     int pc1 = pc1Combobox->currentIndex();
     int pc2 = pc2Combobox->currentIndex();
@@ -519,79 +682,4 @@ void MainWindow::loadFASTADebugText() {
 
     cacheDebugText.append(debugText);
     updateDebugWindow();
-}
-
-void MainWindow::on_actionPlotPCA_triggered()
-{
-
-    auto *dataset = new QComboBox();
-    auto *xAxisData = new QComboBox();
-    auto *yAxisData = new QComboBox();
-
-    dataset->setObjectName("group_name");
-    xAxisData->setObjectName("X_axis");
-    yAxisData->setObjectName("Y_axis");
-
-    auto applyChanges = new QPushButton("Apply");
-
-    for(auto const &name: chainGroups->getGroupNames()) {
-
-        if (chainGroups->getPerformedPCA(name)) {
-            // add group name if pca has been performed
-            dataset->addItem(name);
-        }
-    }
-
-    for (int i = 1; i < 10; ++i) {
-        xAxisData->addItem(QString::number(i));
-        yAxisData->addItem(QString::number(i));
-    }
-
-    xAxisData->setCurrentIndex(0);
-    yAxisData->setCurrentIndex(1);
-
-    ui->plotSettingLayout->addWidget(new QLabel("Group"), 1, 0);
-    ui->plotSettingLayout->addWidget(dataset, 1, 1);
-    ui->plotSettingLayout->addWidget(new QLabel("X-axis PC"), 2, 0);
-    ui->plotSettingLayout->addWidget(xAxisData, 2, 1);
-    ui->plotSettingLayout->addWidget(new QLabel("Y-axis PC"), 3, 0);
-    ui->plotSettingLayout->addWidget(yAxisData, 3, 1);
-    ui->plotSettingLayout->addWidget(applyChanges, 4, 1);
-
-    ui->plotArea->addGraph();
-
-    changeDatasetForPCA();
-
-    connect(applyChanges, SIGNAL(clicked()), this, SLOT(changeDatasetForPCA()));
-}
-
-void MainWindow::on_actionApplyPCA_triggered()
-{
-    for(auto const &name: chainGroups->getGroupNames()) {
-
-        qDebug() << "Checking: " << name;
-
-        if (!chainGroups->getPerformedPCA(name)) {
-
-            if (!chainGroups->getHasHDatabase(name)) {
-                QMessageBox msgBox;
-                msgBox.setText(QString("Group %1 does not have hydrophobicity values assigned to it!").arg(name));
-                msgBox.exec();
-                return;
-            }
-
-            try {
-                // perform PCA on first 10 dims
-                qDebug() << "Applying PCA to: " << name;
-                chainGroups->performPCA(name, 10);
-            }
-
-            catch (ChainSequenceNotNumberedException) {
-                QMessageBox msgBox;
-                msgBox.setText(QString("Numbering was not applied to group %1!").arg(name));
-                msgBox.exec();
-                return;
-            }
-        }
-    }
 }

@@ -51,12 +51,13 @@ public:
     // GETTERS
     Ui::MainWindow* getUI() {return ui;}
 
-    // Display message editors
 //    void addAntibodyObjectText(std::string name_);
     void addAntibodyObjectDebugText(AntibodyChainCPP *object_);
     void loadFASTADebugText();
     void startApp();
     void startConnection();
+    void plotSettings();
+
 //    void addGroupText(std::string name);
 
 //    void updateWorkingWindowGroup();
@@ -109,6 +110,11 @@ private Q_SLOTS:
 
     void update_abnum_connection(bool isConnected_);
 
+    void adjustXAxisLower();
+    void adjustYAxisLower();
+    void adjustXAxisUpper();
+    void adjustYAxisUpper();
+
 private:
     Ui::MainWindow *ui;
     ChainGroups *chainGroups;
@@ -132,6 +138,11 @@ private:
 
     bool startedWorking;
     constexpr static std::array<char[15], 3> numberingSchemesVector = {"chothia", "kabat", "chothia_ext"};
+
+    QDoubleSpinBox *xAxisRangeUpper;
+    QDoubleSpinBox *xAxisRangeLower;
+    QDoubleSpinBox *yAxisRangeUpper;
+    QDoubleSpinBox *yAxisRangeLower;
 
 };
 
