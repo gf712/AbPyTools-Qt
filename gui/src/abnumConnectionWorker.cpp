@@ -6,6 +6,7 @@
 
 void abnumConnectionWorker::checkConnection() {
 
+    checkConnectionHelper();
     // run timer in background
     connectionTimer = new QTimer();
     connectionTimer->start(500);
