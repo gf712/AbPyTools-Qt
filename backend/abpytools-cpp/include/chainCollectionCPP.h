@@ -83,8 +83,8 @@ public:
 
 private:
     bool partial;
-    int numberOfChains;
     bool loaded;
+    int numberOfChains;
     int nLoaded;
     int nFailed;
     int nTried;
