@@ -1,8 +1,5 @@
 project(BackendAbPyToolsPureCPP)
 
-set(INCLUDE_FILES include/chainCollectionCPP.h
-        )
-
 set(ABPYTOOLS_CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE INTERNAL "abpytools-cpp include lib")
 
 set(SOURCE_FILES

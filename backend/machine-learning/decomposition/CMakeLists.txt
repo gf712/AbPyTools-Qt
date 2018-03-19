@@ -1,9 +1,5 @@
 project(DecompositionAlgorithms)
 
-set(INCLUDE_FILES
-        include/chainCollectionCPP.h
-        )
-
 set(DECOMPOSITION_ALGO_DIR include CACHE INTERNAL "decomposition algorithms include lib")
 
 set(SOURCE_FILES
