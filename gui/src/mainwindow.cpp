@@ -499,13 +499,13 @@ void MainWindow::on_actionPlotPCA_triggered()
     xAxisData->setCurrentIndex(0);
     yAxisData->setCurrentIndex(1);
 
-    ui->plotSettingLayoutCustom->addWidget(new QLabel("Group"), 1, 0);
-    ui->plotSettingLayoutCustom->addWidget(dataset, 1, 1);
-    ui->plotSettingLayoutCustom->addWidget(new QLabel("X-axis PC"), 2, 0);
-    ui->plotSettingLayoutCustom->addWidget(xAxisData, 2, 1);
-    ui->plotSettingLayoutCustom->addWidget(new QLabel("Y-axis PC"), 3, 0);
-    ui->plotSettingLayoutCustom->addWidget(yAxisData, 3, 1);
-    ui->plotSettingLayoutCustom->addWidget(applyChanges, 4, 1);
+    ui->plotSettingLayoutCustom->addWidget(new QLabel("Group"), 1, 0, Qt::AlignTop);
+    ui->plotSettingLayoutCustom->addWidget(dataset, 1, 1, Qt::AlignTop);
+    ui->plotSettingLayoutCustom->addWidget(new QLabel("X-axis PC"), 2, 0, Qt::AlignTop);
+    ui->plotSettingLayoutCustom->addWidget(xAxisData, 2, 1, Qt::AlignTop);
+    ui->plotSettingLayoutCustom->addWidget(new QLabel("Y-axis PC"), 3, 0, Qt::AlignTop);
+    ui->plotSettingLayoutCustom->addWidget(yAxisData, 3, 1, Qt::AlignTop);
+    ui->plotSettingLayoutCustom->addWidget(applyChanges, 4, 1, Qt::AlignTop);
 
     ui->plotArea->addGraph();
 
@@ -525,23 +525,9 @@ void MainWindow::changeDatasetForPCA() {
     QComboBox *pc2Combobox = this->findChild<QComboBox*>("Y_axis");
     QComboBox *nameCombobox = this->findChild<QComboBox*>("group_name");
 
-    if (pc1Combobox == 0 or pc2Combobox == 0 or nameCombobox == 0) {
-        qDebug() << "Could not find combobox";
-        return;
-    }
-    else {
-        qDebug() << "Found combobox";
-    }
-
-
-    qDebug() << "Got ui->plotSettingLayoutCustom children";
-
     int pc1 = pc1Combobox->currentIndex();
     int pc2 = pc2Combobox->currentIndex();
     QString groupname = nameCombobox->currentText();
-
-    qDebug() << "Got current index";
-    qDebug() << pc1 << pc2;
 
     auto x = chainGroups->getPrincipalComponent(groupname, pc1);
     auto y = chainGroups->getPrincipalComponent(groupname, pc2);
@@ -549,36 +535,28 @@ void MainWindow::changeDatasetForPCA() {
     ui->plotArea->graph(0)->setData(x, y);
     ui->plotArea->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->plotArea->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 4));
-//    ui->plotArea->rescaleAxes();
 
     bool foundX, foundY;
 
     auto xrange = ui->plotArea->graph(0)->data()->keyRange(foundX);
     auto yrange = ui->plotArea->graph(0)->data()->valueRange(foundY);
 
-    double xmin = xmin < 0 ? xrange.lower * 1.1 : xrange.lower * 0.9;
-    double xmax = xmax < 0 ? xrange.upper * 0.9 : xrange.upper * 1.1;
-    double ymin = ymin < 0 ? yrange.lower * 1.1 : yrange.lower * 0.9;
-    double ymax = ymax < 0 ? yrange.upper * 0.9 : yrange.upper * 1.1;
-
-    std::cout << "PRE ADJUSTMENT: \n";
-    std::cout << "X_MIN: " << xrange.lower << std::endl;
-    std::cout << "X_MAX: " << xrange.upper << std::endl;
-    std::cout << "Y_MIN: " << yrange.lower << std::endl;
-    std::cout << "Y_MAX: " << yrange.upper << std::endl;
-
-    std::cout << "\nADJUSTED:\n";
-    std::cout << "X_MIN: " << xmin << std::endl;
-    std::cout << "X_MAX: " << xmax << std::endl;
-    std::cout << "Y_MIN: " << ymin << std::endl;
-    std::cout << "Y_MAX: " << ymax << std::endl;
+    double xmin = xrange.lower < 0 ? xrange.lower * 1.1 : xrange.lower * 0.9;
+    double xmax = xrange.upper < 0 ? xrange.upper * 0.9 : xrange.upper * 1.1;
+    double ymin = yrange.lower < 0 ? yrange.lower * 1.1 : yrange.lower * 0.9;
+    double ymax = yrange.upper < 0 ? yrange.upper * 0.9 : yrange.upper * 1.1;
 
     double delta = (fabs(xmax) - fabs(xmin) > fabs(ymax) - fabs(ymax)) ? fabs(xmax) - fabs(xmin) : fabs(ymax) - fabs(ymax);
 
-    ui->plotArea->xAxis->setRange(xmin - delta, xmax + delta);
-    ui->plotArea->yAxis->setRange(ymin - delta, ymax + delta);
+    xAxisRangeLower->setValue(xmin - delta);
+    xAxisRangeUpper->setValue(xmax + delta);
+    yAxisRangeLower->setValue(ymin - delta);
+    yAxisRangeUpper->setValue(ymax + delta);
 
-    ui->plotArea->replot();
+    adjustXAxisLower();
+    adjustXAxisUpper();
+    adjustYAxisLower();
+    adjustYAxisUpper();
 }
 
 // #####################################################################################################################
