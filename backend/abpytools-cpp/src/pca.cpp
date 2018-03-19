@@ -6,7 +6,22 @@
 
 void PCA::fit(arma::mat data) {
 
-    Apply(data, transformedData, eigenvalues, eigenvectors);
+    // Center the data into a temporary matrix.
+    arma::mat centeredData;
+    mlpack::math::Center(data, centeredData);
+
+    // tranform data to have variance zero
+    arma::vec stdDev = arma::stddev(centeredData, 0, 1);
+
+    // If there are any zeroes, make them very small.
+    for (size_t i = 0; i < stdDev.n_elem; ++i)
+        if (stdDev[i] == 0)
+            stdDev[i] = 1e-50;
+
+    centeredData /= arma::repmat(stdDev, 1, centeredData.n_cols);
+
+    // apply PCA on centered and whitened data
+    Apply(centeredData, transformedData, eigenvalues, eigenvectors);
 
     std::cout << "MLPACK PCA: \n";
     std::cout << "Data cols: " << data.n_cols << "\n";
