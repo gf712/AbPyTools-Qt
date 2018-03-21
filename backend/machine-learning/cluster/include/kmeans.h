@@ -7,8 +7,9 @@
 
 #include <mlpack/core.hpp>
 #include <mlpack/methods/kmeans/kmeans.hpp>
+#include "cluster.h"
 
-class KMeans: public mlpack::kmeans::KMeans<> {
+class KMeans: public cluster, public mlpack::kmeans::KMeans<> {
 
 public:
 
@@ -18,7 +19,6 @@ public:
     }
 
     void fit(arma::mat);
-    arma::urowvec predict(arma::mat);
 
     arma::mat getCentroids() {return centroids;}
     int getK() {return n_clusters;}
@@ -27,7 +27,6 @@ public:
 private:
     int n_clusters;
     int max_iterations;
-    arma::mat centroids;
 
 };
 

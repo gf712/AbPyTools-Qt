@@ -3,6 +3,7 @@ project(ClusterAlgorithms)
 set(CLUSTER_ALGO_DIR include CACHE INTERNAL "cluster algorithms include lib")
 
 set(SOURCE_FILES
+        src/cluster.cpp
         src/kmeans.cpp)
 
 set(TARGET_NAME CLUSTER_ALGORITHMS_LIBRARIES)
