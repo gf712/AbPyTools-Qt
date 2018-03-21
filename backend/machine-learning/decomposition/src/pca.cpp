@@ -4,24 +4,31 @@
 
 #include "../include/pca.h"
 
-void PCA::fit(arma::mat data) {
+void PCA::fit(const arma::mat &data) {
 
     // Center the data into a temporary matrix.
-    arma::mat centeredData;
-    mlpack::math::Center(data, centeredData);
 
-    // tranform data to have variance zero
-    arma::vec stdDev = arma::stddev(centeredData, 0, 1);
+    if (centreData) {
+        arma::mat centeredData;
+        mlpack::math::Center(data, centeredData);
 
-    // If there are any zeroes, make them very small.
-    for (size_t i = 0; i < stdDev.n_elem; ++i)
-        if (stdDev[i] == 0)
-            stdDev[i] = 1e-50;
+        // tranform data to have variance zero
+        arma::vec stdDev = arma::stddev(centeredData, 0, 1);
 
-    centeredData /= arma::repmat(stdDev, 1, centeredData.n_cols);
+        // If there are any zeroes, make them very small.
+        for (size_t i = 0; i < stdDev.n_elem; ++i)
+            if (stdDev[i] == 0)
+                stdDev[i] = 1e-50;
 
-    // apply PCA on centered and whitened data
-    Apply(centeredData, transformedData, eigenvalues, eigenvectors);
+        centeredData /= arma::repmat(stdDev, 1, centeredData.n_cols);
+
+        // apply PCA on centered and whitened data
+        Apply(centeredData, transformedData, eigenvalues, eigenvectors);
+    }
+
+    else
+        Apply(data, transformedData, eigenvalues, eigenvectors);
+
 
     std::cout << "MLPACK PCA: \n";
     std::cout << "Data cols: " << data.n_cols << "\n";
@@ -30,13 +37,15 @@ void PCA::fit(arma::mat data) {
     std::cout << "EigVec cols: " << eigenvectors.n_cols << "\n";
     std::cout << "EigVec rows: " << eigenvectors.n_rows << "\n";
 
+    std::cout << "Eigenvalues size: " << eigenvalues.size() << std::endl;
+
     explainedVariance = arma::cumsum(eigenvalues);
 
-    // normalise eigenvalues and keep normalising value
-    sumEigenvalue = arma::sum(eigenvalues);
-    eigenvalues /= sumEigenvalue;
+//    // normalise eigenvalues and keep normalising value
+//    eigenvalues /= sumEigenvalue;
 
-    explainedVarianceRatio = arma::cumsum(eigenvalues);
+    sumEigenvalue = arma::sum(eigenvalues);
+    explainedVarianceRatio = eigenvalues / sumEigenvalue;
 
 }
 
