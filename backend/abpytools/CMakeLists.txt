@@ -30,4 +30,4 @@ target_link_libraries(${TARGET_NAME}
 add_subdirectory(tests)
 
 add_test(NAME BackendAbPyToolsCPPTest COMMAND BackendAbPyToolsCPPTest
-        WORKING_DIRECTORY ${BackendAbPyToolsCPPTests_BIN_DIR})
+         WORKING_DIRECTORY ${BackendAbPyToolsCPPTests_BIN_DIR})
