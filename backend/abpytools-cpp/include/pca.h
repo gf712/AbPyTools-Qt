@@ -18,19 +18,23 @@ class PCA: public mlpca::PCA {
     // but with a touch of python's sklearn library
 
 public:
-    PCA(int nDimensions_) {
+    PCA(int nDimensions_, bool centreData_ = false) {
         nDimensions = nDimensions_;
+        centreData = centreData_;
     };
 
-    PCA(double maxVariance_) {
+    PCA(double maxVariance_, bool centreData_ = false) {
         maxVariance = maxVariance_;
+        centreData = centreData_;
     };
 
-    ~PCA();
+//    PCA();
 
-    void fit(arma::mat data);
+    ~PCA() = default;
+
+    void fit(const arma::mat &data);
     arma::mat transform();
-    arma::mat fit_transform(arma::mat data) {
+    arma::mat fit_transform(const arma::mat &data) {
         fit(data);
         return transform();
     }
@@ -59,6 +63,8 @@ public:
 private:
     boost::optional<int> nDimensions;
     boost::optional<double> maxVariance;
+    bool centreData;
+
 
     arma::vec explainedVariance;
     arma::vec explainedVarianceRatio;
