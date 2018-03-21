@@ -491,6 +491,14 @@ void MainWindow::on_actionPlotPCA_triggered()
         }
     }
 
+    if (dataset->count() == 0) {
+        // pca was not performed on any of the groups
+        QMessageBox msgBox;
+        msgBox.setText(QString("PCA was not applied to any of the groups."));
+        msgBox.exec();
+        return;
+    }
+
     for (int i = 1; i < 10; ++i) {
         xAxisData->addItem(QString::number(i));
         yAxisData->addItem(QString::number(i));
