@@ -6,9 +6,7 @@
 
 void KMeans::fit(arma::mat data) {
 
-    // mlpack expects a matrix with a datapoint per *COLUMN* (??)
-    Cluster(data.t(), n_clusters, centroids);
-
+    Cluster(data, n_clusters, centroids);
     std::cout << "Number of clusters: " << n_clusters << std::endl;
     std::cout << "Data: " << std::endl;
     data.print();
@@ -17,25 +15,28 @@ void KMeans::fit(arma::mat data) {
 
 }
 
-arma::uvec KMeans::predict(arma::mat data) {
+arma::urowvec KMeans::predict(arma::mat data) {
 
-    auto dists = arma::mat(data.n_rows, centroids.n_rows, arma::fill::zeros);
+    auto dists = arma::mat(centroids.n_rows, data.n_cols, arma::fill::zeros);
 
-    for (int j = 0; j < centroids.n_rows; ++j) {
+    for (int j = 0; j < centroids.n_cols; ++j) {
 
-        auto centroidVec = centroids.row(j);
+        arma::vec centroidVec = centroids.col(j);
 
-        for (int i = 0; i < data.n_rows; ++i) {
+        std::cout << "Vector: " << std::endl;
+        centroidVec.print();
 
-            auto distVec = data.row(i);
+        for (int i = 0; i < data.n_cols; ++i) {
+
+            arma::vec distVec = data.col(i);
 
             // calculate distance between all rows -> do not take square root as it is not necessary
             // just need to check where distance is lowest -> works with euclidean distance
             // so D = sum((dist[i], centroids[j]) ** 2)
-            dists(i, j) = arma::sum(arma::pow((distVec - centroidVec), 2));
+            dists(j, i) = arma::sum(arma::pow((distVec - centroidVec), 2));
         }
     }
 
-    // generate a column vector with minimum distance
-    return arma::index_min(dists, 1);
+    // generate a row vector with minimum distance
+    return arma::index_min(dists, 0);
 }

@@ -18,7 +18,7 @@ public:
     }
 
     void fit(arma::mat);
-    arma::uvec predict(arma::mat);
+    arma::urowvec predict(arma::mat);
 
     arma::mat getCentroids() {return centroids;}
     int getK() {return n_clusters;}
