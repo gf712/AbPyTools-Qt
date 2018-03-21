@@ -38,8 +38,11 @@ void ChainGroups::removeGroup(std::string groupName_) {
     chainCollectionGroups.erase(groupName_);
     performedPCA.erase(groupName_);
     hasHDatabase.erase(groupName_);
-
+    groupFASTALoadingProgressRecord.erase(groupName_);
     internalCounter--;
+
+    std::cout << "ERASED: " << groupName_ << std::endl;
+    std::cout << "Is " << groupName_ << " in the chainGroups: " << groupExists(groupName_) << std::endl;
 }
 
 arma::mat ChainGroups::getHydrophobicityValues(std::string chainGroupName_) {

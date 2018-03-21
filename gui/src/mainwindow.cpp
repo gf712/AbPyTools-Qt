@@ -201,6 +201,7 @@ void MainWindow::on_actionApply_Numbering_triggered()
     connect(this, SIGNAL(numbering_helper_completed()), pbar, SLOT(cancel()));
     connect(this, SIGNAL(numbering_helper_completed()), pBarhelperTimer, SLOT(stop()));
     connect(this, SIGNAL(numbering_helper_completed()), this, SLOT(updateWorkingWindowGroup()));
+    connect(this, SIGNAL(numbering_helper_completed()), this, SLOT(check_numbering()));
 
     // assign future to watcher
     watcher.setFuture(future);
@@ -226,6 +227,73 @@ void MainWindow::pbar_numbering() {
 
     Q_EMIT(pbar_numbering_helper_signal(progress));
 
+}
+
+
+void MainWindow::check_numbering() {
+
+    qDebug() << "check_numbering()";
+
+    // checks if numbering was performed on all the sequences in group
+    for (const auto &name: chainGroups->getGroupNames()) {
+
+        QMessageBox msgBox;
+
+        qDebug() << name;
+        if (!chainGroups->isLoaded(name)) {
+
+            qDebug() << name << chainGroups->isLoaded(name);
+
+            msgBox.setText(QString("%1 could not be numbered.").arg(name));
+            msgBox.setInformativeText("Do you want discard it?");
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll);
+            msgBox.setDefaultButton(QMessageBox::Yes);
+            int ret = msgBox.exec();
+
+            switch (ret) {
+                case QMessageBox::No:
+                    continue;
+                case QMessageBox::Yes:
+                    chainGroups->removeGroup(name.toStdString());
+                case QMessageBox::NoToAll:
+                    goto END;
+                case QMessageBox::YesToAll:
+                    for (const auto &name: chainGroups->getGroupNames()) {
+                        if (!chainGroups->isLoaded(name)) {
+                            chainGroups->removeGroup(name.toStdString());
+                        }
+                    }
+            }
+        }
+
+        else if (chainGroups->isPartial(name)) {
+
+            msgBox.setText(QString("%1 could not be completely numbered.").arg(name));
+            msgBox.setInformativeText("Do you want discard it?");
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll);
+            msgBox.setDefaultButton(QMessageBox::Yes);
+            int ret = msgBox.exec();
+
+            switch (ret) {
+                case QMessageBox::No:
+                    continue;
+                case QMessageBox::Yes:
+                    chainGroups->removeGroup(name.toStdString());
+                case QMessageBox::NoToAll:
+                    goto END;
+                case QMessageBox::YesToAll:
+                    for (const auto &name: chainGroups->getGroupNames()) {
+                        if (chainGroups->isPartial(name)) {
+                            chainGroups->removeGroup(name.toStdString());
+                        }
+                    }
+            }
+        }
+    }
+
+    END:
+
+    updateWorkingWindowGroup();
 }
 
 
@@ -257,7 +325,7 @@ void MainWindow::addAntibodyObject(std::string name_, std::string sequence_, std
     chainGroups->addChain(groupName, name_, sequence_);
 
     qDebug() << "ADDED CHAIN";
-    
+
     // write to windows
 //    addAntibodyObjectText(groupName);
 //    addAntibodyObjectDebugText();
@@ -575,7 +643,6 @@ void MainWindow::update_abnum_connection(bool isConnected_) {
 
     if (isConnected_) {
 
-        qDebug() << "Connected";
         auto temp = ui->iconLayout->takeAt(0);
         ui->iconLayout->removeItem(temp);
         abnumNotConnected->hide();
@@ -585,7 +652,6 @@ void MainWindow::update_abnum_connection(bool isConnected_) {
 
     else {
 
-        qDebug() << "Not connected";
         auto temp = ui->iconLayout->takeAt(0);
         ui->iconLayout->removeItem(temp);
         abnumConnected->hide();
@@ -593,7 +659,7 @@ void MainWindow::update_abnum_connection(bool isConnected_) {
         abnumNotConnected->show();
     }
 
-    qDebug() << "Updated connection image";
+//    qDebug() << "Updated connection image";
 }
 
 // #####################################################################################################################
@@ -628,6 +694,8 @@ void MainWindow::updateWorkingWindowGroup() {
                 "------------------------\n";
 
     for (auto const &name: chainGroups->getGroupNames()) {
+
+        qDebug() << "NAME: " << name;
 
         cacheText.append(chainGroups->getInfo(name));
 

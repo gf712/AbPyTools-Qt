@@ -89,6 +89,7 @@ private Q_SLOTS:
     void on_actionNew_triggered();
     void on_actionNew_group_triggered();
     void on_actionApply_Numbering_triggered();
+    void check_numbering();
     void on_actionImport_hydrophobicity_dataset_triggered();
 
     void addAntibodyObject(std::string name_, std::string sequence_, std::string groupName_);
