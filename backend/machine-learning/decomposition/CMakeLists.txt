@@ -26,7 +26,7 @@ target_link_libraries(${TARGET_NAME}
         ${ARMADILLO_LIBRARIES}
         )
 
-#add_subdirectory(tests)
-#
-#add_test(NAME AbPyToolsCPPTestSuite COMMAND AbPyToolsCPPTest
-#         WORKING_DIRECTORY ${AbPyToolsCPPTests_BIN_DIR})
+add_subdirectory(tests)
+
+add_test(NAME PCATestSuite COMMAND PCATest
+         WORKING_DIRECTORY ${PCATests_BIN_DIR})
