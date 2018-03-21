@@ -114,10 +114,7 @@ BOOST_FIXTURE_TEST_SUITE(chainCollectionCPPTestSuite, ChainCollectionObjectFixtu
 
         testChainCollectionObject->getHydrophobicityValues(hObject, false);
 
-        std::cout << "hydrophobicity matrix: " << std::endl;
-        testChainCollectionObject->getHydrophobicityValues(hObject).print();
-
-        arma::rowvec hSum = arma::sum(testChainCollectionObject->getHydrophobicityValues(hObject), 0);
+        arma::colvec hSum = arma::sum(testChainCollectionObject->getHydrophobicityValues(hObject), 1);
 
         BOOST_TEST(hSum(0) == 50.35, tt::tolerance(10e-9));
 

@@ -280,9 +280,9 @@ arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &cust
     arma::mat hydrophobicityMatrix_(0,0);
 
     if (chainType == "heavy")
-        hydrophobicityMatrix_.resize(158, numberOfChains);
+        hydrophobicityMatrix_.resize(numberOfChains, 158);
     else if (chainType == "light")
-        hydrophobicityMatrix_.resize(138, numberOfChains);
+        hydrophobicityMatrix_.resize(numberOfChains, 138);
     else
         throw ChainSequenceNotNumberedException(chainType);
 
@@ -292,7 +292,7 @@ arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &cust
 
 //        std::cout << "ROWVEC SIZE: " << arma::conv_to<arma::rowvec>::from(chainHVector).size() << std::endl;
 
-        hydrophobicityMatrix_.col(i) = arma::conv_to<arma::colvec>::from(chainHVector);
+        hydrophobicityMatrix_.row(i) = arma::conv_to<arma::rowvec>::from(chainHVector);
     }
 
     // store data in optional class member hydrophobicityMatrix
@@ -321,8 +321,7 @@ void ChainCollectionCPP::performPCA(hydrophobicityParser &customHValues_, int nD
         (*pcaObject)->setNDimensions(nDimensions);
     }
 
-    // for some reason MLPACK does not use column major for PCA
-    (*pcaObject)->fit(hMatrix.t());
+    (*pcaObject)->fit(hMatrix);
 
 }
 
@@ -344,7 +343,7 @@ void ChainCollectionCPP::performPCA(int nDimensions) {
     std::cout << "H matrix cols: " << (*hydrophobicityMatrix).n_cols << std::endl;
     std::cout << "H matrix rows: " << (*hydrophobicityMatrix).n_rows << std::endl;
 
-    (*pcaObject)->fit((*hydrophobicityMatrix).t());
+    (*pcaObject)->fit(*hydrophobicityMatrix);
 
 }
 
