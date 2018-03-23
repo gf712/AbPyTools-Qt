@@ -5,7 +5,7 @@ AbPyTools-Qt
   
 This is a new version of [AbPyTools](https://github.com/gf712/AbPyTools) which has a frontend that can be easily used in addition to the existing Python3 API. Checkout the [wiki](https://github.com/gf712/AbPyTools-Qt/wiki) for more information.  
   
-Project Mission & Summary  
+Project Mission & Summary
 =========================  
 - Provide an easy to use GUI to work with heavy and light antibody chains  
 - Further optimise AbPyTools python code using C/C++ backend  
@@ -84,7 +84,19 @@ Changelog
 - integrate structural analysis  
 - improved UI  
 - memory management  
-- clustering  
+- clustering
+
+### v0.1.2 (23/03/2018):
+- Backend:
+  - fixed PCA crash bug
+  - switched to column major matrix representation (same as armadillo)
+  
+- Frontend:
+  - added plot range settings
+  - user defined behaviour of unnumbered sequences
+
+- Installation:
+  - requires armadillo>=7.3
 
 ### v0.1.1 (16/03/2018):
 - Backend:
@@ -106,6 +118,6 @@ Changelog
 - Easy(ish) installation with:  
   - cmake  
   - make  
-- Tests:  
+- Tests:
   - Continuous integration   
   - Code coverage
