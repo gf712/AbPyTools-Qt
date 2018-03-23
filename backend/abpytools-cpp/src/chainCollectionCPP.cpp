@@ -282,7 +282,7 @@ arma::mat ChainCollectionCPP::getHydrophobicityValues(hydrophobicityParser &cust
     if (chainType == "heavy")
         hydrophobicityMatrix_.resize(numberOfChains, 158);
     else if (chainType == "light")
-        hydrophobicityMatrix_.resize(numberOfChains, 120);
+        hydrophobicityMatrix_.resize(numberOfChains, 138);
     else
         throw ChainSequenceNotNumberedException(chainType);
 

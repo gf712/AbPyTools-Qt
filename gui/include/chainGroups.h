@@ -73,15 +73,15 @@ public:
     double fastaParsingProgress(std::string groupName_);
     double numberingProgress();
 
+    bool isLoaded(QString groupName) {return chainCollectionGroups[groupName.toStdString()]->isLoaded();}
+    bool isPartial(QString groupName) {return chainCollectionGroups[groupName.toStdString()]->isPartial();}
+
     // MAINTENANCE
     QString getInfo(std::string groupName);
     QString getInfo(QString groupName);
     bool groupExists(QString groupName_) {chainCollectionGroups.find(groupName_.toStdString()) != chainCollectionGroups.end();}
     bool groupExists(std::string groupName_) {chainCollectionGroups.find(groupName_) != chainCollectionGroups.end();}
-    bool isAbnumConnected() {
-        std::cout << "[ChainGroups] Is abnum connected: " << abnumConnection();
-        return abnumConnection();
-    }
+    bool isAbnumConnected() { return abnumConnection();}
 
 
 private:

@@ -8,12 +8,11 @@
 #include <string>
 #include "chain.h"
 #include "chainCollectionCPP.h"
+#include "pca.h"
 
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/optional.hpp>
-
-#include "pca.h"
 
 using namespace boost::numeric::ublas;
 
@@ -83,8 +82,8 @@ public:
 
 private:
     bool partial;
-    int numberOfChains;
     bool loaded;
+    int numberOfChains;
     int nLoaded;
     int nFailed;
     int nTried;

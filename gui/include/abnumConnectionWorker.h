@@ -13,9 +13,9 @@
 #include "connection_check.h"
 
 class abnumConnectionWorker: public QObject {
-    
-    Q_OBJECT
-    
+
+Q_OBJECT
+
 public:
     abnumConnectionWorker() {};
 

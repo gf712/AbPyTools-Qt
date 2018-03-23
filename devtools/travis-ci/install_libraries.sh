@@ -9,6 +9,12 @@ sudo apt-get install gcc-5 g++-5 libmlpack-dev -y
 # increase priority of gcc5 and g++5
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 150 --slave /usr/bin/g++ g++ /usr/bin/g++-5
 
+# install latest armadillo (version 7.3 is not available on older ubuntu distro)
+git clone https://github.com/conradsnicta/armadillo-code.git
+cd armadillo-code
+./configure && make
+sudo make install ..
+
 if [[ $HUNTER_ENABLED == 0 ]]
 then
     # install Qt and boost manually

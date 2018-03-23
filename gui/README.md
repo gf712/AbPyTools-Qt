@@ -23,3 +23,5 @@ one set of sequences but with different numbering schemes.
 > hydrophobicityGroup\
 Another container to hold hydrophobicity values. Holds the values behind the scenes
 and from the frontend is called to load the values to specific groups.
+
+`abnumConnectionWorker.cpp/h`

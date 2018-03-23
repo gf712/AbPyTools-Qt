@@ -37,7 +37,7 @@ find_package(Qt5 CONFIG COMPONENTS REQUIRED Widgets Core PrintSupport Concurrent
 
 find_package(Numpy REQUIRED)
 find_package(MLPACK REQUIRED)
-find_package(Armadillo REQUIRED)
+find_package(Armadillo 7.3 REQUIRED)
 find_package(AbPyTools 0.2.3 REQUIRED)
 
 ############################################################################################

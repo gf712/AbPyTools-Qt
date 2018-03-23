@@ -6,6 +6,7 @@
 
 void abnumConnectionWorker::checkConnection() {
 
+    checkConnectionHelper();
     // run timer in background
     connectionTimer = new QTimer();
     connectionTimer->start(500);
@@ -16,7 +17,7 @@ void abnumConnectionWorker::checkConnectionHelper() {
 
     connected = abnumConnection();
 
-    qDebug() << "Thread [" << thread()->currentThread() << "] says abnum is connected: " << connected;
+//    qDebug() << "Thread [" << thread()->currentThread() << "] says abnum is connected: " << connected;
 
     Q_EMIT(connectionStatus(connected));
 }
